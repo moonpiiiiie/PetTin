@@ -10,21 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import edu.neu.madcourse.pettin.databinding.FragmentSlideshowBinding;
+import edu.neu.madcourse.pettin.databinding.FragmentPostBinding;
 
 public class PostFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentPostBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         PostViewModel postViewModel =
                 new ViewModelProvider(this).get(PostViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentPostBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
+        final TextView textView = binding.textPost;
         postViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

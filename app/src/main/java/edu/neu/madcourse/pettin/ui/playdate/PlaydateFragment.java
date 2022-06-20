@@ -10,21 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import edu.neu.madcourse.pettin.databinding.FragmentGalleryBinding;
+import edu.neu.madcourse.pettin.databinding.FragmentPlaydateBinding;
 
 public class PlaydateFragment extends Fragment {
 
-    private FragmentGalleryBinding binding;
+    private FragmentPlaydateBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         PlaydateViewModel playdateViewModel =
                 new ViewModelProvider(this).get(PlaydateViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentPlaydateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textGallery;
+        final TextView textView = binding.textPlaydate;
         playdateViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
