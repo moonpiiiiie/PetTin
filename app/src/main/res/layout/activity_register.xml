@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerEmail"
         android:hint="Password"
+        android:inputType="textPassword"
         android:minHeight="48dp" />
 
     <Button
