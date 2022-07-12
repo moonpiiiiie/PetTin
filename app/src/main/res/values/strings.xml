@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">PetTin</string>
     <string name="login_page">Login Page</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="new_user_registration">New User? Register Now!</string>
+    <string name="new_user">New User? <u>Register Now!</u></string>
     <string name="register">Register</string>
     <string name="register_page">Register Page</string>
-    <string name="existing_user_login">Existing User Login</string>
+    <string name="existing_user_login"><u>Existing User Login</u></string>
     <string name="email">Email</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
