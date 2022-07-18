@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_baseline_profile"
-        app:showAsAction="ifRoom"
-        android:title="@string/menu_profile" />
-
     <item
         android:id="@+id/nav_playdate"
         android:icon="@drawable/ic_baseline_pets"
         app:showAsAction="ifRoom"
         android:title="@string/menu_playdate" />
+
+
+
+
 
     <item
         android:id="@+id/nav_post"
@@ -31,5 +28,10 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_restaurant"
         android:title="@string/menu_restaurant" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_baseline_profile"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_profile" />
 
 </menu>
