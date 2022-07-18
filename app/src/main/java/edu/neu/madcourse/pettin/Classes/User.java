@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin;
+package edu.neu.madcourse.pettin.Classes;
 
 import java.util.HashMap;
 import java.util.Map;

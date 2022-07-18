@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import edu.neu.madcourse.pettin.Classes.User;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText registerUsername;
@@ -83,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     User newUser = new User(user, email, pw);
                                     reference.child(user).setValue(newUser);
                                     Toast.makeText(RegisterActivity.this, "Register Successfully,  " + user, Toast.LENGTH_SHORT).show();
-                                    Intent toMainPage = new Intent(RegisterActivity.this, MainActivity.class);
+                                    Intent toMainPage = new Intent(RegisterActivity.this, PlayDateActivity.class);
                                     toMainPage.putExtra("username", user);
                                     startActivity(toMainPage);
                                     progressBar.setVisibility(INVISIBLE);

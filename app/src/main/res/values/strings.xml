@@ -9,7 +9,8 @@
     <string name="register_page">Register Page</string>
     <string name="existing_user_login"><u>Existing User Login</u></string>
     <string name="email">Email</string>
-
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
