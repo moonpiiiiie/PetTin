@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -150,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
                     Log.w("sign up activity", "createUserWithEmail:failure", task.getException());
                     userId = auth.getCurrentUser().getUid();
-                    DocumentReference documentRef = db.collection("users").document(userName);
+                    DocumentReference documentRef = db.collection("users").document(userId);
                     Map<String, Object> user = new HashMap<>();
                     user.put("username", userName);
                     user.put("email", email);
@@ -159,7 +160,13 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             Log.d("signupUser", "on success, userName" + userId);
                         }
-                    });
+                    })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("signupUser", "failed "+ userId);
+                                }
+                            });
                 }
                 progressBar.setVisibility(View.INVISIBLE);
             }
