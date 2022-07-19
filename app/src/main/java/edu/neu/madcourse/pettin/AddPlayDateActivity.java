@@ -7,25 +7,55 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class AddPlayDateActivity extends AppCompatActivity {
+    // layout
     Spinner spinner_breed;
     Spinner spinner_gender;
     Spinner spinner_spayed;
     Spinner spinner_energyLevel;
     TextView textView_playstyles;
 
+    // date input
+    EditText editText_name;
+    EditText editText_age;
+    EditText editText_location;
+
+    // data output
+    String currentUserId;
+    private FirebaseAuth auth;
+    String name;
+    String gender;
+    String spayed;
+    int age;
+    String breed;
+    ArrayList<String> playStyles;
+    Double weight;
+    int energyLevel;
+    String img;
+    String location;
+    ProgressBar progressBar;
+    Button button_save;
+    Button button_cancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_play_date);
-
-
+        //name
+        editText_name = findViewById(R.id.editText_name);
+        //age
+        editText_age = findViewById(R.id.editText_age);
         //breed
         spinner_breed = findViewById(R.id.spinner_breed);
         String[] breedArray = {"Other mix","Affenpinscher", "Afghan Hound", "Aidi", "Airedale Terrier", "Akbash Dog", "Akita", "Alano Español", "Alaskan Klee Kai", "Alaskan Malamute", "Alpine Dachsbracke", "Alpine Spaniel", "American Bulldog", "American Cocker Spaniel",
@@ -98,7 +128,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
         String[] playArray = {"Balls", "Hiking", "Jogging", "Wrestle", "Tugger", "Chaser"};
         boolean[] selectedPlayStyles = new boolean[playArray.length];
         ArrayList<Integer> playList = new ArrayList<>();
-
+        playStyles = new ArrayList<>();
         textView_playstyles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +152,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                         StringBuilder playListStringBuilder = new StringBuilder();
                         for (int j=0; j<playList.size(); j++) {
                             playListStringBuilder.append(playArray[playList.get(j)]);
+                            playStyles.add(playArray[playList.get(j)]);
                             if (j!=playList.size()-1){
                                 playListStringBuilder.append(", ");
                             }
@@ -139,6 +170,44 @@ public class AddPlayDateActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+    progressBar = findViewById(R.id.progressBar_addPlayDate);
+    progressBar.setVisibility(View.INVISIBLE);
 
+    // Firebase
+    auth = FirebaseAuth.getInstance();
+    currentUserId = auth.getCurrentUser().getUid();
+
+    button_save = findViewById(R.id.button_save);
+    button_save.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            progressBar.setVisibility(View.VISIBLE);
+            name = editText_name.getText().toString();
+            gender = spinner_gender.getSelectedItem().toString();
+            spayed = spinner_spayed.getSelectedItem().toString();
+            age = Integer.parseInt(editText_age.getText().toString());
+            breed = spinner_breed.getSelectedItem().toString();
+
+            System.out.println(name);
+            System.out.println(gender);
+            System.out.println(spayed);
+            System.out.println(age);
+            System.out.println(breed);
+            System.out.println(playStyles);
+
+
+
+
+
+        }
+    });
+
+    button_cancel = findViewById(R.id.button_cancel);
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

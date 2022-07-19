@@ -6,17 +6,17 @@ public class Dogs {
 
     private String name;
     private String gender;
-    private boolean spayed;
+    private String spayed;
     private int age;
-    private Breed breed;
-    private ArrayList<PlayStyles> playStyles;
+    private String breed;
+    private ArrayList<String> playStyles;
     private Double weight;
     private int energyLevel;
     private String img;
     private String location;
+    private String userID;
 
-
-    public Dogs(String name, String gender, boolean spayed, int age, Breed breed, ArrayList<PlayStyles> playStyles, Double weight, int energyLevel, String img, String location) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
@@ -27,6 +27,7 @@ public class Dogs {
         this.energyLevel = energyLevel;
         this.img = img;
         this.location = location;
+        this.userID = userId;
     }
 
     public String getName() {
@@ -45,11 +46,11 @@ public class Dogs {
         this.gender = gender;
     }
 
-    public boolean isSpayed() {
+    public String isSpayed() {
         return spayed;
     }
 
-    public void setSpayed(boolean spayed) {
+    public void setSpayed(String spayed) {
         this.spayed = spayed;
     }
 
@@ -61,19 +62,19 @@ public class Dogs {
         this.age = age;
     }
 
-    public Breed getBreed() {
+    public String getBreed() {
         return breed;
     }
 
-    public void setBreed(Breed breed) {
+    public void setBreed(String breed) {
         this.breed = breed;
     }
 
-    public ArrayList<PlayStyles> getPlayStyles() {
+    public ArrayList<String> getPlayStyles() {
         return playStyles;
     }
 
-    public void setPlayStyles(ArrayList<PlayStyles> playStyles) {
+    public void setPlayStyles(ArrayList<String> playStyles) {
         this.playStyles = playStyles;
     }
 
@@ -107,5 +108,17 @@ public class Dogs {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getSpayed() {
+        return spayed;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

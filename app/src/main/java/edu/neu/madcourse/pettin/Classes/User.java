@@ -1,24 +1,24 @@
 package edu.neu.madcourse.pettin.Classes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-    public String username;
-    public String email;
-    public String password;
-    public String followers;
-    public Map<String, String> following;
-    public Map<String, Object> posts;
-
+    private String username;
+    private String email;
+    private String followers;
+    private Map<String, String> following;
+    private Map<String, Object> posts;
+    private ArrayList<Dogs> dogs;
     public User(){};
 
-    public User(String username, String email, String password){
+    public User(String username, String email){
         this.following=new HashMap<>();
         this.username = username;
         this.email = email;
         this.posts = new HashMap<>();
-        this.password = password;
+        this.dogs = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -37,13 +37,7 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getFollowers() {
         return followers;
@@ -69,12 +63,19 @@ public class User {
         this.posts = posts;
     }
 
+    public ArrayList<Dogs> getDogs() {
+        return dogs;
+    }
+
+    public void setDogs(ArrayList<Dogs> dogs) {
+        this.dogs = dogs;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", followers=" + followers +
                 ", posts=" + posts +
                 '}';

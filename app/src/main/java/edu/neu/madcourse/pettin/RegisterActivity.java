@@ -1,10 +1,10 @@
 package edu.neu.madcourse.pettin;
 
-import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,17 +15,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import edu.neu.madcourse.pettin.Classes.User;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-
+    // data input
     private EditText registerUsername;
     private EditText registerEmail;
     private EditText registerPassword;
@@ -33,7 +37,17 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView textLogin;
     private ProgressBar progressBar;
 
+    // data output
+    String userName;
+    String email;
+    String pw;
+
+    // FireStore
     private FirebaseAuth auth;
+    FirebaseFirestore db;
+    String userId;
+
+
 
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -51,14 +65,15 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.registerProgressBar);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         registerButton.setOnClickListener(view -> {
 
-            String user = registerUsername.getText().toString();
-            String email = registerEmail.getText().toString();
-            String pw = registerPassword.getText().toString();
+        userName = registerUsername.getText().toString();
+        email = registerEmail.getText().toString();
+        pw = registerPassword.getText().toString();
 
-            if (user.isEmpty()) {
+            if (userName.isEmpty()) {
                 registerUsername.setError("Username is required");
             }
 
@@ -70,43 +85,44 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             else {
-                reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            Toast.makeText(RegisterActivity.this, "Duplicate username", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            progressBar.setVisibility(view.VISIBLE);
-
-                            //Register the user in the firebase
-                            auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    User newUser = new User(user, email, pw);
-                                    reference.child(user).setValue(newUser);
-                                    Toast.makeText(RegisterActivity.this, "Register Successfully,  " + user, Toast.LENGTH_SHORT).show();
-                                    Intent toMainPage = new Intent(RegisterActivity.this, PlayDateActivity.class);
-                                    toMainPage.putExtra("username", user);
-                                    startActivity(toMainPage);
-                                    progressBar.setVisibility(INVISIBLE);
-                                }
-                                else {
-                                    progressBar.setVisibility(INVISIBLE);
-                                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                                }
-
-                            });
-                        }
-
-                    }
-
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                SignUpUser();
+//                reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if (snapshot.exists()) {
+//                            Toast.makeText(RegisterActivity.this, "Duplicate username", Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            progressBar.setVisibility(view.VISIBLE);
+//
+//                            //Register the user in the firebase
+//                            auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener(task -> {
+//                                if (task.isSuccessful()) {
+//                                    User newUser = new User(user, email);
+//                                    reference.child(user).setValue(newUser);
+//                                    Toast.makeText(RegisterActivity.this, "Register Successfully,  " + user, Toast.LENGTH_SHORT).show();
+//                                    Intent toMainPage = new Intent(RegisterActivity.this, PlayDateActivity.class);
+//                                    toMainPage.putExtra("username", user);
+//                                    startActivity(toMainPage);
+//                                    progressBar.setVisibility(INVISIBLE);
+//                                }
+//                                else {
+//                                    progressBar.setVisibility(INVISIBLE);
+//                                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//
+//                                }
+//
+//                            });
+//                        }
+//
+//                    }
+//
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
             }
 
@@ -118,6 +134,34 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
 
+            }
+        });
+    }
+
+    private void SignUpUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        registerButton.setVisibility(View.VISIBLE);
+        auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "Sign Up Failed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
+                    Log.w("sign up activity", "createUserWithEmail:failure", task.getException());
+                    userId = auth.getCurrentUser().getUid();
+                    DocumentReference documentRef = db.collection("users").document(userName);
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("username", userName);
+                    user.put("email", email);
+                    documentRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("signupUser", "on success, userName" + userId);
+                        }
+                    });
+                }
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

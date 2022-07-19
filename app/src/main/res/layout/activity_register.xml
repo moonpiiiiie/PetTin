@@ -47,8 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/registerPassword"
-        android:text="@string/register"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="15dp"
+        android:text="@string/register" />
 
     <TextView
         android:id="@+id/textLogin"
