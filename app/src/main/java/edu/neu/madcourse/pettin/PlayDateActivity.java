@@ -5,11 +5,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 
 public class PlayDateActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
 
+    Button button_addPlaydate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +21,14 @@ public class PlayDateActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        button_addPlaydate = findViewById(R.id.button_addPlaydate);
+        button_addPlaydate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AddPlayDateActivity.class));
+            }
+        });
 
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_playdate);
