@@ -27,4 +27,8 @@
         <item>Boy</item>
         <item>Girl</item>
     </string-array>
+
+    <string name="post_date">Post Date</string>
+    <string name="location">Location</string>
+    <string name="post_content">Post content</string>
 </resources>
