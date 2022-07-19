@@ -4,10 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4015" />
+        <entry key="app/src/main/res/drawable/edittext_rounded.xml" value="0.2525" />
         <entry key="app/src/main/res/drawable/ic_baseline_chat_bubble_outline.xml" value="0.4015" />
         <entry key="app/src/main/res/drawable/ic_baseline_pets.xml" value="0.4015" />
         <entry key="app/src/main/res/drawable/ic_baseline_profile.xml" value="0.4015" />
         <entry key="app/src/main/res/drawable/ic_baseline_restaurant.xml" value="0.4015" />
+        <entry key="app/src/main/res/layout/activity_add_play_date.xml" value="0.2937152629328773" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/activity_content.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5" />

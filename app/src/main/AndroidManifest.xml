@@ -11,8 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetTin">
         <activity
+            android:name=".AddPlayDateActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,9 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
