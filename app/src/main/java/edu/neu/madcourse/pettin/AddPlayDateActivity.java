@@ -6,14 +6,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -43,7 +48,8 @@ public class AddPlayDateActivity extends AppCompatActivity {
     EditText editText_name;
     EditText editText_age;
     EditText editText_location;
-    ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView;
+    ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6;
+    Uri ImageUri =null;
     // permission
     String[] permissionsRequest = new String[]{Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -68,23 +74,24 @@ public class AddPlayDateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_play_date);
+        Context context = this;
         //photos
-        imageView1 = findViewById(R.id.image_view_1);
+//        imageView1 = findViewById(R.id.image_view_1);
         imageView2 = findViewById(R.id.image_view_2);
-        imageView3 = findViewById(R.id.image_view_3);
-        imageView4 = findViewById(R.id.image_view_4);
-        imageView5 = findViewById(R.id.image_view_5);
-        imageView6 = findViewById(R.id.image_view_6);
-        imageView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("image", "clicked");
-                System.out.println("permission: " + checkPermissions());
-                if (!checkPermissions()) {
-                    getPermissions();
-                }
-            }
-        });
+//        imageView3 = findViewById(R.id.image_view_3);
+//        imageView4 = findViewById(R.id.image_view_4);
+//        imageView5 = findViewById(R.id.image_view_5);
+//        imageView6 = findViewById(R.id.image_view_6);
+//        imageView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("image", "clicked");
+//                System.out.println("permission: " + checkPermissions());
+//                if (!checkPermissions()) {
+//                    getPermissions();
+//                }
+//            }
+//        });
         imageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +103,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                 if (checkPermissions()) {
                     CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
                     androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AddPlayDateActivity.this);
-                    builder.setTitle("Add Photo!");
+                    builder.setTitle("Add a photo of your four-leg friend");
                     builder.setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int item) {
@@ -106,7 +113,6 @@ public class AddPlayDateActivity extends AppCompatActivity {
                             } else if (options[item].equals("Choose from Gallery"))
                             {
                                 galleryIntent();
-
                             } else if (options[item].equals("Cancel")) {
                                 dialog.dismiss();
                             }
@@ -116,73 +122,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                 }
             }
         });
-        imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("image", "clicked");
-                System.out.println("permission: " + checkPermissions());
-                if (!checkPermissions()) {
-                    getPermissions();
-                }
-                if (checkPermissions()) {
-                    CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AddPlayDateActivity.this);
-                }
-            }
-        });
-        imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("image", "clicked");
-                System.out.println("permission: " + checkPermissions());
-                if (!checkPermissions()) {
-                    getPermissions();
-                }
-                if (checkPermissions()) {
-                    CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AddPlayDateActivity.this);
-                }
-            }
-        });
-        imageView4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("image", "clicked");
-                if (!checkPermissions()) {
-                    getPermissions();
-                }
-                if (checkPermissions()) {
-                    CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AddPlayDateActivity.this);
-                }
-            }
-        });
-        imageView5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("image", "clicked");
-                if (!checkPermissions()) {
-                    getPermissions();
-                }
-                if (checkPermissions()) {
-                    CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AddPlayDateActivity.this);
-                }
-            }
-        });
-        imageView6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("image", "clicked");
-                if (!checkPermissions()) {
-                    getPermissions();
-                }
-                if (checkPermissions()) {
-                    CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AddPlayDateActivity.this);
-                }
-            }
-        });
+
         //name
         editText_name = findViewById(R.id.editText_name);
         //age
@@ -320,17 +260,17 @@ public class AddPlayDateActivity extends AppCompatActivity {
     }
 
     private void galleryIntent() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        openGallery.launch(gallery);
 
     }
 
     private void cameraIntent() {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
-
+//        Uri cam_uri;
+//        ContentValues values = new ContentValues();
+//        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+//        values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+       //cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startCamera.launch(cameraIntent);
 
@@ -339,10 +279,30 @@ public class AddPlayDateActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
+                // TODO keep photo on imageView when rotate
+                // TODO get correct direction for photo taken by camera
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK) {
-                        // There are no request codes
-
+                        Intent data = result.getData();
+                        Bundle bundle = data.getExtras();
+                        Bitmap bitmap = (Bitmap) bundle.get("data");
+                        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 350, 350, true);
+                        Matrix mtx = new Matrix();
+                        mtx.postRotate(90);
+                        scaled = Bitmap.createBitmap(scaled, 0, 0, 350, 350, mtx, true);
+                        imageView2.setImageBitmap(scaled);
+                    }
+                }
+            });
+    ActivityResultLauncher<Intent> openGallery = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        ImageUri = data.getData();
+                        imageView2.setImageURI(ImageUri);
                     }
                 }
             });
