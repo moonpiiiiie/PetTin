@@ -31,4 +31,6 @@
     <string name="post_date">Post Date</string>
     <string name="location">Location</string>
     <string name="post_content">Post content</string>
+    <string name="title">Title</string>
+    <string name="_1_1k">1.1k</string>
 </resources>
