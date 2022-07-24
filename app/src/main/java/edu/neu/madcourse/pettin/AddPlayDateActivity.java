@@ -4,18 +4,17 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
@@ -30,11 +29,27 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.neu.madcourse.pettin.Classes.Dogs;
 
 public class AddPlayDateActivity extends AppCompatActivity {
     // layout
@@ -48,14 +63,15 @@ public class AddPlayDateActivity extends AppCompatActivity {
     EditText editText_name;
     EditText editText_age;
     EditText editText_location;
-    ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6;
+    EditText editText_weight;
+    ImageView imageView1, imageView, imageView3, imageView4, imageView5, imageView6;
     Uri ImageUri =null;
     // permission
     String[] permissionsRequest = new String[]{Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     // data output
     String currentUserId;
-    private FirebaseAuth auth;
     String name;
     String gender;
     String spayed;
@@ -64,11 +80,15 @@ public class AddPlayDateActivity extends AppCompatActivity {
     ArrayList<String> playStyles;
     Double weight;
     int energyLevel;
-    String img;
     String location;
     ProgressBar progressBar;
     Button button_save;
     Button button_cancel;
+
+    // firebase
+    FirebaseAuth auth;
+    StorageReference storageReference;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +96,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_play_date);
         Context context = this;
         //photos
-//        imageView1 = findViewById(R.id.image_view_1);
-        imageView2 = findViewById(R.id.image_view_2);
+        imageView = findViewById(R.id.image_view_2);
 //        imageView3 = findViewById(R.id.image_view_3);
 //        imageView4 = findViewById(R.id.image_view_4);
 //        imageView5 = findViewById(R.id.image_view_5);
@@ -92,7 +111,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-        imageView2.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("image", "clicked");
@@ -127,6 +146,8 @@ public class AddPlayDateActivity extends AppCompatActivity {
         editText_name = findViewById(R.id.editText_name);
         //age
         editText_age = findViewById(R.id.editText_age);
+        // weight
+        editText_weight = findViewById(R.id.editText_weight);
         //breed
         spinner_breed = findViewById(R.id.spinner_breed);
         String[] breedArray = {"Other mix","Affenpinscher", "Afghan Hound", "Aidi", "Airedale Terrier", "Akbash Dog", "Akita", "Alano Español", "Alaskan Klee Kai", "Alaskan Malamute", "Alpine Dachsbracke", "Alpine Spaniel", "American Bulldog", "American Cocker Spaniel",
@@ -214,12 +235,17 @@ public class AddPlayDateActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+        //location
+        editText_location = findViewById(R.id.editText_loc);
+
     progressBar = findViewById(R.id.progressBar_addPlayDate);
     progressBar.setVisibility(View.INVISIBLE);
 
     // Firebase
     auth = FirebaseAuth.getInstance();
     currentUserId = auth.getCurrentUser().getUid();
+    storageReference = FirebaseStorage.getInstance().getReference();
+    db = FirebaseFirestore.getInstance();
 
     button_save = findViewById(R.id.button_save);
     button_save.setOnClickListener(new View.OnClickListener() {
@@ -231,13 +257,47 @@ public class AddPlayDateActivity extends AppCompatActivity {
             spayed = spinner_spayed.getSelectedItem().toString();
             age = Integer.parseInt(editText_age.getText().toString());
             breed = spinner_breed.getSelectedItem().toString();
-
+            weight = Double.parseDouble(editText_weight.getText().toString());
+            energyLevel = Integer.parseInt(spinner_energyLevel.getSelectedItem().toString());
+            location = editText_location.getText().toString();
             System.out.println(name);
             System.out.println(gender);
             System.out.println(spayed);
             System.out.println(age);
             System.out.println(breed);
+            System.out.println(weight);
+            System.out.println(energyLevel);
             System.out.println(playStyles);
+            System.out.println(location);
+            System.out.println(ImageUri.toString());
+            if (!name.isEmpty() && ImageUri!=null) {
+                StorageReference playDateRef = storageReference.child("playdate_pohoto").child(FieldValue.serverTimestamp().toString() + ".jpg");
+                playDateRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            playDateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Map<String, Object> playdatePost = new HashMap<>();
+                                    Timestamp ts = new Timestamp(new Date());
+                                    Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, ImageUri.toString(), location, currentUserId, ts);
+                                    CollectionReference dogRef = db.collection("dogs");
+                                    String dog_id = dog.getDog_id();
+                                    dogRef.document(dog_id).set(dog);
+                                    Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    finish();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(AddPlayDateActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(AddPlayDateActivity.this, "Please input your dog's name.", Toast.LENGTH_SHORT).show();
+            }
         }
     });
 
@@ -290,7 +350,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                         Matrix mtx = new Matrix();
                         mtx.postRotate(90);
                         scaled = Bitmap.createBitmap(scaled, 0, 0, 350, 350, mtx, true);
-                        imageView2.setImageBitmap(scaled);
+                        imageView.setImageBitmap(scaled);
                     }
                 }
             });
@@ -302,7 +362,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         ImageUri = data.getData();
-                        imageView2.setImageURI(ImageUri);
+                        imageView.setImageURI(ImageUri);
                     }
                 }
             });

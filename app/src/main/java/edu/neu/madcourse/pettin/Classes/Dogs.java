@@ -1,6 +1,9 @@
 package edu.neu.madcourse.pettin.Classes;
 
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Dogs {
 
@@ -15,8 +18,10 @@ public class Dogs {
     private String img;
     private String location;
     private String userID;
+    private Timestamp timestamp;
+    private String dog_id;
 
-    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
@@ -28,6 +33,8 @@ public class Dogs {
         this.img = img;
         this.location = location;
         this.userID = userId;
+        this.timestamp = timestamp;
+        this.dog_id = UUID.randomUUID().toString();
     }
 
     public String getName() {
@@ -46,7 +53,7 @@ public class Dogs {
         this.gender = gender;
     }
 
-    public String isSpayed() {
+    public String getSpayed() {
         return spayed;
     }
 
@@ -110,15 +117,27 @@ public class Dogs {
         this.location = location;
     }
 
-    public String getSpayed() {
-        return spayed;
-    }
-
     public String getUserID() {
         return userID;
     }
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getDog_id() {
+        return dog_id;
+    }
+
+    public void setDog_id(String dog_id) {
+        this.dog_id = dog_id;
     }
 }
