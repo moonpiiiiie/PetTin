@@ -2,15 +2,12 @@ package edu.neu.madcourse.pettin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import edu.neu.madcourse.pettin.Classes.Post;
-import edu.neu.madcourse.pettin.Classes.PostAdapter;
 import edu.neu.madcourse.pettin.Classes.User;
 
 public class PostActivity extends AppCompatActivity {

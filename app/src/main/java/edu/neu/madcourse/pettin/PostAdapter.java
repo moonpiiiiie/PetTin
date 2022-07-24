@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin.Classes;
+package edu.neu.madcourse.pettin;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import edu.neu.madcourse.pettin.Classes.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>  implements Filterable {
 
