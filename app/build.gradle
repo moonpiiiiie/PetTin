@@ -54,4 +54,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //swipecard dependency
+    implementation 'com.lorentzos.swipecards:library:1.0.9'
 }
