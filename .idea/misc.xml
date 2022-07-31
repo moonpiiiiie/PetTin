@@ -18,12 +18,18 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/activity_play_date.xml" value="0.16843971631205673" />
-        <entry key="app/src/main/res/layout/activity_post.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_post.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1171875" />
+        <entry key="app/src/main/res/layout/activity_show_all_post.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_show_blogger_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_show_follow.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_show_post_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.10054347826086957" />
         <entry key="app/src/main/res/layout/all_post_item.xml" value="0.10364583333333334" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/follow_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1933876811594203" />

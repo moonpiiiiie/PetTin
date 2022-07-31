@@ -19,7 +19,6 @@ public class PlayDateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_date);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         button_addPlaydate = findViewById(R.id.button_addPlaydate);

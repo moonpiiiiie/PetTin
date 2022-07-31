@@ -26,7 +26,7 @@ import edu.neu.madcourse.pettin.Classes.Post;
 import edu.neu.madcourse.pettin.Classes.User;
 
 public class PostActivity extends AppCompatActivity {
-    BottomNavigationView bottomNav;
+//    BottomNavigationView bottomNav;
     private RecyclerView recyclerView;
     private PostAdapter.RecyclerViewClickListener listener;
     private ImageView addButton;
@@ -40,7 +40,7 @@ public class PostActivity extends AppCompatActivity {
     private ArrayList<Post> newPostList;
 
     private String username;
-    @SuppressLint("WrongViewCast")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +49,17 @@ public class PostActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference("Users");
 
         addButton = findViewById(R.id.add);
+        homeButton = findViewById(R.id.home);
+        followButton = findViewById(R.id.follower);
+        System.out.println(getIntent().hasExtra("username"));
 
-        username = getIntent().getStringExtra("username");
+        if (getIntent().hasExtra("username")) {
+
+            username = getIntent().getStringExtra("username");
+        }
+
+        System.out.println("Username in onCreate");
+        System.out.println(username);
         PostActivity.this.setTitle(username);
 
         postList = new ArrayList<>();
@@ -90,42 +99,57 @@ public class PostActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PostActivity.this, AddPostActivity.class);
                 intent.putExtra("username", username);
+                System.out.println("Username in add post");
+                System.out.println(username);
                 startActivity(intent);
             }
         });
 
-
-        bottomNav = findViewById(R.id.bottom_nav);
-        bottomNav.setSelectedItemId(R.id.nav_post);
-        bottomNav.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_chat:
-                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.nav_playdate:
-                    startActivity(new Intent(getApplicationContext(), PlayDateActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.nav_post:
-                    return true;
-                case R.id.nav_profile:
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-            }
-            return false;
-        });
-
-        // add post activity
-        addButton.setOnClickListener(new View.OnClickListener() {
+        // reload the page
+        homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PostActivity.this, AddPostActivity.class);
-//                intent.putExtra("username", username);
-                startActivity(intent);
+                Intent refresh = new Intent(PostActivity.this, PostActivity.class);
+                refresh.putExtra("username", username);
+                startActivity(refresh);
+                PostActivity.this.finish();
             }
         });
+
+        // to follower page
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toFollowPage = new Intent(PostActivity.this, ShowFollowActivity.class);
+                toFollowPage.putExtra("username", username);
+                startActivity(toFollowPage);
+            }
+        });
+
+
+//        bottomNav = findViewById(R.id.bottom_nav);
+//        bottomNav.setSelectedItemId(R.id.nav_post);
+//        bottomNav.setOnItemSelectedListener(item -> {
+//            switch (item.getItemId()) {
+//                case R.id.nav_chat:
+//                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+//                    overridePendingTransition(0, 0);
+//                    return true;
+//                case R.id.nav_playdate:
+//                    startActivity(new Intent(getApplicationContext(), PlayDateActivity.class));
+//                    overridePendingTransition(0, 0);
+//                    return true;
+//                case R.id.nav_post:
+//                    return true;
+//                case R.id.nav_profile:
+//                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+//                    overridePendingTransition(0, 0);
+//                    return true;
+//            }
+//            return false;
+//        });
+
+
     }
 
     /**
@@ -175,35 +199,4 @@ public class PostActivity extends AppCompatActivity {
         newPostList.sort((post1, post2) -> Integer.valueOf(post2.getLikes()) - Integer.valueOf(post1.getLikes()));
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main_menu, menu);
-//        MenuItem item = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) item.getActionView();
-//        searchView.setQueryHint("Search Title or Location");
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                postAdapter.getFilter().filter(query);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if(item.getItemId() == R.id.profile) {
-//            Intent toProfilePage = new Intent(PostActivity.this, ShowUserDetailActivity.class);
-//            toProfilePage.putExtra("username", username);
-//            startActivity(toProfilePage);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }

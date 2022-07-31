@@ -73,6 +73,7 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
         user_name = getIntent().getStringExtra("username");
+
         Button select_image_button = findViewById(R.id.choose_image_button);
         select_image_button.setOnClickListener(new View.OnClickListener(){
             @Override

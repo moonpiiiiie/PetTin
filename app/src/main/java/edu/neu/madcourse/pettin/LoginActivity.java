@@ -80,8 +80,14 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+//                                            System.out.println("username in login");
+//                                            System.out.println(user);
+
                                             Intent toMainPage = new Intent(LoginActivity.this, PlayDateActivity.class);
                                             toMainPage.putExtra("username", user);
+
+                                            Intent toPostPage = new Intent(LoginActivity.this, PostActivity.class);
+                                            toPostPage.putExtra("username", user);
                                             startActivity(toMainPage);
                                             progressBar.setVisibility(View.INVISIBLE);
                                         }
