@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 public class PlayDateActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
@@ -18,6 +18,7 @@ public class PlayDateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_date);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

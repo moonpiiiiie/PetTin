@@ -1,22 +1,27 @@
 package edu.neu.madcourse.pettin.Classes;
 
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Dogs {
 
     private String name;
     private String gender;
-    private boolean spayed;
+    private String spayed;
     private int age;
-    private Breed breed;
-    private ArrayList<PlayStyles> playStyles;
+    private String breed;
+    private ArrayList<String> playStyles;
     private Double weight;
     private int energyLevel;
     private String img;
     private String location;
+    private String userID;
+    private Timestamp timestamp;
+    private String dog_id;
 
-
-    public Dogs(String name, String gender, boolean spayed, int age, Breed breed, ArrayList<PlayStyles> playStyles, Double weight, int energyLevel, String img, String location) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
@@ -27,6 +32,9 @@ public class Dogs {
         this.energyLevel = energyLevel;
         this.img = img;
         this.location = location;
+        this.userID = userId;
+        this.timestamp = timestamp;
+        this.dog_id = UUID.randomUUID().toString();
     }
 
     public String getName() {
@@ -45,11 +53,11 @@ public class Dogs {
         this.gender = gender;
     }
 
-    public boolean isSpayed() {
+    public String getSpayed() {
         return spayed;
     }
 
-    public void setSpayed(boolean spayed) {
+    public void setSpayed(String spayed) {
         this.spayed = spayed;
     }
 
@@ -61,19 +69,19 @@ public class Dogs {
         this.age = age;
     }
 
-    public Breed getBreed() {
+    public String getBreed() {
         return breed;
     }
 
-    public void setBreed(Breed breed) {
+    public void setBreed(String breed) {
         this.breed = breed;
     }
 
-    public ArrayList<PlayStyles> getPlayStyles() {
+    public ArrayList<String> getPlayStyles() {
         return playStyles;
     }
 
-    public void setPlayStyles(ArrayList<PlayStyles> playStyles) {
+    public void setPlayStyles(ArrayList<String> playStyles) {
         this.playStyles = playStyles;
     }
 
@@ -107,5 +115,29 @@ public class Dogs {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getDog_id() {
+        return dog_id;
+    }
+
+    public void setDog_id(String dog_id) {
+        this.dog_id = dog_id;
     }
 }

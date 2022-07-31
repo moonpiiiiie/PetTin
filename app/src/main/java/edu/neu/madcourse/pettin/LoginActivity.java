@@ -12,26 +12,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText loginUsername;
+    private EditText loginEmail;
     private EditText loginPassword;
     private Button loginButton;
     private TextView textRegister;
     private ProgressBar progressBar;
 
     private String email;
-
+    private String pw;
     private FirebaseAuth auth;
 
     private DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -40,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginUsername = findViewById(R.id.loginUsername);
+        loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         textRegister = findViewById(R.id.textRegister);
         loginButton = findViewById(R.id.loginButton);
@@ -54,65 +51,59 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String user = loginUsername.getText().toString();
-                String pw = loginPassword.getText().toString();
+                email = loginEmail.getText().toString();
+                pw = loginPassword.getText().toString();
 
-                if (user.isEmpty()) {
-                    loginUsername.setError("Username is required");
+                if (email.isEmpty()) {
+                    loginEmail.setError("Email is required");
                 }
                 else if (pw.isEmpty()) {
                     loginPassword.setError("Password is required");
                 }
 
                 else {
-                    reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (!snapshot.exists()) {
-                                Toast.makeText(LoginActivity.this, "Username does not exist", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                progressBar.setVisibility(view.VISIBLE);
-                                email = snapshot.child("email").getValue().toString();
-                                //authenticate user
-                                auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-//                                            System.out.println("username in login");
-//                                            System.out.println(user);
+//                    reference.child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            if (!snapshot.exists()) {
+//                                Toast.makeText(LoginActivity.this, "Username does not exist", Toast.LENGTH_SHORT).show();
+//                            }
+//                            else {
+//                                progressBar.setVisibility(view.VISIBLE);
+//                                email = snapshot.child("email").getValue().toString();
+//                                //authenticate user
+//                                auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                                        if (task.isSuccessful()) {
+//                                            Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+//                                            Intent toMainPage = new Intent(LoginActivity.this, PlayDateActivity.class);
+//                                            toMainPage.putExtra("username", user);
+//                                            startActivity(toMainPage);
+//                                            progressBar.setVisibility(View.INVISIBLE);
+//                                        }
+//                                        else {
+//                                            progressBar.setVisibility(View.INVISIBLE);
+//                                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                });
+//
+//                            }
+//
+//
+//
+//
+//                        }
+//
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
 
-                                            Intent toMainPage = new Intent(LoginActivity.this, PlayDateActivity.class);
-                                            toMainPage.putExtra("username", user);
-
-                                            Intent toPostPage = new Intent(LoginActivity.this, PostActivity.class);
-                                            toPostPage.putExtra("username", user);
-                                            startActivity(toMainPage);
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                        }
-                                        else {
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-
-                            }
-
-
-
-
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
+                    SignInUser();
                 }
             }
         });
@@ -127,6 +118,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void SignInUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        loginButton.setVisibility(View.INVISIBLE);
+        auth.signInWithEmailAndPassword(email, pw).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, PlayDateActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(LoginActivity.this, "Error - " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
+                loginButton.setVisibility(View.VISIBLE);
+            }
+        });
 
+    }
 
 }
