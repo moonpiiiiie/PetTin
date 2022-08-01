@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+//import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 public class PlayDateActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;

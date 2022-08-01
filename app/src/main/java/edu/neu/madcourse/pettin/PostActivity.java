@@ -81,7 +81,7 @@ public class PostActivity extends AppCompatActivity {
                 newPostList.clear();
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     User user = dataSnapshot.getValue(User.class);
-                    if(user.posts != null) {
+                    if(user.getPosts() != null) {
                         userList.add(user);
                     }
                 }
