@@ -42,8 +42,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         setContentView(R.layout.activity_play_date);
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         button_addPlaydate = findViewById(R.id.button_addPlaydate);
         button_addPlaydate.setOnClickListener(new View.OnClickListener() {
             @Override
