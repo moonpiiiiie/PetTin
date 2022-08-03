@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin.Utils;
+package edu.neu.madcourse.pettin;
 
 import android.content.Context;
 import android.util.Log;
@@ -20,8 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
-import edu.neu.madcourse.pettin.R;
-import edu.neu.madcourse.pettin.SingleDogActivity;
 
 public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.ViewHolder> implements View.OnClickListener {
     private LayoutInflater layoutInflater;
