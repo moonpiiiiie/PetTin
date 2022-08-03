@@ -105,6 +105,25 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 
     @Override
     public void onDogClick(int position) {
-
+        Intent intent = new Intent(this, SingleDogActivity.class);
+        String name = dogs.get(position).getName();
+        String dogId = dogs.get(position).getDog_id();
+        String gender = dogs.get(position).getGender();
+        int age = dogs.get(position).getAge();
+        int energyLevel = dogs.get(position).getEnergyLevel();
+        Double weight = dogs.get(position).getWeight();
+        String spayed = dogs.get(position).getSpayed();
+        String breed = dogs.get(position).getBreed();
+        String city = dogs.get(position).getLocation();
+        intent.putExtra("name", name);
+        intent.putExtra("dogId", dogId);
+        intent.putExtra("age", age);
+        intent.putExtra("gender", gender);
+        intent.putExtra("energyLevel", energyLevel);
+        intent.putExtra("weight", weight);
+        intent.putExtra("spayed", spayed);
+        intent.putExtra("breed", breed);
+        intent.putExtra("city", city);
+        startActivity(intent);
     }
 }
