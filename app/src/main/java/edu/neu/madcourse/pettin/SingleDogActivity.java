@@ -36,7 +36,7 @@ public class SingleDogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_dog);
 
-        // post section
+        // info section
         dogName = findViewById(R.id.textView_dogName);
         dogCity = findViewById(R.id.textView_dogCity);
         dogPhoto = findViewById(R.id.imageView_singlePostPhoto);
