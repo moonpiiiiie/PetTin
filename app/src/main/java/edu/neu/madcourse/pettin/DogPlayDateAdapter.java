@@ -58,6 +58,11 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
         viewHolder.name.setText(dog.getName());
         viewHolder.age.setText(String.valueOf(dog.getAge()));
         viewHolder.gender.setText(" "+dog.getGender());
+        viewHolder.energyLevel.setText(String.valueOf(dog.getEnergyLevel()));
+        viewHolder.weight.setText(Double.toString(dog.getWeight()) + " lbs");
+        viewHolder.spayed.setText("Spayed: " + dog.getSpayed());
+        viewHolder.breed.setText(dog.getBreed());
+        viewHolder.city.setText(dog.getLocation());
         viewHolder.setPhoto(dog.getImg());
 
     }
@@ -73,7 +78,7 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView name, age, gender, note, category;
+        TextView name, age, gender, energyLevel, weight, spayed, breed, city;
         ImageView photo;
         OnDogListener onDogListener;
 
@@ -82,6 +87,11 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
             name = itemView.findViewById(R.id.textView_name);
             age = itemView.findViewById(R.id.textView_age);
             gender = itemView.findViewById(R.id.textView_gender);
+            energyLevel = itemView.findViewById(R.id.textView_energyLevel);
+            weight = itemView.findViewById(R.id.textView_weight);
+            spayed = itemView.findViewById(R.id.textView_spayed);
+            breed = itemView.findViewById(R.id.textView_breed);
+            city = itemView.findViewById(R.id.textView_loc);
 
             this.onDogListener = onDogListener;
             itemView.setOnClickListener(this);

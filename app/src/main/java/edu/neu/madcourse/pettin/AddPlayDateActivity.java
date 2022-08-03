@@ -97,20 +97,6 @@ public class AddPlayDateActivity extends AppCompatActivity {
         Context context = this;
         //photos
         imageView = findViewById(R.id.image_view_2);
-//        imageView3 = findViewById(R.id.image_view_3);
-//        imageView4 = findViewById(R.id.image_view_4);
-//        imageView5 = findViewById(R.id.image_view_5);
-//        imageView6 = findViewById(R.id.image_view_6);
-//        imageView1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("image", "clicked");
-//                System.out.println("permission: " + checkPermissions());
-//                if (!checkPermissions()) {
-//                    getPermissions();
-//                }
-//            }
-//        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
