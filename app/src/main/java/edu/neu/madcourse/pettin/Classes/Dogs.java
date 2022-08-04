@@ -37,6 +37,10 @@ public class Dogs {
         this.dog_id = UUID.randomUUID().toString();
     }
 
+    public Dogs() {
+
+    }
+
     public String getName() {
         return name;
     }
