@@ -36,7 +36,9 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
-
+    // TODO search
+    // TODO advanced filter dialog
+    // TODO swipe left/right to dislike and request
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

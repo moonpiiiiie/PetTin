@@ -12,7 +12,7 @@ public class User {
     private Map<String, Object> posts;
     private ArrayList<Dogs> dogs;
     public User(){};
-
+    // TODO disliked dog list
     public User(String username, String email){
         this.following=new HashMap<>();
         this.username = username;
