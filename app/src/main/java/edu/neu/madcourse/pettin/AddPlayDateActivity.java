@@ -257,17 +257,17 @@ public class AddPlayDateActivity extends AppCompatActivity {
             System.out.println(location);
             System.out.println(ImageUri.toString());
             if (!name.isEmpty() && ImageUri!=null) {
-                StorageReference playDateRef = storageReference.child("playdate_pohoto").child(FieldValue.serverTimestamp().toString() + ".jpg");
-                playDateRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                StorageReference dogPhotoRef = storageReference.child("dog_photo").child(FieldValue.serverTimestamp().toString() + ".jpg");
+                dogPhotoRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()) {
-                            playDateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            dogPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     Map<String, Object> playdatePost = new HashMap<>();
                                     Timestamp ts = new Timestamp(new Date());
-                                    Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, ImageUri.toString(), location, currentUserId, ts);
+                                    Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts);
                                     CollectionReference dogRef = db.collection("dogs");
                                     String dog_id = dog.getDog_id();
                                     dogRef.document(dog_id).set(dog);
@@ -348,6 +348,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         ImageUri = data.getData();
+                        System.out.println(ImageUri);
                         imageView.setImageURI(ImageUri);
                     }
                 }

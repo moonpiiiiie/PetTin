@@ -103,9 +103,9 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
         }
 
 
-        public void setPhoto(String urlPost) {
+        public void setPhoto(String url) {
             photo = itemView.findViewById(R.id.imageView_dog);
-            Glide.with(context).load(urlPost).apply(new RequestOptions().override(150, 150)).centerCrop().into(photo);
+            Glide.with(context).load(url).apply(new RequestOptions().override(150, 150)).centerCrop().into(photo);
         }
 
         @Override
