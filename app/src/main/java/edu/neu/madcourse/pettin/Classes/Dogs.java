@@ -3,6 +3,7 @@ package edu.neu.madcourse.pettin.Classes;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Dogs {
@@ -20,6 +21,8 @@ public class Dogs {
     private String userID;
     private Timestamp timestamp;
     private String dog_id;
+    private List<Dogs> sentMatch;
+    private List<Dogs> receivedMatch;
 
     public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp) {
         this.name = name;
@@ -35,6 +38,8 @@ public class Dogs {
         this.userID = userId;
         this.timestamp = timestamp;
         this.dog_id = UUID.randomUUID().toString();
+        this.sentMatch = new ArrayList<>();
+        this.receivedMatch = new ArrayList<>();
     }
 
     public Dogs() {
