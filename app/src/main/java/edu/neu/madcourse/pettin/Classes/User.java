@@ -11,6 +11,8 @@ public class User {
     private Map<String, String> following;
     private Map<String, Object> posts;
     private ArrayList<Dogs> dogs;
+    private ArrayList<User> matchedUsers;
+
     public User(){};
     // TODO disliked dog list
     public User(String username, String email){
@@ -19,6 +21,7 @@ public class User {
         this.email = email;
         this.posts = new HashMap<>();
         this.dogs = new ArrayList<>();
+        this.matchedUsers = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -69,6 +72,14 @@ public class User {
 
     public void setDogs(ArrayList<Dogs> dogs) {
         this.dogs = dogs;
+    }
+
+    public ArrayList<User> getMatchedUsers() {
+        return matchedUsers;
+    }
+
+    public void setMatchedUsers(ArrayList<User> matchedUsers) {
+        this.matchedUsers = matchedUsers;
     }
 
     @Override
