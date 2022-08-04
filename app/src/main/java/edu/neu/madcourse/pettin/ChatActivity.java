@@ -8,12 +8,18 @@ import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ChatActivity extends AppCompatActivity {
+
     BottomNavigationView bottomNav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        createNavBar();
+    }
+
+    public void createNavBar() {
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_chat);
         bottomNav.setOnItemSelectedListener(item -> {
