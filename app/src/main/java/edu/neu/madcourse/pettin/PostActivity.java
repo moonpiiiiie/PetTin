@@ -2,201 +2,155 @@ package edu.neu.madcourse.pettin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
+
 import android.widget.Toast;
 
+
+import com.google.android.gms.tasks.OnCompleteListener;
+
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.Map;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import edu.neu.madcourse.pettin.Classes.Post;
-import edu.neu.madcourse.pettin.Classes.User;
 
 public class PostActivity extends AppCompatActivity {
-//    BottomNavigationView bottomNav;
-    private RecyclerView recyclerView;
-    private PostAdapter.RecyclerViewClickListener listener;
-    private ImageView addButton;
-    private ImageView homeButton;
-    private ImageView followButton;
+    BottomNavigationView bottomNav;
+    //Declaration of FirebaseAuth class,which helps in Authentication
+    private FirebaseAuth mAuth;
+    //Declaration of FirebaseFirestore which helps in storing data and url of the images
+    private FirebaseFirestore firebaseFirestore;
+    //Declaration of current_user_id String
+    private String current_user_id;
 
-    private DatabaseReference database;
-    private PostAdapter postAdapter;
-    private ArrayList<User> userList;
-    private ArrayList<Post> postList;
-    private ArrayList<Post> newPostList;
+    //Declaration of Floating Action Button
+    private FloatingActionButton addPostBtn;
 
-    private String username;
+    //Fragments which are to be used to replace the default fragment in PostActivity
+    private PostFragment postFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        recyclerView = findViewById(R.id.postList);
-        database = FirebaseDatabase.getInstance().getReference("Users");
 
-        addButton = findViewById(R.id.add);
-        homeButton = findViewById(R.id.home);
-        followButton = findViewById(R.id.follower);
-        System.out.println(getIntent().hasExtra("username"));
+        mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        if (getIntent().hasExtra("username")) {
+        //Add button Initialization
+        addPostBtn = findViewById(R.id.add_post_btn);
+        //Fragments Initialization
+        postFragment = new PostFragment();
 
-            username = getIntent().getStringExtra("username");
-        }
+        //Firstly on OnCreate() we will replace the fragment with homeFragment in MainActivity
+        replaceFragment(postFragment);
 
-        System.out.println("Username in onCreate");
-        System.out.println(username);
-        PostActivity.this.setTitle(username);
+        bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav.setSelectedItemId(R.id.nav_chat);
+        bottomNav.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_post:
+                    return true;
+                case R.id.nav_playdate:
+                    startActivity(new Intent(getApplicationContext(), PlayDateActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.nav_chat:
+                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.nav_profile:
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+            }
+            return false;
+        });
 
-        postList = new ArrayList<>();
-        userList = new ArrayList<>();
-        newPostList = new ArrayList<>();
-
-        setPostItemOnClickListener();
-        postAdapter = new PostAdapter(this, postList, newPostList, listener);
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(postAdapter);
-
-        database.addValueEventListener(new ValueEventListener() {
+        //When we click on post button(Floating Action Button) then it will send an Explict Intent to PostActicity
+        addPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                postList.clear();
-                newPostList.clear();
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if(user.getPosts() != null) {
-                        userList.add(user);
+            public void onClick(View v) {
+                //Starts an Explict Intent
+                startActivity(new Intent(PostActivity.this, AddPostActivity.class));
+            }
+        });
+    }
+
+    //This method will occur on start of the activity
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Initialization of FirebaseUser and getting the current user from firebase
+        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //If user is not logged in then send him to the zloginActivity
+        if (currentuser == null) {
+            sendToLogin();
+
+        } else {
+            //Retrieve the current user from firebase by id
+            current_user_id = mAuth.getCurrentUser().getUid();
+            //We are retriving the documents that in the Users collection and added onCompleteListener
+            firebaseFirestore.collection("Users").document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    //If the task is successful then ...
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().exists()) {
+//                            //Start thr Explict Intent to setUpActivity
+//                            Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
+//                            startActivity(setupIntent);
+
+                        }
                     }
+                    //Show the errors in the form of toasts
+                    else{
+                        String error = task.getException().getMessage();
+                        Toast.makeText(PostActivity.this, "Error"+ error, Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
-                getPosts(userList, postList, newPostList);
-                postAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
-        // add post activity
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PostActivity.this, AddPostActivity.class);
-                intent.putExtra("username", username);
-                System.out.println("Username in add post");
-                System.out.println(username);
-                startActivity(intent);
-            }
-        });
-
-        // reload the page
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent refresh = new Intent(PostActivity.this, PostActivity.class);
-                refresh.putExtra("username", username);
-                startActivity(refresh);
-                PostActivity.this.finish();
-            }
-        });
-
-        // to follower page
-        followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent toFollowPage = new Intent(PostActivity.this, ShowFollowActivity.class);
-                toFollowPage.putExtra("username", username);
-                startActivity(toFollowPage);
-            }
-        });
-
-
-//        bottomNav = findViewById(R.id.bottom_nav);
-//        bottomNav.setSelectedItemId(R.id.nav_post);
-//        bottomNav.setOnItemSelectedListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.nav_chat:
-//                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    return true;
-//                case R.id.nav_playdate:
-//                    startActivity(new Intent(getApplicationContext(), PlayDateActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    return true;
-//                case R.id.nav_post:
-//                    return true;
-//                case R.id.nav_profile:
-//                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    return true;
-//            }
-//            return false;
-//        });
-
-
-    }
-
-    /**
-     * The click listener for each item in the recycler list
-     */
-    private void setPostItemOnClickListener() {
-        listener = new PostAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Toast.makeText(PostActivity.this, "Title is:" + postList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-                Intent toPostDetailPage = new Intent(getApplicationContext(), ShowPostDetailActivity.class);
-                toPostDetailPage.putExtra("content", postList.get(position).getContent());
-                toPostDetailPage.putExtra("image", postList.get(position).getImage());
-                toPostDetailPage.putExtra("likes", postList.get(position).getLikes());
-                toPostDetailPage.putExtra("location", postList.get(position).getLocation());
-                toPostDetailPage.putExtra("time", postList.get(position).getTime());
-                toPostDetailPage.putExtra("title", postList.get(position).getTitle());
-                toPostDetailPage.putExtra("bloggerName", postList.get(position).getUsername());
-                toPostDetailPage.putExtra("username", username);
-                startActivity(toPostDetailPage);
-            }
-        };
-    }
-
-
-    /**
-     * Get all the posts from the user and update the post list
-     * @param userList
-     * @param postList
-     */
-    private void getPosts(ArrayList<User> userList, ArrayList<Post> postList, ArrayList<Post> newPostList) {
-        for(User user: userList) {
-            String username = user.getUsername();
-            for(Map.Entry<String, Object> entry: user.getPosts().entrySet()) {
-                Map<String, String> map = (Map<String, String>)entry.getValue();
-                String image = map.get("image");
-                String title = map.get("title");
-                String content = map.get("content");
-                String location = map.get("location");
-                String time = map.get("time");
-                String likes = map.get("likes");
-                postList.add(new Post(image, title, content, location, time, likes, username));
-                newPostList.add(new Post(image, title, content, location, time, likes, username));
-            }
+            });
         }
-        postList.sort((post1, post2) -> Integer.valueOf(post2.getLikes()) - Integer.valueOf(post1.getLikes()));
-        newPostList.sort((post1, post2) -> Integer.valueOf(post2.getLikes()) - Integer.valueOf(post1.getLikes()));
     }
+
+    private void sendToLogin() {
+
+        //Declaration of explict Intent from PostActivity to LoginActivity
+        Intent intent = new Intent(PostActivity.this, LoginActivity.class);
+        //Starting of the Intent
+        startActivity(intent);
+        finish();
+    }
+
+    //This methos is used to replace fragment by another fragment
+    private void replaceFragment(Fragment fragment){
+
+        //Initiaization and declaration of FragmentTransaction class and begin the transaction of fragment
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        //Replace the fragment by given fragment which was passed as arguement
+        fragmentTransaction.replace(R.id.main_content_fragment,fragment);
+        //We must commit the transaction so that it can be worked properly
+        fragmentTransaction.commit();
+
+    }
+
+
 
 }

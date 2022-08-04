@@ -49,20 +49,13 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name=".AddPostActivity"
             android:exported="false" />
         <activity
-            android:name=".ShowAllPostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ShowBloggerDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ShowPostDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ShowFollowActivity"
+            android:name=".CommentActivity"
             android:exported="false" />
     </application>
 
