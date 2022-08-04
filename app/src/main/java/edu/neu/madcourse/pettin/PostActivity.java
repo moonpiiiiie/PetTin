@@ -46,6 +46,8 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        postFragment = new PostFragment();
+        replaceFragment(postFragment);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -53,10 +55,13 @@ public class PostActivity extends AppCompatActivity {
         //Add button Initialization
         addPostBtn = findViewById(R.id.add_post_btn);
         //Fragments Initialization
-        postFragment = new PostFragment();
 
-        //Firstly on OnCreate() we will replace the fragment with homeFragment in MainActivity
-        replaceFragment(postFragment);
+
+        //Initialization of FirebaseUser and getting the current user from firebase
+        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //Firstly on OnCreate() we will replace the fragment with homeFragment in PostActivity
+
 
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_chat);
@@ -80,24 +85,6 @@ public class PostActivity extends AppCompatActivity {
             return false;
         });
 
-        //When we click on post button(Floating Action Button) then it will send an Explict Intent to PostActicity
-        addPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Starts an Explict Intent
-                startActivity(new Intent(PostActivity.this, AddPostActivity.class));
-            }
-        });
-    }
-
-    //This method will occur on start of the activity
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Initialization of FirebaseUser and getting the current user from firebase
-        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
-
-        //If user is not logged in then send him to the zloginActivity
         if (currentuser == null) {
             sendToLogin();
 
@@ -128,6 +115,15 @@ public class PostActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //When we click on post button(Floating Action Button) then it will send an Explict Intent to PostActicity
+        addPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Starts an Explict Intent
+                startActivity(new Intent(PostActivity.this, AddPostActivity.class));
+            }
+        });
     }
 
     private void sendToLogin() {
@@ -139,11 +135,12 @@ public class PostActivity extends AppCompatActivity {
         finish();
     }
 
-    //This methos is used to replace fragment by another fragment
+    //This method is used to replace fragment by another fragment
     private void replaceFragment(Fragment fragment){
 
         //Initiaization and declaration of FragmentTransaction class and begin the transaction of fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         //Replace the fragment by given fragment which was passed as arguement
         fragmentTransaction.replace(R.id.main_content_fragment,fragment);
         //We must commit the transaction so that it can be worked properly

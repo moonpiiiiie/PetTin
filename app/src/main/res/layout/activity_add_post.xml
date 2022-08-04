@@ -3,18 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPostActivity"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AddPostActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/new_post_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:background="@color/colorPrimary"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintHorizontal_bias="0.0"
-        android:layout_constraintStart_toStartOf="parent"
-        android:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.appcompat.widget.Toolbar>
     <ImageView
@@ -23,10 +23,10 @@
         android:layout_height="200dp"
         android:background="@android:color/darker_gray"
         android:scaleType="centerCrop"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:layout_constraintTop_toBottomOf="@+id/new_post_toolbar"
-        android:srcCompat="@mipmap/action_add_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_post_toolbar"
+        app:srcCompat="@mipmap/action_add_photo"
         tools:ignore="VectorDrawableCompat" />
 
     <EditText
@@ -41,9 +41,9 @@
         android:inputType="textMultiLine|textPersonName"
         android:padding="16dp"
         android:textSize="18sp"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:layout_constraintTop_toBottomOf="@+id/new_post_image" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_post_image" />
 
     <Button
         android:id="@+id/post_btn"
@@ -58,9 +58,9 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:layout_constraintTop_toBottomOf="@+id/new_post_desc" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_post_desc" />
 
     <ProgressBar
         android:id="@+id/new_post_progress"
@@ -70,8 +70,8 @@
         android:layout_marginBottom="16dp"
         android:indeterminate="true"
         android:visibility="invisible"
-        android:layout_constraintBottom_toBottomOf="parent"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
