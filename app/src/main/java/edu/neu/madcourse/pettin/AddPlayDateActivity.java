@@ -272,6 +272,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                                     String dog_id = dog.getDog_id();
                                     dogRef.document(dog_id).set(dog);
                                     Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
+                                    // TODO append dog to user's list
                                     progressBar.setVisibility(View.INVISIBLE);
                                     finish();
                                 }

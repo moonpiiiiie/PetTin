@@ -67,7 +67,7 @@ public class SingleDogActivity extends AppCompatActivity {
                 curDog = documentSnapshot.toObject(Dogs.class);
 
                 // set data to post section
-                dogCity.setText("Notes: " + curDog.getLocation());
+                dogCity.setText("City: " + curDog.getLocation());
                 dogAge.setText("Age: " + curDog.getAge());
                 dogGender.setText("Gender: " + curDog.getGender());
                 String imageUrl = curDog.getImg();
