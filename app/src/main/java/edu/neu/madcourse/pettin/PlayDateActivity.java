@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -60,6 +61,17 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         recyclerView.setAdapter(dogPlayDateAdapter);
 
         fetchPlayDate();
+
+
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.swipeLayout);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                dogs.clear();
+                fetchPlayDate();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_playdate);
