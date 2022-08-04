@@ -77,6 +77,10 @@ public class ProfileActivity extends AppCompatActivity {
                 case R.id.nav_profile:
 
                     return true;
+                case R.id.nav_restaurant:
+                    startActivity(new Intent(getApplicationContext(), RestaurantsNearByMeActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
             }
             return false;
         });
