@@ -2,256 +2,162 @@ package edu.neu.madcourse.pettin;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import edu.neu.madcourse.pettin.Classes.Post;
 
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>  {
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+    private Context context;
+    private ArrayList<Post> posts;
+    private RecyclerViewClickListener listener;
+    FirebaseFirestore db;
 
-    public List<Post> blog_list;
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth firebaseAuth;
-    public Context context;
-    public PostAdapter(List<Post> blog_list){
-        this.blog_list= blog_list;
+    public PostAdapter(Context context, ArrayList<Post> postList, RecyclerViewClickListener listener) {
+        this.context = context;
+        this.posts = postList;
+        this.listener = listener;
     }
+
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.blog_list_item,viewGroup,false);
-        context = viewGroup.getContext();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        return  new ViewHolder(view);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+        return new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Post post = posts.get(position);
+        String username = post.getUsername();
+        String postId = post.getPost_id();
+        String title = post.getTitle();
+        String likes = post.getLikes();
+        holder.title.setText(title.length() <= 20? title: title.substring(0,20) + "...");
+        holder.likes.setText(likes);
+        holder.username.setText(username);
+        Glide.with(context).load(post.getImage()).into(holder.image);
 
-        viewHolder.setIsRecyclable(false);
+//         Click the username, got some bugs here
+//        holder.username.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(context, ShowUserDetailActivity.class);
+//                intent.putExtra("username", username);
+//                context.startActivity(intent);
+//            }
+//        });
 
-        final String blogPostId = blog_list.get(i).PostId;
-        final String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
-        String desc_data = blog_list.get(i).getDesc();
-        viewHolder.setDescText(desc_data);
-        String image_uri = blog_list.get(i).getImage_url();
-        String thumbUri = blog_list.get(i).getImage_thumb();
-        viewHolder.setBlogImage(image_uri,thumbUri);
-
-        String user_id = blog_list.get(i).getUser_id();
-        //User data will be retrieved here
-        firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        // Click the Likes
+        holder.heart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    String userName = task.getResult().getString("name");
-                    String userImage = task.getResult().getString("image");
-                    viewHolder.setData(userName,userImage);
-
-                }else {
-                    String error = task.getException().getMessage();
-                    Toast.makeText(context, "Fire Strore Error"+error, Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        //Time stamp will converted into date here
-
-        long millisecond = blog_list.get(i).getTimestamp().getTime();
-        String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(millisecond));
-        viewHolder.setDate(dateString);
-
-        //Get Likes Count
-        /*firebaseFirestore.collection("Posts/"+blogPostId+"/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if(!documentSnapshots.isEmpty()){
-                    viewHolder.updateLikesCount(documentSnapshots.size());
-                }else {
-                    viewHolder.updateLikesCount(0);
-                }
-            }
-        });*/
-        firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if (documentSnapshots != null) {
-                    if (!documentSnapshots.isEmpty()) {
-
-                        viewHolder.updateLikesCount(documentSnapshots.size() + "");
-                    } else {
-
-                        viewHolder.updateLikesCount("0");
-                    }
-                }
-            }
-        });
-        //Get Comments Count
-        firebaseFirestore.collection("Posts/" + blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if (documentSnapshots != null) {
-                    if (!documentSnapshots.isEmpty()) {
-
-                        viewHolder.updateCommentsCount(documentSnapshots.size() + "");
-                    } else {
-
-                        viewHolder.updateCommentsCount("0");
-                    }
-                }
-            }
-        });
-
-        //Get Likes
-        firebaseFirestore.collection("Posts/"+blogPostId+"/Likes").document(currentUserId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if (documentSnapshot!= null) {
-                    if (documentSnapshot.exists()) {
-
-                        viewHolder.blogLikeBtn.setImageResource(R.drawable.like_accent);
-                    } else {
-                        viewHolder.blogLikeBtn.setImageResource(R.drawable.like_grey);
-                    }
-                }
-            }
-        });
-
-        //Likes Feature
-        viewHolder.blogLikeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                firebaseFirestore.collection("Posts/"+blogPostId+"/Likes").document(currentUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            public void onClick(View view) {
+                DocumentReference postRef = db.collection("posts").document(postId);
+//                DatabaseReference likesThisPost = database.child(holder.username.getText().toString()).child("posts").child(title).child("likes");
+                postRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(!task.getResult().exists()){
-                            Map<String,Object> likesMap = new HashMap<>();
-                            likesMap.put("timestamp", FieldValue.serverTimestamp());
-
-                            firebaseFirestore.collection("Posts/"+blogPostId+"/Likes").document(currentUserId).set(likesMap);
-                        }
-                        else {
-                            firebaseFirestore.collection("Posts/"+blogPostId+"/Likes").document(currentUserId).delete();
-
-                        }
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Post curPost = documentSnapshot.toObject(Post.class);
+                        String likesThisPost = String.valueOf(Integer.valueOf(likes)+1);
+                        curPost.setLikes(likesThisPost);
                     }
                 });
 
-
             }
         });
-
-        //Comments feature
-        viewHolder.blogCommentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent commentIntent = new Intent(context, CommentActivity.class);
-                commentIntent.putExtra("blog_post_id", blogPostId);
-                context.startActivity(commentIntent);
-
-            }
-        });
-
-
 
     }
+
+
 
     @Override
     public int getItemCount() {
-        return blog_list.size();
+        return posts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public View mView;
-        public TextView descView;
-        public ImageView blogImageView;
-        public TextView blogDate;
-        public TextView blogUserName;
-        public CircleImageView blogUserImage;
-        public ImageView blogLikeBtn;
-        public TextView blogLikeCount, blogCommentCount;
-        private ImageView blogCommentBtn;
-
-
-        public ViewHolder(@NonNull View itemView) {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView title, likes, username;
+        ImageView heart, image;
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            mView = itemView;
-            blogLikeBtn = mView.findViewById(R.id.blog_like_btn);
-            blogLikeCount = mView.findViewById(R.id.blog_like_counter);
-            blogCommentBtn = mView.findViewById(R.id.blog_comment_icon);
+            title = itemView.findViewById(R.id.title);
+            likes = itemView.findViewById(R.id.likes);
+            username = itemView.findViewById(R.id.post_username);
+            heart = itemView.findViewById(R.id.heart);
+            image = itemView.findViewById(R.id.image);
+            image.setOnClickListener(this);
         }
-        public void setDescText(String descText){
-            descView= mView.findViewById(R.id.blog_desc);
-            descView.setText(descText);
-        }
-        public void setBlogImage(String downloadUri,String thumbUri) {
 
-            blogImageView = mView.findViewById(R.id.blog_image);
-
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.placeholder(R.drawable.image_placeholder);
-
-            Glide.with(context).applyDefaultRequestOptions(requestOptions).load(downloadUri).thumbnail(
-                    Glide.with(context).load(thumbUri)
-            ).into(blogImageView);
-
-        }
-        public void setDate(String date){
-            blogDate = mView.findViewById(R.id.blog_date);
-            blogDate.setText(date);
-
-        }
-        public  void setData(String name,String image){
-            blogUserName = mView.findViewById(R.id.blog_user_name);
-            blogUserImage = mView.findViewById(R.id.blog_user_image);
-            blogUserName.setText(name);
-
-            RequestOptions placeholderOption =new RequestOptions();
-            placeholderOption.placeholder(R.drawable.profile_placeholder);
-
-            Glide.with(context).applyDefaultRequestOptions(placeholderOption).load(image).into(blogUserImage);
-
-        }
-        public void updateLikesCount(String count) {
-            blogLikeCount = mView.findViewById(R.id.blog_like_counter);
-            blogLikeCount.setText(count + " Likes");
-        }
-        public void updateCommentsCount(String count) {
-            blogCommentCount = mView.findViewById(R.id.blog_comment_count);
-            blogCommentCount.setText(count + " Comments");
+        @Override
+        public void onClick(View view) {
+            listener.onClick(itemView, getAdapterPosition());
         }
     }
+
+
+
+//    @Override
+//    public Filter getFilter() {
+//        return filter;
+//    }
+//
+//    Filter filter = new Filter() {
+//        // background thread
+//        @Override
+//        protected FilterResults performFiltering(CharSequence charSequence) {
+//            List<Post> filteredList = new ArrayList<>();
+//            if(charSequence.toString().isEmpty()) {
+//                filteredList.addAll(posts);
+//            } else {
+//                String pattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
+//                // Search for title
+//                for(Post post: posts) {
+//                    if(post.getTitle().toLowerCase().contains(pattern) || (post.getLocation() != null && post.getLocation().toLowerCase().contains(pattern))) {
+//                        filteredList.add(post);
+//                    }
+//                }
+//            }
+//            FilterResults filterResults = new FilterResults();
+//            filterResults.values = filteredList;
+//            return filterResults;
+//        }
+//
+//        // UI thread
+//        @Override
+//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+//            posts.clear();
+//            posts.addAll((Collection<? extends Post>) filterResults.values);
+//            notifyDataSetChanged();
+//        }
+//    };
+
+
+    public interface RecyclerViewClickListener {
+        void onClick(View v, int position);
+    }
+
 }

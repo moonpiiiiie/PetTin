@@ -3,64 +3,84 @@ package edu.neu.madcourse.pettin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+
+import edu.neu.madcourse.pettin.Classes.Post;
+import edu.neu.madcourse.pettin.Classes.User;
 
 
 public class PostActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
-    //Declaration of FirebaseAuth class,which helps in Authentication
-    private FirebaseAuth mAuth;
-    //Declaration of FirebaseFirestore which helps in storing data and url of the images
-    private FirebaseFirestore firebaseFirestore;
-    //Declaration of current_user_id String
-    private String current_user_id;
+    private RecyclerView recyclerView;
+    private PostAdapter.RecyclerViewClickListener listener;
+    private ImageView addButton;
 
-    //Declaration of Floating Action Button
-    private FloatingActionButton addPostBtn;
+    FirebaseFirestore db;
+    FirebaseAuth auth;
+    private PostAdapter postAdapter;
+    private ArrayList<Post> postList;
 
-    //Fragments which are to be used to replace the default fragment in PostActivity
-    private PostFragment postFragment;
+
+    private String username;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        postFragment = new PostFragment();
-        replaceFragment(postFragment);
-
-        mAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-
-        //Add button Initialization
-        addPostBtn = findViewById(R.id.add_post_btn);
-        //Fragments Initialization
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
 
-        //Initialization of FirebaseUser and getting the current user from firebase
-        FirebaseUser currentuser = FirebaseAuth.getInstance().getCurrentUser();
+        recyclerView = findViewById(R.id.postList);
+        addButton = findViewById(R.id.add);
+        postList = new ArrayList<>();
 
-        //Firstly on OnCreate() we will replace the fragment with homeFragment in PostActivity
+        setPostItemOnClickListener();
+        postAdapter = new PostAdapter(this, postList, listener);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(postAdapter);
+
+        getPosts();
+
+
+        // add post activity
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostActivity.this, AddPostActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         bottomNav = findViewById(R.id.bottom_nav);
@@ -85,69 +105,50 @@ public class PostActivity extends AppCompatActivity {
             return false;
         });
 
-        if (currentuser == null) {
-            sendToLogin();
-
-        } else {
-            //Retrieve the current user from firebase by id
-            current_user_id = mAuth.getCurrentUser().getUid();
-            //We are retriving the documents that in the Users collection and added onCompleteListener
-            firebaseFirestore.collection("Users").document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                    //If the task is successful then ...
-                    if (task.isSuccessful()) {
-                        if (!task.getResult().exists()) {
-//                            //Start thr Explict Intent to setUpActivity
-//                            Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
-//                            startActivity(setupIntent);
-
-                        }
-                    }
-                    //Show the errors in the form of toasts
-                    else{
-                        String error = task.getException().getMessage();
-                        Toast.makeText(PostActivity.this, "Error"+ error, Toast.LENGTH_SHORT).show();
-                    }
 
 
-                }
-            });
-        }
-
-        //When we click on post button(Floating Action Button) then it will send an Explict Intent to PostActicity
-        addPostBtn.setOnClickListener(new View.OnClickListener() {
+        // add post activity
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //Starts an Explict Intent
-                startActivity(new Intent(PostActivity.this, AddPostActivity.class));
+            public void onClick(View view) {
+                Intent intent = new Intent(PostActivity.this, AddPostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void getPosts() {
+        CollectionReference postRef = db.collection("posts");
+        postRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        postList.add(document.toObject(Post.class));
+                        postAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    Log.d("fetch post", "failed", task.getException());
+                }
             }
         });
     }
 
-    private void sendToLogin() {
-
-        //Declaration of explict Intent from PostActivity to LoginActivity
-        Intent intent = new Intent(PostActivity.this, LoginActivity.class);
-        //Starting of the Intent
-        startActivity(intent);
-        finish();
+    /**
+     * The click listener for each item in the recycler list
+     */
+    private void setPostItemOnClickListener() {
+        listener = new PostAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Toast.makeText(PostActivity.this, "Title is:" + postList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent toPostDetailPage = new Intent(getApplicationContext(), ShowPostDetailActivity.class);
+                toPostDetailPage.putExtra("postId",  postList.get(position).getPost_id());
+                toPostDetailPage.putExtra("image", postList.get(position).getImage());
+                startActivity(toPostDetailPage);
+            }
+        };
     }
-
-    //This method is used to replace fragment by another fragment
-    private void replaceFragment(Fragment fragment){
-
-        //Initiaization and declaration of FragmentTransaction class and begin the transaction of fragment
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        //Replace the fragment by given fragment which was passed as arguement
-        fragmentTransaction.replace(R.id.main_content_fragment,fragment);
-        //We must commit the transaction so that it can be worked properly
-        fragmentTransaction.commit();
-
-    }
-
-
 
 }

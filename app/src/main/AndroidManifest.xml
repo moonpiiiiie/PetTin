@@ -56,7 +56,7 @@
             android:name=".AddPostActivity"
             android:exported="false" />
         <activity
-            android:name=".CommentActivity"
+            android:name=".ShowPostDetailActivity"
             android:exported="false" />
     </application>
 
