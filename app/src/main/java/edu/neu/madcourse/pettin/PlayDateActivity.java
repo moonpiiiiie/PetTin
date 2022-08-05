@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,6 +39,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     FirebaseFirestore db;
     // TODO search
     // TODO advanced filter dialog
+    ImageView filter;
     // TODO swipe left/right to dislike and request
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 
         fetchPlayDate();
 
-
+        // swipe to refresh
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.swipeLayout);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -72,6 +74,16 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 dogs.clear();
                 fetchPlayDate();
                 pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        // click for advanced filter
+        filter = findViewById(R.id.imageview_filter);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdvancedFilter filterDialog = new AdvancedFilter();
+                filterDialog.show(getSupportFragmentManager(), "advanced filter");
             }
         });
 
