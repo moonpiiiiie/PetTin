@@ -1,15 +1,21 @@
 package edu.neu.madcourse.pettin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChatActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNav;
+    private RecyclerView recyclerView;
+
+    private FirebaseFirestore dbInstance = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
