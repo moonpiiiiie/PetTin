@@ -31,7 +31,8 @@ public class AdvancedFilter extends AppCompatDialogFragment {
 
                     }
                 });
-
         return builder.create();
     }
+
+
 }
