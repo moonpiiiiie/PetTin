@@ -25,6 +25,8 @@ public class User {
         this.dislikeDog = new ArrayList<>();
     }
 
+
+
     public String getUsername() {
         return username;
     }
@@ -89,6 +91,10 @@ public class User {
 
     public void setDislikeDog(ArrayList<String> dislikeDog) {
         this.dislikeDog = dislikeDog;
+    }
+
+    public void updateDislikeDog(String dogId) {
+        this.dislikeDog.add(dogId);
     }
 
     @Override

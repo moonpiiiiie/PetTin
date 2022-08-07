@@ -26,8 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class RegisterActivity extends AppCompatActivity {
     // data input
@@ -152,9 +155,15 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.w("sign up activity", "createUserWithEmail:failure", task.getException());
                     userId = auth.getCurrentUser().getUid();
                     DocumentReference documentRef = db.collection("users").document(userId);
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("username", userName);
-                    user.put("email", email);
+                    User user = new User(userName, email);
+//                    Map<String, Object> user = new HashMap<>();
+//                    user.put("username", userName);
+//                    user.put("email", email);
+//                    user.put("following", new HashMap<>());
+//                    user.put("posts", new HashMap<>());
+//                    user.put("dogs", new ArrayList<>());
+//                    user.put("mathcedUsers", new ArrayList<>());
+//                    user.put("dislikeDog", new ArrayList<>());
                     documentRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {

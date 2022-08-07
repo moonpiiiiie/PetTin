@@ -4,20 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+
 import edu.neu.madcourse.pettin.Classes.Dogs;
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class SingleDogActivity extends AppCompatActivity {
     //Post section
@@ -31,6 +39,10 @@ public class SingleDogActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
+    FirebaseUser curUser;
+
+    // button for dislike and match
+    ExtendedFloatingActionButton dislike, match;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +55,8 @@ public class SingleDogActivity extends AppCompatActivity {
         dogAge = findViewById(R.id.textView_age);
         dogGender = findViewById(R.id.textView_gender);
         dogBreed = findViewById(R.id.textView_dogBreed);
+
+
 
         // data carried from main activity
         Intent intent = getIntent();
@@ -74,5 +88,30 @@ public class SingleDogActivity extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load(imageUrl).apply(new RequestOptions().override(150, 150)).centerCrop().into(dogPhoto);
             }
         });
+
+        // user
+        curUser = firebaseAuth.getCurrentUser();
+        // buttons
+        dislike = findViewById(R.id.button_dislike);
+        match=findViewById(R.id.button_match);
+
+        dislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (curUser != null) {
+                    String userId = curUser.getUid();
+                    DocumentReference userRef = db.collection("users").document(userId);
+                    // update data in firestore
+                    userRef.update("dislikeDog", FieldValue.arrayUnion(curDog.getDog_id()));
+                    finish();
+
+                }
+
+            }
+        });
+
+    }
+    void updateDislikeDogList(String dogId) {
+
     }
 }
