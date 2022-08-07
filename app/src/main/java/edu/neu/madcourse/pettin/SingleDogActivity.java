@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -105,8 +106,39 @@ public class SingleDogActivity extends AppCompatActivity {
                     userRef.update("dislikeDog", FieldValue.arrayUnion(curDog.getDog_id()));
                     finish();
 
+                } else {
+                    Toast.makeText(SingleDogActivity.this, "Please log in to dislike", Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        match.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (curUser != null) {
+                    String userId = curUser.getUid();
+                    DocumentReference userRef = db.collection("users").document(userId);
+                    userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            User user = documentSnapshot.toObject(User.class);
+                            List<String> dislikeDogs = user.getDislikeDog();
+                            // TODO pop up a dialog to choose user's dog to match
+                            if (user.getDogs().size()>=2) {
+
+                            }
+                            if (dislikeDogs.contains(curDog.getDog_id())) {
+                                userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
+                            }
+                            // TODO add to sent match list
+                        }
+                    });
+                    finish();
+
+                } else {
+                    Toast.makeText(SingleDogActivity.this, "Please log in to match a playdate", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

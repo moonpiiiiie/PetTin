@@ -38,7 +38,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -54,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class AddPlayDateActivity extends AppCompatActivity {
     // layout
@@ -93,6 +97,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
     FirebaseAuth auth;
     StorageReference storageReference;
     FirebaseFirestore db;
+    FirebaseUser curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +221,8 @@ public class AddPlayDateActivity extends AppCompatActivity {
     storageReference = FirebaseStorage.getInstance().getReference();
     db = FirebaseFirestore.getInstance();
 
+    curUser = auth.getCurrentUser();
+
     button_save = findViewById(R.id.button_save);
     button_save.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -231,32 +238,38 @@ public class AddPlayDateActivity extends AppCompatActivity {
             location = editText_location.getText().toString();
 
             if (!name.isEmpty() && ImageUri!=null) {
-                StorageReference dogPhotoRef = storageReference.child("dog_photo").child(FieldValue.serverTimestamp().toString() + ".jpg");
-                dogPhotoRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            dogPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Map<String, Object> playdatePost = new HashMap<>();
-                                    Timestamp ts = new Timestamp(new Date());
-                                    Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts);
-                                    CollectionReference dogRef = db.collection("dogs");
-                                    String dog_id = dog.getDog_id();
-                                    dogRef.document(dog_id).set(dog);
-                                    Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
-                                    // TODO append dog to user's list
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    finish();
-                                }
-                            });
-                        } else {
-                            Toast.makeText(AddPlayDateActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                if (curUser!=null) {
+                    StorageReference dogPhotoRef = storageReference.child("dog_photo").child(FieldValue.serverTimestamp().toString() + ".jpg");
+                    dogPhotoRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                dogPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Map<String, Object> playdatePost = new HashMap<>();
+                                        Timestamp ts = new Timestamp(new Date());
+                                        Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts);
+                                        CollectionReference dogRef = db.collection("dogs");
+                                        String dog_id = dog.getDog_id();
+                                        dogRef.document(dog_id).set(dog);
+                                        Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
+                                        String userId = curUser.getUid();
+                                        DocumentReference userRef = db.collection("users").document(userId);
+                                        userRef.update("dogs", FieldValue.arrayUnion(dog));
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        finish();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(AddPlayDateActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
+                    });
+                }else {
+                    Toast.makeText(AddPlayDateActivity.this, "Please sign in.", Toast.LENGTH_SHORT).show();
                     }
-                });
-            } else {
+                } else {
                 Toast.makeText(AddPlayDateActivity.this, "Please input your dog's name and attach a photo.", Toast.LENGTH_SHORT).show();
             }
         }
