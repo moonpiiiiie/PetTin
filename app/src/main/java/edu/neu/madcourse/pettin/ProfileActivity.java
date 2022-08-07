@@ -62,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
-                    dogIds = user.getDogs();
+//                    dogIds = user.getDogs();
                     userName = user.getUsername();
                     email = user.getEmail();
                     textView_userName.setText(userName);
