@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +51,9 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
-    // TODO search
+
+    ImageView searchButton;
+    EditText searchText;
     // TODO advanced filter dialog
     ImageView filter;
     SmartMaterialSpinner<String> spinner_filter_breed;
@@ -60,13 +62,24 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     String filterSpayed;
     int filterAgeLow, filterAgeHigh;
     int filterWeightLow, filterWeightHigh;
+    int filterEnergyLow, filterEnergyHigh;
     List<String> filterPS = new ArrayList<>();
     // TODO swipe left/right to dislike and request
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_date);
 
+        searchButton = findViewById(R.id.imageview_search);
+        searchText = findViewById(R.id.editText_search);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String searchInput = searchText.getText().toString();
+                applySearch(searchInput);
+            }
+        });
 
         button_addPlaydate = findViewById(R.id.button_addPlaydate);
         button_addPlaydate.setOnClickListener(new View.OnClickListener() {
@@ -103,9 +116,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                filterDialog = new AdvancedFilter();
-//                filterDialog.show(getSupportFragmentManager(), "advanced filter");
-//                initBreedSpinner();
                 showFilterDialog();
             }
         });
@@ -149,19 +159,24 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             }
         });
     }
+
     private void applyFilter() {
-        System.out.println(filterAgeLow);
-        System.out.println(filterAgeHigh);
-        System.out.println(filterWeightLow);
-        System.out.println(filterWeightHigh);
-        System.out.println(filterGender);
-        System.out.println(filterSpayed);
-        dogs.removeIf(dog -> (dog.getAge() > filterAgeHigh || dog.getAge() < filterAgeLow) || dog.getWeight() > filterWeightHigh
-        || dog.getWeight() < filterWeightLow || !filterGender.contains(dog.getGender()) || !filterSpayed.contains(dog.getSpayed()));
+        dogs.removeIf(dog -> ( (!filterBreed.equals("All") && !filterBreed.equals(dog.getBreed()))
+                || dog.getAge() > filterAgeHigh || dog.getAge() < filterAgeLow) ||
+                dog.getWeight() > filterWeightHigh || dog.getWeight() < filterWeightLow ||
+                dog.getEnergyLevel() > filterEnergyHigh || dog.getEnergyLevel() < filterEnergyLow ||
+                !filterGender.contains(dog.getGender()) || !filterSpayed.contains(dog.getSpayed()));
         dogPlayDateAdapter.notifyDataSetChanged();
     }
-    private void applySearch() {
 
+    private void applySearch(String searchInput) {
+        dogs.removeIf(dog -> !dog.getName().toLowerCase().contains(searchInput.toLowerCase()));
+        if (dogs.isEmpty()) {
+            Toast.makeText(this, "No dog found", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "find possible matches", Toast.LENGTH_SHORT).show();
+            dogPlayDateAdapter.notifyDataSetChanged();
+        }
     }
     @Override
     public void onDogClick(int position) {
@@ -226,8 +241,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             }
         });
 
-        // button
-        Button filter_ok = dialog.findViewById(R.id.filter_button);
 
         dialog.show();
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -235,6 +248,16 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         dialog.getWindow().setAttributes(layoutParams);
+
+        // button
+        Button filter_ok = dialog.findViewById(R.id.filter_ok);
+        Button filter_cancel = dialog.findViewById(R.id.filter_cancel);
+        filter_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
         RadioButton radioButton_boy = dialog.findViewById(R.id.filter_boy);
         RadioButton radioButton_girl = dialog.findViewById(R.id.filter_girl);
@@ -246,6 +269,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         RadioGroup spayGroup = dialog.findViewById(R.id.rg_spay);
         RangeSlider ageSlider = dialog.findViewById(R.id.age_slider);
         RangeSlider weightSlider = dialog.findViewById(R.id.weight_slider);
+        RangeSlider energySlider = dialog.findViewById(R.id.energy_slider);
 
         CheckBox ball = dialog.findViewById(R.id.ps_balls);
         CheckBox hiking = dialog.findViewById(R.id.ps_hiking);
@@ -268,32 +292,30 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 float ahigh = ageSlider.getValues().get(1);
                 float wlow = weightSlider.getValues().get(0);
                 float whigh = weightSlider.getValues().get(1);
+                float elow = energySlider.getValues().get(0);
+                float ehigh = energySlider.getValues().get(1);
                 filterAgeLow = (int) alow;
                 filterAgeHigh = (int) ahigh;
                 filterWeightLow = (int) wlow;
                 filterWeightHigh = (int) whigh;
+                filterEnergyLow = (int) elow;
+                filterEnergyHigh = (int) ehigh;
                 int gender = genderGroup.getCheckedRadioButtonId();
                 int spay = spayGroup.getCheckedRadioButtonId();
                 RadioButton grb = (RadioButton)dialog.findViewById(gender);
                 RadioButton srb = (RadioButton)dialog.findViewById(spay);
-                if (grb.getText()==null) {
-                    Toast.makeText(PlayDateActivity.this, "please choose a gender", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (grb.getText().equals("Doesn't matter")) {
-                    filterGender = "BoyGril";
-                } else {
+                if (grb!=null && grb.getText().equals("Doesn't matter")) {
+                    filterGender = "BoyGirl";
+                } else if (grb!=null) {
                     filterGender = (String) grb.getText();
                 }
-                if (srb.getText()==null) {
-                    Toast.makeText(PlayDateActivity.this, "please choose if spayed", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (srb.getText().equals("Doesn't matter")) {
+
+                if (srb!=null && srb.getText().equals("Doesn't matter")) {
                     filterSpayed = "YesNo";
-                } else {
+                } else if (srb!=null) {
                     filterSpayed = (String) srb.getText();
                 }
+
                 ball.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -357,8 +379,15 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 //                System.out.println(filterGender);
 //                System.out.println(filterSpayed);
 //                System.out.println(filterPS);
-                applyFilter();
-                dialog.dismiss();
+                if (grb==null || srb==null) {
+                    Toast.makeText(PlayDateActivity.this, "please fill out all the fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    applyFilter();
+                    dialog.dismiss();
+                }
+
+
+
             }
         });
 
