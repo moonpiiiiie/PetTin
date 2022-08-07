@@ -10,7 +10,7 @@ public class User {
     private String followers;
     private Map<String, String> following;
     private Map<String, Object> posts;
-    private ArrayList<Dogs> dogs;
+    private ArrayList<String> dogs;
     private ArrayList<User> matchedUsers;
     private ArrayList<String> dislikeDog;
     public User(){};
@@ -69,11 +69,11 @@ public class User {
         this.posts = posts;
     }
 
-    public ArrayList<Dogs> getDogs() {
+    public ArrayList<String> getDogs() {
         return dogs;
     }
 
-    public void setDogs(ArrayList<Dogs> dogs) {
+    public void setDogs(ArrayList<String> dogs) {
         this.dogs = dogs;
     }
 
