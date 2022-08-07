@@ -55,6 +55,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     DogPlayDateAdapter dogPlayDateAdapter;
     ArrayList<Dogs> dogs;
     List<String> dislikeDogs;
+    List<String> ownedDogs;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
@@ -104,6 +105,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         curUser = firebaseAuth.getCurrentUser();
 
         dislikeDogs=new ArrayList<>();
+        ownedDogs = new ArrayList<>();
         if (curUser !=null ) {
             String userId = curUser.getUid();
             DocumentReference userRef = db.collection("users").document(userId);
@@ -112,7 +114,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
                     dislikeDogs = user.getDislikeDog();
-                    System.out.println("0dislikedog" + dislikeDogs);
+                    ownedDogs = user.getDogs();
                 }
             });
         }
@@ -178,8 +180,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                         Dogs dog = document.toObject(Dogs.class);
                         System.out.println("dogId" + dog.getDog_id());
                         System.out.println("dislike list " + dislikeDogs);
-                        if (!dislikeDogs.contains(dog.getDog_id())) {
-                            System.out.println("dislikedog");
+                        if (!dislikeDogs.contains(dog.getDog_id())&& !ownedDogs.contains(dog.getDog_id())) {
                             dogs.add(document.toObject(Dogs.class));
                         }
                         dogPlayDateAdapter.notifyDataSetChanged();

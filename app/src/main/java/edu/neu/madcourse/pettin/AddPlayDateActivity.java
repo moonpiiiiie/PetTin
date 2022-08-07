@@ -256,7 +256,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                                         Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
                                         String userId = curUser.getUid();
                                         DocumentReference userRef = db.collection("users").document(userId);
-                                        userRef.update("dogs", FieldValue.arrayUnion(dog));
+                                        userRef.update("dogs", FieldValue.arrayUnion(dog.getDog_id()));
                                         progressBar.setVisibility(View.INVISIBLE);
                                         finish();
                                     }
