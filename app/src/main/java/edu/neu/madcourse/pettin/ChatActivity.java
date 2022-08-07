@@ -1,16 +1,31 @@
 package edu.neu.madcourse.pettin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
+import edu.neu.madcourse.pettin.GroupChat.Adapter.ViewPagerAdapter;
+
 public class ChatActivity extends AppCompatActivity {
+
+    private static final String TAG = "ChatActivity";
 
     BottomNavigationView bottomNav;
     private RecyclerView recyclerView;
@@ -23,6 +38,39 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         createNavBar();
+
+        // tab layout and view pager
+        TabLayout tabLayout = findViewById(R.id.chat_user_tab);
+        Log.v(TAG, "tabLayout created");
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        ViewPagerAdapter viewPageAdapter = new ViewPagerAdapter(this);
+        viewPager.setAdapter(viewPageAdapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tabLayout.getTabAt(position).select();
+            }
+        });
+
     }
 
     public void createNavBar() {
@@ -48,4 +96,7 @@ public class ChatActivity extends AppCompatActivity {
             return false;
         });
     }
+
+
+
 }
