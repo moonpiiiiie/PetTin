@@ -199,8 +199,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/oxley"
-            android:textColor="#F3F0E7"
             android:text="dislike"
+            android:textColor="#F3F0E7"
 
             app:icon="@drawable/ic_baseline_dislike"
             app:iconTint="#F3F0E7" />

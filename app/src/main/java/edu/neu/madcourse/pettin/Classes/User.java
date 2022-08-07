@@ -13,9 +13,10 @@ public class User {
     private ArrayList<String> dogs;
     private ArrayList<User> matchedUsers;
     private ArrayList<String> dislikeDog;
+    private String userId;
     public User(){};
     // TODO disliked dog list
-    public User(String username, String email){
+    public User(String username, String email, String userId){
         this.following=new HashMap<>();
         this.username = username;
         this.email = email;
@@ -23,6 +24,7 @@ public class User {
         this.dogs = new ArrayList<>();
         this.matchedUsers = new ArrayList<>();
         this.dislikeDog = new ArrayList<>();
+        this.userId = userId;
     }
 
 
@@ -95,6 +97,14 @@ public class User {
 
     public void updateDislikeDog(String dogId) {
         this.dislikeDog.add(dogId);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
