@@ -229,16 +229,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
             weight = Double.parseDouble(editText_weight.getText().toString());
             energyLevel = Integer.parseInt(spinner_energyLevel.getSelectedItem().toString());
             location = editText_location.getText().toString();
-            System.out.println(name);
-            System.out.println(gender);
-            System.out.println(spayed);
-            System.out.println(age);
-            System.out.println(breed);
-            System.out.println(weight);
-            System.out.println(energyLevel);
-            System.out.println(playStyles);
-            System.out.println(location);
-            System.out.println(ImageUri.toString());
+
             if (!name.isEmpty() && ImageUri!=null) {
                 StorageReference dogPhotoRef = storageReference.child("dog_photo").child(FieldValue.serverTimestamp().toString() + ".jpg");
                 dogPhotoRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -266,7 +257,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(AddPlayDateActivity.this, "Please input your dog's name.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddPlayDateActivity.this, "Please input your dog's name and attach a photo.", Toast.LENGTH_SHORT).show();
             }
         }
     });
