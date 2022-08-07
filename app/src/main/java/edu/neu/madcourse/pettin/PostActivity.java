@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,6 +72,16 @@ public class PostActivity extends AppCompatActivity {
         recyclerView.setAdapter(postAdapter);
 
         getPosts();
+
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.updatePost);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                postList.clear();
+                getPosts();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
 
         // add post activity

@@ -21,13 +21,8 @@ import edu.neu.madcourse.pettin.Classes.Post;
 
 public class ShowPostDetailActivity extends AppCompatActivity {
     Post curPost;
-//    private String bloggerName;
-//    private String title;
     private String image;
-//    private String content;
-//    private String likes;
-//    private String location;
-//    private String time;
+
     private String post_id;
 
     // firebase
@@ -48,13 +43,6 @@ public class ShowPostDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_post_detail);
         post_id = getIntent().getStringExtra("postId");
-//        image = getIntent().getStringExtra("image");
-//        bloggerName = getIntent().getStringExtra("bloggerName");
-//        title = getIntent().getStringExtra("title");
-//        content = getIntent().getStringExtra("content");
-//        likes = getIntent().getStringExtra("likes");
-//        location = getIntent().getStringExtra("location");
-//        time = getIntent().getStringExtra("time");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();

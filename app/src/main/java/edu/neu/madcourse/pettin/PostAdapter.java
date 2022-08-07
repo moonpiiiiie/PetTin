@@ -2,6 +2,7 @@ package edu.neu.madcourse.pettin;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -27,7 +29,7 @@ import java.util.Locale;
 
 import edu.neu.madcourse.pettin.Classes.Post;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>  {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> implements Filterable {
 
     private Context context;
     private ArrayList<Post> posts;
@@ -59,6 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.likes.setText(likes);
         holder.username.setText(username);
         Glide.with(context).load(post.getImage()).into(holder.image);
+        System.out.println("postId" + postId);
 
 //         Click the username, got some bugs here
 //        holder.username.setOnClickListener(new View.OnClickListener() {
@@ -76,13 +79,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
                 DocumentReference postRef = db.collection("posts").document(postId);
-//                DatabaseReference likesThisPost = database.child(holder.username.getText().toString()).child("posts").child(title).child("likes");
                 postRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Post curPost = documentSnapshot.toObject(Post.class);
                         String likesThisPost = String.valueOf(Integer.valueOf(likes)+1);
                         curPost.setLikes(likesThisPost);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("post adapter", "failed to like");
                     }
                 });
 
@@ -120,40 +127,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
 
-//    @Override
-//    public Filter getFilter() {
-//        return filter;
-//    }
-//
-//    Filter filter = new Filter() {
-//        // background thread
-//        @Override
-//        protected FilterResults performFiltering(CharSequence charSequence) {
-//            List<Post> filteredList = new ArrayList<>();
-//            if(charSequence.toString().isEmpty()) {
-//                filteredList.addAll(posts);
-//            } else {
-//                String pattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
-//                // Search for title
-//                for(Post post: posts) {
-//                    if(post.getTitle().toLowerCase().contains(pattern) || (post.getLocation() != null && post.getLocation().toLowerCase().contains(pattern))) {
-//                        filteredList.add(post);
-//                    }
-//                }
-//            }
-//            FilterResults filterResults = new FilterResults();
-//            filterResults.values = filteredList;
-//            return filterResults;
-//        }
-//
-//        // UI thread
-//        @Override
-//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//            posts.clear();
-//            posts.addAll((Collection<? extends Post>) filterResults.values);
-//            notifyDataSetChanged();
-//        }
-//    };
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        // background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Post> filteredList = new ArrayList<>();
+            if(charSequence.toString().isEmpty()) {
+                filteredList.addAll(posts);
+            } else {
+                String pattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
+                // Search for title
+                for(Post post: posts) {
+                    if(post.getTitle().toLowerCase().contains(pattern) || (post.getLocation() != null && post.getLocation().toLowerCase().contains(pattern))) {
+                        filteredList.add(post);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        // UI thread
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            posts.clear();
+            posts.addAll((Collection<? extends Post>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
     public interface RecyclerViewClickListener {
