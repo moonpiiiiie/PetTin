@@ -410,13 +410,21 @@
                             android:text="Breed"
                             android:textSize="18dp"
                             android:textStyle="bold" />
-
-                        <Spinner
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/spinner_breed"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:hint="Breed"
-                           />
+                            android:layout_height="wrap_content"
+                            app:smsp_isSearchable="true"
+                            app:smsp_floatingLabelColor="#1976D2"
+                            app:smsp_hint="choose breed"
+                            app:smsp_multilineError="false"
+                            app:smsp_selectedItemListColor="#FF5252" />
+<!--                        <Spinner-->
+<!--                            android:id="@+id/spinner_breed"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:hint="Breed"-->
+<!--                           />-->
                     </LinearLayout>
 
 

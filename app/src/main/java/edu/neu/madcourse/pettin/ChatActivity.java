@@ -45,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
 
         createNavBar();
 
+
 //        LoadingDialog loadingDialog = new LoadingDialog(ChatActivity.this);
 //        loadingDialog.loadingDialog();
 

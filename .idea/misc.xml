@@ -24,6 +24,10 @@
         <entry key="app/src/main/res/layout/chat_messages_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/chat_users_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2557291666666667" />
+
+        <entry key="app/src/main/res/layout/dog_view.xml" value="0.29286019666524155" />
+        <entry key="app/src/main/res/layout/filter_dialog.xml" value="0.33" />
+
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/fragment_playdate.xml" value="0.5333333333333333" />
@@ -31,6 +35,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/list_of_users.xml" value="0.36354166666666665" />
         <entry key="app/src/main/res/layout/loading_dialog.xml" value="0.28802083333333334" />
+        <entry key="app/src/main/res/layout/my_dog_view.xml" value="0.2466866182129115" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/playdate_cardview.xml" value="0.3215049166310389" />
         <entry key="app/src/main/res/layout/user_card_chat.xml" value="0.5" />
