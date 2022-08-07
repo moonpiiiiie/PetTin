@@ -155,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.w("sign up activity", "createUserWithEmail:failure", task.getException());
                     userId = auth.getCurrentUser().getUid();
                     DocumentReference documentRef = db.collection("users").document(userId);
-                    User user = new User(userName, email);
+                    User user = new User(userName, email, userId);
 //                    Map<String, Object> user = new HashMap<>();
 //                    user.put("username", userName);
 //                    user.put("email", email);
