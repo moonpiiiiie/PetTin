@@ -8,6 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,7 +31,10 @@ import android.widget.Toast;
 
 import com.google.android.material.slider.RangeSlider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -40,6 +44,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAdapter.OnDogListener{
     BottomNavigationView bottomNav;
@@ -48,9 +53,11 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     RecyclerView recyclerView;
     DogPlayDateAdapter dogPlayDateAdapter;
     ArrayList<Dogs> dogs;
+    List<String> dislikeDogs;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
+    FirebaseUser curUser;
 
     ImageView searchButton;
     EditText searchText;
@@ -91,8 +98,26 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 
         recyclerView = findViewById(R.id.recyclerView_playdate);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        curUser = firebaseAuth.getCurrentUser();
+
+        dislikeDogs=new ArrayList<>();
+
+        if (curUser != null) {
+            String userId = curUser.getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User user = documentSnapshot.toObject(User.class);
+                    dislikeDogs = user.getDislikeDog();
+                }
+            });
+
+        }
+
+
         dogs = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dogPlayDateAdapter = new DogPlayDateAdapter(PlayDateActivity.this, dogs, this);
@@ -150,7 +175,10 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document: task.getResult()) {
-                        dogs.add(document.toObject(Dogs.class));
+                        Dogs dog = document.toObject(Dogs.class);
+                        if (!dislikeDogs.contains(dog.getDog_id())) {
+                            dogs.add(document.toObject(Dogs.class));
+                        }
                         dogPlayDateAdapter.notifyDataSetChanged();
                     }
                 } else {
