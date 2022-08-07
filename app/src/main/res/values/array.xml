@@ -8,4 +8,8 @@
         <item>2</item>
         <item>7</item>
     </array>
+    <array name="initial_energy_slider_values">
+        <item>1</item>
+        <item>3</item>
+    </array>
 </resources>
