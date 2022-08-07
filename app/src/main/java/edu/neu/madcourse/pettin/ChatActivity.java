@@ -4,16 +4,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,8 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.User;
-import edu.neu.madcourse.pettin.GroupChat.LoadingDialog;
-import edu.neu.madcourse.pettin.GroupChat.UserAdapter;
+import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -39,6 +36,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private FirebaseFirestore dbInstance;
 
+    private FirebaseUser firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +45,12 @@ public class ChatActivity extends AppCompatActivity {
 
         createNavBar();
 
-        LoadingDialog loadingDialog = new LoadingDialog(ChatActivity.this);
-        loadingDialog.loadingDialog();
+//        LoadingDialog loadingDialog = new LoadingDialog(ChatActivity.this);
+//        loadingDialog.loadingDialog();
 
         recyclerView = findViewById(R.id.matched_users);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         dbInstance = FirebaseFirestore.getInstance();
         listOfUsers = new ArrayList<User>();
@@ -59,6 +58,10 @@ public class ChatActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(userAdapter);
         retrieveUsers();
+
+//        firebaseAuth = FirebaseAuth.getInstance().getCurrentUser();
+//        userId = auth.getCurrentUser().getUid();
+
 
     }
 

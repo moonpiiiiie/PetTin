@@ -5,7 +5,8 @@
     android:id="@+id/user_card_chat"
     android:layout_width="80dp"
     android:layout_height="90dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="0dp"
+    android:backgroundTint="#EBF5EE">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,8 +28,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Username"
-            android:textColor="@color/black"
-            android:textSize="11sp"/>
+            android:textColor="#5D8AA8"
+            android:textSize="11sp"
+            />
 
     </LinearLayout>
 

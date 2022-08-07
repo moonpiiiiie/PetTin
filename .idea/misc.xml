@@ -11,10 +11,11 @@
         <entry key="app/src/main/res/drawable/ic_baseline_restaurant.xml" value="0.4015" />
         <entry key="app/src/main/res/drawable/user_placeholder image_foreground.xml" value="0.356" />
         <entry key="app/src/main/res/layout/activity_add_play_date.xml" value="0.2937152629328773" />
-        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_content.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5369791666666667" />
+        <entry key="app/src/main/res/layout/activity_message.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_play_date.xml" value="0.5229826353421859" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.67" />
