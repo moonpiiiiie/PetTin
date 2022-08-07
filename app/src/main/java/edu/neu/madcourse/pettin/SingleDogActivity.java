@@ -48,7 +48,7 @@ public class SingleDogActivity extends AppCompatActivity {
         Intent intent = getIntent();
         dogName.setText(intent.getStringExtra("name"));
         dog_id = intent.getStringExtra("dogId");
-        dogAge.setText(intent.getStringExtra("age"));
+        dogAge.setText(String.valueOf(intent.getStringExtra("age")));
         dogGender.setText(intent.getStringExtra("gender"));
         dogBreed.setText(intent.getStringExtra("breed"));
         dogCity.setText(intent.getStringExtra("city"));
