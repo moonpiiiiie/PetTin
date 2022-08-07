@@ -39,6 +39,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,8 +104,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         curUser = firebaseAuth.getCurrentUser();
 
         dislikeDogs=new ArrayList<>();
-
-        if (curUser != null) {
+        if (curUser !=null ) {
             String userId = curUser.getUid();
             DocumentReference userRef = db.collection("users").document(userId);
             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -112,11 +112,11 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
                     dislikeDogs = user.getDislikeDog();
+                    System.out.println("0dislikedog" + dislikeDogs);
                 }
             });
-
         }
-
+        System.out.println("1dislikedog" + dislikeDogs);
 
         dogs = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -176,7 +176,10 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document: task.getResult()) {
                         Dogs dog = document.toObject(Dogs.class);
+                        System.out.println("dogId" + dog.getDog_id());
+                        System.out.println("dislike list " + dislikeDogs);
                         if (!dislikeDogs.contains(dog.getDog_id())) {
+                            System.out.println("dislikedog");
                             dogs.add(document.toObject(Dogs.class));
                         }
                         dogPlayDateAdapter.notifyDataSetChanged();
