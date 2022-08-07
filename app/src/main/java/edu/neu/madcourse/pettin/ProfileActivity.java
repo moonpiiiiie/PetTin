@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,7 +21,7 @@ import edu.neu.madcourse.pettin.Classes.User;
 
 public class ProfileActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
-    Button button_SignOut;
+    ExtendedFloatingActionButton button_SignOut;
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser curUser;
