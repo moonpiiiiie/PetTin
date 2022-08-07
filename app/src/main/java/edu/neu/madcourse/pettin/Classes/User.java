@@ -12,7 +12,7 @@ public class User {
     private Map<String, Object> posts;
     private ArrayList<Dogs> dogs;
     private ArrayList<User> matchedUsers;
-
+    private ArrayList<String> dislikeDog;
     public User(){};
     // TODO disliked dog list
     public User(String username, String email){
@@ -22,6 +22,7 @@ public class User {
         this.posts = new HashMap<>();
         this.dogs = new ArrayList<>();
         this.matchedUsers = new ArrayList<>();
+        this.dislikeDog = new ArrayList<>();
     }
 
     public String getUsername() {
@@ -80,6 +81,14 @@ public class User {
 
     public void setMatchedUsers(ArrayList<User> matchedUsers) {
         this.matchedUsers = matchedUsers;
+    }
+
+    public ArrayList<String> getDislikeDog() {
+        return dislikeDog;
+    }
+
+    public void setDislikeDog(ArrayList<String> dislikeDog) {
+        this.dislikeDog = dislikeDog;
     }
 
     @Override

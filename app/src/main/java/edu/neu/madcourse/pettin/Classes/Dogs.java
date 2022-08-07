@@ -23,7 +23,7 @@ public class Dogs {
     private String dog_id;
     private List<Dogs> sentMatch;
     private List<Dogs> receivedMatch;
-    private List<String> dislike;
+
 
     public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp) {
         this.name = name;
@@ -41,7 +41,7 @@ public class Dogs {
         this.dog_id = UUID.randomUUID().toString();
         this.sentMatch = new ArrayList<>();
         this.receivedMatch = new ArrayList<>();
-        this.dislike = new ArrayList<>();
+
     }
 
     public Dogs() {
