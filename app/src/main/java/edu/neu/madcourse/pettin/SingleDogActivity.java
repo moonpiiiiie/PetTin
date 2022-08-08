@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -132,42 +134,76 @@ public class SingleDogActivity extends AppCompatActivity {
         match.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (curUser != null) {
-                    String userId = curUser.getUid();
-                    DocumentReference userRef = db.collection("users").document(curUser.getUid());
-                    userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            User user = documentSnapshot.toObject(User.class);
-                            List<String> dislikeDogs = user.getDislikeDog();
-
-                            // TODO pop up a dialog to choose user's dog to match
-                            System.out.println("user dog number " + user.getDogs().size());
-                            if (user.getDogs().size()>=2) {
-//                                getMyDogList();
-                                showMatchDialog();
-                            }
-                            String dogId = user.getDogs().get(0);
-                            if (dislikeDogs.contains(curDog.getDog_id())) {
-                                userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
-                            }
-//                            // TODO add to sent match list with current dog
-                            DocumentReference myDogRef = db.collection("dogs").document(dogId);
-                            myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog.getDog_id()));
-//                            // TODO add received match with the other dog
-                            curDogRef.update("receivedMatch", FieldValue.arrayUnion(curDog.getDog_id()));
-//                            // TODO check if sent and received
+                getMyDogList();
+                showMatchDialog();
+//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(SingleDogActivity.this);
 //
+//                builderSingle.setTitle("Select One Pet:-");
+//
+//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SingleDogActivity.this, android.R.layout.select_dialog_singlechoice);
+//                arrayAdapter.add("Hardik");
+//                arrayAdapter.add("Archit");
+//                arrayAdapter.add("Jignesh");
+//                arrayAdapter.add("Umang");
+//                arrayAdapter.add("Gatti");
+//
+//                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        String strName = arrayAdapter.getItem(which);
+//                        AlertDialog.Builder builderInner = new AlertDialog.Builder(SingleDogActivity.this);
+//                        builderInner.setMessage(strName);
+//                        builderInner.setTitle("Your Selected Pet is");
+//                        builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog,int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                        builderInner.show();
+//                    }
+//                });
+//                builderSingle.show();
 
-
-
-                        }
-                    });
-                    finish();
-
-                } else {
-                    Toast.makeText(SingleDogActivity.this, "Please log in to match a playdate", Toast.LENGTH_SHORT).show();
-                }
+//                if (curUser != null) {
+//                    String userId = curUser.getUid();
+//                    DocumentReference userRef = db.collection("users").document(curUser.getUid());
+//                    userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                            User user = documentSnapshot.toObject(User.class);
+//                            List<String> dislikeDogs = user.getDislikeDog();
+//
+//                            // TODO pop up a dialog to choose user's dog to match
+//                            System.out.println("user dog number " + user.getDogs().size());
+////                            if (user.getDogs().size()>=2) {
+////
+////                            }
+//                            String dogId = user.getDogs().get(0);
+//                            if (dislikeDogs.contains(curDog.getDog_id())) {
+//                                userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
+//                            }
+////                            // TODO add to sent match list with current dog
+//                            DocumentReference myDogRef = db.collection("dogs").document(dogId);
+//                            myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog.getDog_id()));
+////                            // TODO add received match with the other dog
+//                            curDogRef.update("receivedMatch", FieldValue.arrayUnion(curDog.getDog_id()));
+////                            // TODO check if sent and received
+//
+//                        }
+//                    });
+//                    finish();
+//
+//                } else {
+//                    Toast.makeText(SingleDogActivity.this, "Please log in to match a playdate", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
@@ -193,27 +229,42 @@ public class SingleDogActivity extends AppCompatActivity {
     }
 
     void showMatchDialog() {
-        final Dialog dialog = new Dialog(SingleDogActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.match_which_dog_view);
-        myDogToMatchRV= dialog.findViewById(R.id.myDogToMatchRV);
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(SingleDogActivity.this);
 
-        List<String> testList = new ArrayList<>();
-        testList.add("dog1");
-        testList.add("dog2");
-        testList.add("dog3");
-        dogToMatchAdapter = new DogToMatchAdapter(SingleDogActivity.this, testList);
-        myDogToMatchRV.setAdapter(dogToMatchAdapter);
-        myDogToMatchRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+            builderSingle.setTitle("Select One Pet:-");
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SingleDogActivity.this, android.R.layout.select_dialog_singlechoice);
+            arrayAdapter.add("Hardik");
+            arrayAdapter.add("Archit");
+            arrayAdapter.add("Jignesh");
+            arrayAdapter.add("Umang");
+            arrayAdapter.add("Gatti");
+
+            builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String strName = arrayAdapter.getItem(which);
+                    AlertDialog.Builder builderInner = new AlertDialog.Builder(SingleDogActivity.this);
+                    builderInner.setMessage(strName);
+                    builderInner.setTitle("Your Selected Pet is");
+                    builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builderInner.show();
+                }
+            });
+            builderSingle.show();
 
 
-        dialog.show();
-        dialog.findViewById(R.id.match_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
     }
 }
