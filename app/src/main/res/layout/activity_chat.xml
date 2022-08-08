@@ -9,6 +9,16 @@
     android:backgroundTint="#EBF5EE"
     tools:context=".ChatActivity">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="983dp"
+        android:layout_height="1066dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chats_tab_layout" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
@@ -23,25 +33,35 @@
         android:id="@+id/matched_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#EBF5EE"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="981dp"
-        android:layout_height="1099dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/chats_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:backgroundTint="#EBF5EE"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/matched_users" />
+        app:layout_constraintTop_toBottomOf="@+id/matched_users">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/chats_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chats" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Group Chats" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
