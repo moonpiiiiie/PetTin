@@ -29,6 +29,8 @@
         <entry key="app/src/main/res/layout/fragment_playdate.xml" value="0.5333333333333333" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1933876811594203" />
+        <entry key="app/src/main/res/layout/match_dialog_dog_view.xml" value="0.2466866182129115" />
+        <entry key="app/src/main/res/layout/match_which_dog_view.xml" value="0.2466866182129115" />
         <entry key="app/src/main/res/layout/my_dog_view.xml" value="0.2466866182129115" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/playdate_cardview.xml" value="0.3215049166310389" />
