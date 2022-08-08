@@ -57,6 +57,8 @@ public class SingleDogActivity extends AppCompatActivity {
 
     // match my dog dialog
     List<String> myDogtoMatch;
+    DogToMatchAdapter dogToMatchAdapter;
+    RecyclerView myDogToMatchRV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,21 +142,22 @@ public class SingleDogActivity extends AppCompatActivity {
                             List<String> dislikeDogs = user.getDislikeDog();
 
                             // TODO pop up a dialog to choose user's dog to match
-//                            if (user.getDogs().size()>=2) {
+                            System.out.println("user dog number " + user.getDogs().size());
+                            if (user.getDogs().size()>=2) {
 //                                getMyDogList();
-//                                showMatchDialog();
-//                            }
+                                showMatchDialog();
+                            }
                             String dogId = user.getDogs().get(0);
                             if (dislikeDogs.contains(curDog.getDog_id())) {
                                 userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
                             }
-                            // TODO add to sent match list with current dog
+//                            // TODO add to sent match list with current dog
                             DocumentReference myDogRef = db.collection("dogs").document(dogId);
-                            myDogRef.update("sentMatch", curDog.getDog_id());
-                            // TODO add received match with the other dog
-                            curDogRef.update("receivedMatch", dogId);
-                            // TODO check if sent and received
-                            System.out.println("sentMatch" +myDogRef.get().getResult().get("sentMatch"));
+                            myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog.getDog_id()));
+//                            // TODO add received match with the other dog
+                            curDogRef.update("receivedMatch", FieldValue.arrayUnion(curDog.getDog_id()));
+//                            // TODO check if sent and received
+//
 
 
 
@@ -194,11 +197,23 @@ public class SingleDogActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.match_which_dog_view);
-        RecyclerView myDogToMatchRV = dialog.findViewById(R.id.myDogToMatchRV);
-        myDogtoMatch = Arrays.asList(new String[]{"dog1", "dog2", "dog3"});
-        myDogToMatchRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        DogToMatchAdapter dogToMatchAdapter = new DogToMatchAdapter(SingleDogActivity.this, myDogtoMatch);
+        myDogToMatchRV= dialog.findViewById(R.id.myDogToMatchRV);
+
+        List<String> testList = new ArrayList<>();
+        testList.add("dog1");
+        testList.add("dog2");
+        testList.add("dog3");
+        dogToMatchAdapter = new DogToMatchAdapter(SingleDogActivity.this, testList);
         myDogToMatchRV.setAdapter(dogToMatchAdapter);
+        myDogToMatchRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+
+
         dialog.show();
+        dialog.findViewById(R.id.match_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 }
