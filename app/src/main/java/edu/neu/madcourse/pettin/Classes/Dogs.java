@@ -25,7 +25,7 @@ public class Dogs {
     private List<String> receivedMatch;
 
 
-    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, List<String> sentMatch, List<String>receivedMatch) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, List<String> sentMatch, List<String> receivedMatch) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
