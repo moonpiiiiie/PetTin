@@ -39,7 +39,6 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
     MyDogAdapter(Context context, List<Dogs> dogs) {
         this.layoutInflater = LayoutInflater.from(context);
         this.dogs = dogs;
-
     }
 
 
@@ -57,12 +56,7 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
         viewHolder.name.setText(dog.getName());
         viewHolder.age.setText(String.valueOf(dog.getAge()));
         viewHolder.gender.setText(" "+dog.getGender());
-
-        viewHolder.energyLevel.setText(String.valueOf(dog.getEnergyLevel()));
-        viewHolder.weight.setText(Double.toString(dog.getWeight()) + " lbs");
-        viewHolder.spayed.setText("Spayed: " + dog.getSpayed());
         viewHolder.breed.setText(dog.getBreed());
-        viewHolder.city.setText(dog.getLocation());
 
         viewHolder.position = viewHolder.getAdapterPosition();
 
@@ -77,7 +71,7 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, age, gender, energyLevel, weight, spayed, breed, city;
+        TextView name, age, gender, breed;
         int position;
 
         public ViewHolder(@NonNull View itemView) {
@@ -85,12 +79,7 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
             name = itemView.findViewById(R.id.textView_myDogname);
             age = itemView.findViewById(R.id.textView_myDogage);
             gender = itemView.findViewById(R.id.textView_myDoggender);
-
-            energyLevel = itemView.findViewById(R.id.textView_myDogenergyLevel);
-            weight = itemView.findViewById(R.id.textView_myDogweight);
-            spayed = itemView.findViewById(R.id.textView_myDogspayed);
             breed = itemView.findViewById(R.id.textView_myDogbreed);
-            city = itemView.findViewById(R.id.textView_myDogloc);
             itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

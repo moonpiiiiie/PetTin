@@ -2,9 +2,11 @@ package edu.neu.madcourse.pettin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,11 +20,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
@@ -41,9 +45,13 @@ public class SingleDogActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
     FirebaseUser curUser;
+    String userId;
 
     // button for dislike and match
     ExtendedFloatingActionButton dislike, match;
+
+    // match my dog dialog
+    List<String> myDogtoMatch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +98,7 @@ public class SingleDogActivity extends AppCompatActivity {
             }
         });
 
+
         // user
         curUser = firebaseAuth.getCurrentUser();
         // buttons
@@ -100,7 +109,7 @@ public class SingleDogActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (curUser != null) {
-                    String userId = curUser.getUid();
+                    userId = curUser.getUid();
                     DocumentReference userRef = db.collection("users").document(userId);
                     // update data in firestore
                     userRef.update("dislikeDog", FieldValue.arrayUnion(curDog.getDog_id()));
@@ -126,7 +135,8 @@ public class SingleDogActivity extends AppCompatActivity {
                             List<String> dislikeDogs = user.getDislikeDog();
                             // TODO pop up a dialog to choose user's dog to match
                             if (user.getDogs().size()>=2) {
-
+                                getMyDogList();
+                                showMatchDialog();
                             }
                             if (dislikeDogs.contains(curDog.getDog_id())) {
                                 userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
@@ -145,5 +155,28 @@ public class SingleDogActivity extends AppCompatActivity {
     }
     void updateDislikeDogList(String dogId) {
 
+    }
+
+    void getMyDogList() {
+        myDogtoMatch = new ArrayList<>();
+        DocumentReference userRef = db.collection("users").document(userId);
+        CollectionReference dogRef = db.collection("dogs");
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                for (String dogId: user.getDogs()) {
+                    myDogtoMatch.add(dogRef.document(dogId).get().toString());
+                }
+                System.out.println("my dog to match" + myDogtoMatch);
+            }
+        });
+    }
+
+    void showMatchDialog() {
+        final Dialog dialog = new Dialog(SingleDogActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.match_which_dog_view);
     }
 }

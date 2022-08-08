@@ -164,7 +164,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
         spinner_energyLevel.setAdapter(energyLevel_adapter);
         //play style
         textView_playstyles = findViewById(R.id.textView_playStyles);
-        String[] playArray = {"Balls", "Hiking", "Jogging", "Wrestle", "Tugger", "Chaser"};
+        String[] playArray = {"Balls", "Hiking", "Jogging", "Wrestle", "Tugger", "Chaser", "Other"};
         boolean[] selectedPlayStyles = new boolean[playArray.length];
         ArrayList<Integer> playList = new ArrayList<>();
         playStyles = new ArrayList<>();
