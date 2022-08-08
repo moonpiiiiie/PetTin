@@ -175,16 +175,16 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/button_match"
+        android:id="@+id/button_delete"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
 
         android:backgroundTint="@color/oxley"
         android:text="Delete"
-        app:iconTint="#F3F0E7"
         android:textColor="#F3F0E7"
-        app:icon="@drawable/ic_baseline_delete_24" />
+        app:icon="@drawable/ic_baseline_delete_24"
+        app:iconTint="#F3F0E7" />
 </RelativeLayout>
 
             </LinearLayout>
