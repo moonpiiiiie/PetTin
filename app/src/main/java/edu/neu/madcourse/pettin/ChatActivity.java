@@ -36,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private FirebaseFirestore dbInstance;
 
-    private FirebaseUser firebaseAuth;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +60,10 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(userAdapter);
         retrieveUsers();
 
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
 //        firebaseAuth = FirebaseAuth.getInstance().getCurrentUser();
 //        userId = auth.getCurrentUser().getUid();
-
 
     }
 
@@ -77,10 +78,16 @@ public class ChatActivity extends AppCompatActivity {
                             return;
                         }
                         // get all the data from the firestore
+                        // TODO - want to retrieve matched users - will need to get the field matchedUsers which is an array
                         for (DocumentChange document : value.getDocumentChanges()) {
                             if (document.getType() == DocumentChange.Type.ADDED) {
                                 // fetch data
-                                listOfUsers.add(document.getDocument().toObject(User.class));
+                                User user = document.getDocument().toObject(User.class);
+                                if (!user.getUserId().equals(currentUser.getUid())) {
+                                    listOfUsers.add(user);
+                                }
+
+//                                listOfUsers.add(document.getDocument().toObject(User.class));
                             }
                             userAdapter.notifyDataSetChanged();
                         }

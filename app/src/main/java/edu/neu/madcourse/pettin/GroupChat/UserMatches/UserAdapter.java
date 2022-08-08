@@ -44,6 +44,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         user = listOfUsers.get(position);
         holder.username.setText(user.getUsername());
+        holder.userId = user.getUserId();
     }
 
     @Override
@@ -53,7 +54,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
 
-        TextView username;
+        private TextView username;
+        private String userId;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,11 +64,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.v(TAG + "user clicked", username.getText().toString());
-//                    Intent intent = new Intent(context, MessageActivity.class);
-//                    intent.putExtra("userid", user.getId());
-//                    context.startActivity(intent);
-
+                    Log.v(TAG + " user clicked", username.getText().toString());
+                    Log.v(TAG + " username onClick: ", userId);
+                    Intent intent = new Intent(context, MessageActivity.class);
+                    // need id - need to pass the id of the user
+                    intent.putExtra("userId", userId);
+                    Log.v(TAG, "Starting Message Activity " + userId);
+                    context.startActivity(intent);
                 }
             });
 

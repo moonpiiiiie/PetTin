@@ -125,9 +125,9 @@ public class SingleDogActivity extends AppCompatActivity {
                             User user = documentSnapshot.toObject(User.class);
                             List<String> dislikeDogs = user.getDislikeDog();
                             // TODO pop up a dialog to choose user's dog to match
-                            if (user.getDogs().size()>=2) {
-
-                            }
+//                            if (user.getDogs().size()>=2) {
+//
+//                            }
                             if (dislikeDogs.contains(curDog.getDog_id())) {
                                 userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
                             }
