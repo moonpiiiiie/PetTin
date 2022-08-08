@@ -25,14 +25,14 @@ import edu.neu.madcourse.pettin.Classes.Dogs;
 
 public class DogToMatchAdapter extends RecyclerView.Adapter<DogToMatchAdapter.ViewHolder> {
     private LayoutInflater layoutInflater;
-    private List<Dogs> dogs;
+    private List<String> dogs;
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser curUser;
     final String TAG = "DogToMatchAdapter";
 
 
-    DogToMatchAdapter(Context context, List<Dogs> dogs) {
+    DogToMatchAdapter(Context context, List<String> dogs) {
         this.layoutInflater = LayoutInflater.from(context);
         this.dogs = dogs;
     }
@@ -48,8 +48,8 @@ public class DogToMatchAdapter extends RecyclerView.Adapter<DogToMatchAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull DogToMatchAdapter.ViewHolder viewHolder, int i) {
-        Dogs dog = dogs.get(i);
-        viewHolder.name.setText(dog.getName());
+        String dogId = dogs.get(i);
+        viewHolder.name.setText(dogId);
 
         viewHolder.position = viewHolder.getAdapterPosition();
 

@@ -1,14 +1,18 @@
 package edu.neu.madcourse.pettin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
@@ -71,7 +76,7 @@ public class SingleDogActivity extends AppCompatActivity {
         Intent intent = getIntent();
         dogName.setText(intent.getStringExtra("name"));
         dog_id = intent.getStringExtra("dogId");
-        dogAge.setText(String.valueOf(intent.getStringExtra("age")));
+//        dogAge.setText(String.valueOf(intent.getStringExtra("age")));
         dogGender.setText(intent.getStringExtra("gender"));
         dogBreed.setText(intent.getStringExtra("breed"));
         dogCity.setText(intent.getStringExtra("city"));
@@ -83,8 +88,8 @@ public class SingleDogActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // retrieve data from firebase for the single post
-        DocumentReference postRef = db.collection("dogs").document(dog_id);
-        postRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        DocumentReference curDogRef = db.collection("dogs").document(dog_id);
+        curDogRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 curDog = documentSnapshot.toObject(Dogs.class);
@@ -109,7 +114,7 @@ public class SingleDogActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (curUser != null) {
-                    userId = curUser.getUid();
+                    String userId = curUser.getUid();
                     DocumentReference userRef = db.collection("users").document(userId);
                     // update data in firestore
                     userRef.update("dislikeDog", FieldValue.arrayUnion(curDog.getDog_id()));
@@ -127,21 +132,32 @@ public class SingleDogActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (curUser != null) {
                     String userId = curUser.getUid();
-                    DocumentReference userRef = db.collection("users").document(userId);
+                    DocumentReference userRef = db.collection("users").document(curUser.getUid());
                     userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             User user = documentSnapshot.toObject(User.class);
                             List<String> dislikeDogs = user.getDislikeDog();
+
                             // TODO pop up a dialog to choose user's dog to match
-                            if (user.getDogs().size()>=2) {
-                                getMyDogList();
-                                showMatchDialog();
-                            }
+//                            if (user.getDogs().size()>=2) {
+//                                getMyDogList();
+//                                showMatchDialog();
+//                            }
+                            String dogId = user.getDogs().get(0);
                             if (dislikeDogs.contains(curDog.getDog_id())) {
                                 userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
                             }
-                            // TODO add to sent match list
+                            // TODO add to sent match list with current dog
+                            DocumentReference myDogRef = db.collection("dogs").document(dogId);
+                            myDogRef.update("sentMatch", curDog.getDog_id());
+                            // TODO add received match with the other dog
+                            curDogRef.update("receivedMatch", dogId);
+                            // TODO check if sent and received
+                            System.out.println("sentMatch" +myDogRef.get().getResult().get("sentMatch"));
+
+
+
                         }
                     });
                     finish();
@@ -159,14 +175,14 @@ public class SingleDogActivity extends AppCompatActivity {
 
     void getMyDogList() {
         myDogtoMatch = new ArrayList<>();
-        DocumentReference userRef = db.collection("users").document(userId);
+        DocumentReference userRef = db.collection("users").document(curUser.getUid());
         CollectionReference dogRef = db.collection("dogs");
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
                 for (String dogId: user.getDogs()) {
-                    myDogtoMatch.add(dogRef.document(dogId).get().toString());
+                    myDogtoMatch.add(dogId);
                 }
                 System.out.println("my dog to match" + myDogtoMatch);
             }
@@ -178,5 +194,11 @@ public class SingleDogActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.match_which_dog_view);
+        RecyclerView myDogToMatchRV = dialog.findViewById(R.id.myDogToMatchRV);
+        myDogtoMatch = Arrays.asList(new String[]{"dog1", "dog2", "dog3"});
+        myDogToMatchRV.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        DogToMatchAdapter dogToMatchAdapter = new DogToMatchAdapter(SingleDogActivity.this, myDogtoMatch);
+        myDogToMatchRV.setAdapter(dogToMatchAdapter);
+        dialog.show();
     }
 }
