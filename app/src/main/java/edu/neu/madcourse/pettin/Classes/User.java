@@ -11,7 +11,7 @@ public class User {
     private Map<String, String> following;
     private Map<String, Object> posts;
 
-    private ArrayList<Dogs> dogs;
+    private ArrayList<String> dogs;
     private ArrayList<User> matchedUsers;
 
 
