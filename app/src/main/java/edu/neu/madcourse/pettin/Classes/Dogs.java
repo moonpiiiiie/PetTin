@@ -21,11 +21,11 @@ public class Dogs {
     private String userID;
     private Timestamp timestamp;
     private String dog_id;
-    private List<Dogs> sentMatch;
-    private List<Dogs> receivedMatch;
+    private List<String> sentMatch;
+    private List<String> receivedMatch;
 
 
-    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, List<String> sentMatch, List<String> receivedMatch) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
@@ -39,8 +39,8 @@ public class Dogs {
         this.userID = userId;
         this.timestamp = timestamp;
         this.dog_id = UUID.randomUUID().toString();
-        this.sentMatch = new ArrayList<>();
-        this.receivedMatch = new ArrayList<>();
+        this.sentMatch = sentMatch;
+        this.receivedMatch = receivedMatch;
 
     }
 
@@ -150,5 +150,21 @@ public class Dogs {
 
     public void setDog_id(String dog_id) {
         this.dog_id = dog_id;
+    }
+
+    public List<String> getSentMatch() {
+        return sentMatch;
+    }
+
+    public void setSentMatch(List<String> sentMatch) {
+        this.sentMatch = sentMatch;
+    }
+
+    public List<String> getReceivedMatch() {
+        return receivedMatch;
+    }
+
+    public void setReceivedMatch(List<String> receivedMatch) {
+        this.receivedMatch = receivedMatch;
     }
 }

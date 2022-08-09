@@ -118,7 +118,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 }
             });
         }
-        System.out.println("1dislikedog" + dislikeDogs);
 
         dogs = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -178,11 +177,11 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document: task.getResult()) {
                         Dogs dog = document.toObject(Dogs.class);
-
                         if (!dislikeDogs.contains(dog.getDog_id())&& !ownedDogs.contains(dog.getDog_id())) {
                             dogs.add(dog);
+                            dogPlayDateAdapter.notifyDataSetChanged();
                         }
-                        dogPlayDateAdapter.notifyDataSetChanged();
+
                     }
                 } else {
                     Log.d("fetch playdate", "failed", task.getException());
@@ -290,12 +289,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             }
         });
 
-        RadioButton radioButton_boy = dialog.findViewById(R.id.filter_boy);
-        RadioButton radioButton_girl = dialog.findViewById(R.id.filter_girl);
-        RadioButton radioButton_nogender = dialog.findViewById(R.id.gender_nomatter);
-        RadioButton radioButton_spayed = dialog.findViewById(R.id.filter_spayed);
-        RadioButton radioButton_nospayed = dialog.findViewById(R.id.filter_nospayed);
-        RadioButton radioButton_nmspayed = dialog.findViewById(R.id.spay_nomatter);
         RadioGroup genderGroup = dialog.findViewById(R.id.rg_gender);
         RadioGroup spayGroup = dialog.findViewById(R.id.rg_spay);
         RangeSlider ageSlider = dialog.findViewById(R.id.age_slider);
@@ -403,22 +396,13 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                         }
                     }
                 });
-//                System.out.println(filterAgeLow);
-//                System.out.println(filterAgeHigh);
-//                System.out.println(filterWeightLow);
-//                System.out.println(filterWeightHigh);
-//                System.out.println(filterGender);
-//                System.out.println(filterSpayed);
-//                System.out.println(filterPS);
+
                 if (grb==null || srb==null) {
                     Toast.makeText(PlayDateActivity.this, "please fill out all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     applyFilter();
                     dialog.dismiss();
                 }
-
-
-
             }
         });
 

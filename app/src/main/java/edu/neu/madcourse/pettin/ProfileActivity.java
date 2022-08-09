@@ -32,7 +32,7 @@ import edu.neu.madcourse.pettin.Classes.User;
 
 public class ProfileActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
-    ExtendedFloatingActionButton button_SignOut;
+    ExtendedFloatingActionButton button_SignOut, button_ChangePW;
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser curUser;
@@ -86,6 +86,16 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 auth.signOut();
                 signOutUser();
+            }
+        });
+
+        button_ChangePW = findViewById(R.id.btn_changePW);
+        button_ChangePW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         // bottom nav

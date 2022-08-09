@@ -15,23 +15,30 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> {
     private LayoutInflater layoutInflater;
     private List<Dogs> dogs;
     FirebaseFirestore db;
+    FirebaseAuth auth;
+    FirebaseUser curUser;
     final String TAG = "My Dog Adapater";
 
 
     MyDogAdapter(Context context, List<Dogs> dogs) {
         this.layoutInflater = LayoutInflater.from(context);
         this.dogs = dogs;
-
     }
 
 
@@ -49,12 +56,9 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
         viewHolder.name.setText(dog.getName());
         viewHolder.age.setText(String.valueOf(dog.getAge()));
         viewHolder.gender.setText(" "+dog.getGender());
-
-        viewHolder.energyLevel.setText(String.valueOf(dog.getEnergyLevel()));
-        viewHolder.weight.setText(Double.toString(dog.getWeight()) + " lbs");
-        viewHolder.spayed.setText("Spayed: " + dog.getSpayed());
         viewHolder.breed.setText(dog.getBreed());
-        viewHolder.city.setText(dog.getLocation());
+
+        viewHolder.position = viewHolder.getAdapterPosition();
 
 
     }
@@ -67,25 +71,28 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, age, gender, energyLevel, weight, spayed, breed, city;
+        TextView name, age, gender, breed;
+        int position;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.textView_myDogname);
             age = itemView.findViewById(R.id.textView_myDogage);
             gender = itemView.findViewById(R.id.textView_myDoggender);
-
-            energyLevel = itemView.findViewById(R.id.textView_myDogenergyLevel);
-            weight = itemView.findViewById(R.id.textView_myDogweight);
-            spayed = itemView.findViewById(R.id.textView_myDogspayed);
             breed = itemView.findViewById(R.id.textView_myDogbreed);
-            city = itemView.findViewById(R.id.textView_myDogloc);
-
+            itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteItem(position);
+                }
+            });
         }
 
 
     public void deleteItem(int position) {
         Dogs dog = dogs.get(position);
+        auth = FirebaseAuth.getInstance();
+        curUser = auth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         db.collection("dogs").document(dog.getDog_id()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -102,6 +109,11 @@ public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> 
                 });
         dogs.remove(position);
         notifyItemRemoved(position);
+        if (curUser !=null ) {
+            String userId = curUser.getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+            userRef.update("dogs", FieldValue.arrayRemove(dog.getDog_id()));
+        }
     }
 }}
 

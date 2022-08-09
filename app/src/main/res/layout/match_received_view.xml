@@ -111,22 +111,37 @@
 
 
                 </LinearLayout>
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
+                    <ImageView
+                        android:id="@+id/button_accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:backgroundTint="@color/oxley"
+                        android:src="@drawable/ic_baseline_accept"
+                        android:text="Accept"
+                        android:textColor="#F3F0E7"
+                        app:icon="@drawable/ic_baseline_delete_24"
+                        app:iconTint="#F3F0E7" />
 
-        android:backgroundTint="@color/oxley"
-        android:text="Delete"
-        android:textColor="#F3F0E7"
-        app:icon="@drawable/ic_baseline_delete_24"
-        app:iconTint="#F3F0E7" />
-</RelativeLayout>
+                    <ImageView
+                        android:id="@+id/button_Reject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:src="@drawable/ic_baseline_delete"
+                        android:clickable="true"
+                        android:backgroundTint="@color/oxley"
+                        android:text="Reject"
+                        android:textColor="#F3F0E7"
+                        app:icon="@drawable/ic_baseline_delete_24"
+                        app:iconTint="#F3F0E7" />
+                </RelativeLayout>
 
             </LinearLayout>
 
