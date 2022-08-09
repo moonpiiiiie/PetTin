@@ -1,24 +1,153 @@
 package edu.neu.madcourse.pettin;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+
+import edu.neu.madcourse.pettin.Classes.User;
+import edu.neu.madcourse.pettin.GroupChat.Fragments.ViewPageAdapter;
+import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
+
 
 public class ChatActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNav;
+    private static final String TAG = "ChatActivity";
+
+    private BottomNavigationView bottomNav;
+    private RecyclerView recyclerView;
+    private ArrayList<User> listOfUsers;
+    private UserAdapter userAdapter;
+
+    private FirebaseFirestore dbInstance;
+
+    private FirebaseUser currentUser;
+
+    // Tab Layout - Chats | Group Chats
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager2;
+    private ViewPageAdapter viewPageAdapter;
+
+    // Setting up group chat
+    private FloatingActionButton fabCreateGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // creates the nav bar
         createNavBar();
+
+        // creates the tab layout
+        setTabLayout();
+
+        // sets up the users at the top - to be matched users
+        retrieveUsers();
+
+        fabCreateGroup = findViewById(R.id.create_group);
+
+
     }
 
+    /**
+     * Method sets up the tab layout.
+     */
+    private void setTabLayout() {
+        tabLayout = findViewById(R.id.chats_tab_layout);
+        viewPager2 = findViewById(R.id.view_pager);
+        viewPageAdapter = new ViewPageAdapter(this);
+        viewPager2.setAdapter(viewPageAdapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tabLayout.getTabAt(position).select();
+            }
+        });
+    }
+
+    /**
+     * Method retrieves users from the FireStore database.
+     * TODO: need to update so that it gets matched users only
+     */
+    private void retrieveUsers() {
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        recyclerView = findViewById(R.id.matched_users);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        dbInstance = FirebaseFirestore.getInstance();
+        listOfUsers = new ArrayList<User>();
+        userAdapter = new UserAdapter(ChatActivity.this, this.listOfUsers);
+
+        recyclerView.setAdapter(userAdapter);
+
+        dbInstance.collection("users").orderBy("username", Query.Direction.ASCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            // there is an error
+                            Log.v("Firestore error", error.getMessage());
+                            return;
+                        }
+                        // get all the data from the firestore
+                        // TODO - want to retrieve matched users - will need to get the field matchedUsers which is an array
+                        for (DocumentChange document : value.getDocumentChanges()) {
+                            if (document.getType() == DocumentChange.Type.ADDED) {
+                                // fetch data
+                                User user = document.getDocument().toObject(User.class);
+                                if (user != null && !user.getUserId().equals(currentUser.getUid())) {
+                                    listOfUsers.add(user);
+                                }
+                            }
+                            userAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Method creates the navigation bar to get to the other activities.
+     */
     public void createNavBar() {
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_chat);
@@ -42,4 +171,5 @@ public class ChatActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }

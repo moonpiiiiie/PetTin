@@ -10,10 +10,14 @@ public class User {
     private String followers;
     private Map<String, String> following;
     private Map<String, Object> posts;
+
     private ArrayList<String> dogs;
     private ArrayList<User> matchedUsers;
+
+
     private ArrayList<String> dislikeDog;
     private String userId;
+
     public User(){};
     // TODO disliked dog list
     public User(String username, String email, String userId){
@@ -27,7 +31,13 @@ public class User {
         this.userId = userId;
     }
 
+    public ArrayList<String> getDogs() {
+        return dogs;
+    }
 
+    public void setDogs(ArrayList<String> dogs) {
+        this.dogs = dogs;
+    }
 
     public String getUsername() {
         return username;
@@ -71,14 +81,6 @@ public class User {
         this.posts = posts;
     }
 
-    public ArrayList<String> getDogs() {
-        return dogs;
-    }
-
-    public void setDogs(ArrayList<String> dogs) {
-        this.dogs = dogs;
-    }
-
     public ArrayList<User> getMatchedUsers() {
         return matchedUsers;
     }
@@ -86,6 +88,7 @@ public class User {
     public void setMatchedUsers(ArrayList<User> matchedUsers) {
         this.matchedUsers = matchedUsers;
     }
+
 
     public ArrayList<String> getDislikeDog() {
         return dislikeDog;
@@ -106,6 +109,7 @@ public class User {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
 
     @Override
     public String toString() {
