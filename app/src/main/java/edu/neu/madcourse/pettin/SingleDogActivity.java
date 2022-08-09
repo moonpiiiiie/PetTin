@@ -147,26 +147,6 @@ public class SingleDogActivity extends AppCompatActivity {
         match.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (curUser != null) {
-                    String userId = curUser.getUid();
-                    DocumentReference userRef = db.collection("users").document(userId);
-                    userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            User user = documentSnapshot.toObject(User.class);
-                            List<String> dislikeDogs = user.getDislikeDog();
-                            // TODO pop up a dialog to choose user's dog to match
-//                            if (user.getDogs().size()>=2) {
-//
-//                            }
-                            if (dislikeDogs.contains(curDog.getDog_id())) {
-                                userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
-                            }
-                            // TODO add to sent match list
-                        }
-                    });
-                    finish();
                 // part I
                 if (dogNum == 0) {
                     Toast.makeText(SingleDogActivity.this, "Please add your dog to match another dog", Toast.LENGTH_SHORT).show();
