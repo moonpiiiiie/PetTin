@@ -1,6 +1,7 @@
 package edu.neu.madcourse.pettin.Classes;
 
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.FieldValue;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ public class Message {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.timestamp = ServerValue.TIMESTAMP;
+        this.timestamp = FieldValue.serverTimestamp();
     }
 
     public String getId() {

@@ -27,12 +27,12 @@
                 android:id="@+id/user_image"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:scaleType="centerInside"
                 android:adjustViewBounds="true"
-                app:srcCompat="@mipmap/ic_launcher" />
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_launcher_foreground" />
 
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/username_current"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
