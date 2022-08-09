@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +47,9 @@ public class ChatActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ViewPageAdapter viewPageAdapter;
 
+    // Setting up group chat
+    private FloatingActionButton fabCreateGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,9 @@ public class ChatActivity extends AppCompatActivity {
 
         // sets up the users at the top - to be matched users
         retrieveUsers();
+
+        fabCreateGroup = findViewById(R.id.create_group);
+
 
     }
 
