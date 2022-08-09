@@ -1,5 +1,6 @@
 package edu.neu.madcourse.pettin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -28,8 +30,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
 import edu.neu.madcourse.pettin.Classes.User;
@@ -56,7 +61,7 @@ public class SingleDogActivity extends AppCompatActivity {
     // match my dog dialog
     List<String> myDog;
     List<Task<DocumentSnapshot>> task;
-    List<String> myDogToMatch;
+    Map<String, String> myDogToMatch;
     DogToMatchAdapter dogToMatchAdapter;
     RecyclerView myDogToMatchRV;
     int dogNum;
@@ -118,7 +123,7 @@ public class SingleDogActivity extends AppCompatActivity {
         // get dog number
         dogNum = 0;
         myDog = new ArrayList<>();
-        myDogToMatch = new ArrayList<>();
+        myDogToMatch = new HashMap<>();
         dogNum = ownedDogs();
         System.out.println("dog " + dogNum);
 
@@ -144,16 +149,13 @@ public class SingleDogActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // part I
                 if (dogNum == 0) {
-
                     Toast.makeText(SingleDogActivity.this, "Please add your dog to match another dog", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (dogNum > 1) {
-                    System.out.println("dogNum>1");
-                    System.out.println("my dog to match" + myDogToMatch);
+                    getMyDogList();
                     showMatchDialog();
                 }
-
 //                AlertDialog.Builder builderSingle = new AlertDialog.Builder(SingleDogActivity.this);
 //
 //                builderSingle.setTitle("Select One Pet:-");
@@ -190,7 +192,6 @@ public class SingleDogActivity extends AppCompatActivity {
 //                });
 //                builderSingle.show();
                 // part II
-
             }
         });
 
@@ -201,40 +202,52 @@ public class SingleDogActivity extends AppCompatActivity {
     }
 
     void getMyDogList() {
+        CollectionReference dogRef = db.collection("dogs");
+        for (String dogId: myDog) {
+            dogRef.document(dogId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    String dogName= document.getString("name");
+                    if (!myDogToMatch.containsKey(dogName)) {
+                        myDogToMatch.put(dogName, dogId);
+                    }
 
+                }
+            });
+        }
     }
 
     // get how many dogs the current user owned
     int ownedDogs() {
         DocumentReference userRef = db.collection("users").document(curUser.getUid());
-        CollectionReference dogRef = db.collection("dogs");
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-
                 myDog = user.getDogs();
                 dogNum = myDog.size();
             }
         });
-        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-        System.out.println("my dog" + myDog);
-        for (String path : myDog) {
-            tasks.add(db.document(path).get());
-        }
-        System.out.println("tasks " + tasks);
-        Task<List<DocumentSnapshot>> finalTask = Tasks.whenAllSuccess(tasks);
-        finalTask.addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
-            @Override
-            public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
-                System.out.println("onSuccess?");
-                for (DocumentSnapshot snapshot : documentSnapshots) {
-                    System.out.println(snapshot.toObject(Dogs.class).getName());
-                    myDogToMatch.add(snapshot.toObject(Dogs.class).getName());
-                }
 
-            }
-        });
+//        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+//        System.out.println("my dog" + myDog);
+//        for (String path : myDog) {
+//            tasks.add(db.document(path).get());
+//        }
+//        System.out.println("tasks " + tasks);
+//        Task<List<DocumentSnapshot>> finalTask = Tasks.whenAllSuccess(tasks);
+//        finalTask.addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
+//            @Override
+//            public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
+//                System.out.println("onSuccess?");
+//                for (DocumentSnapshot snapshot : documentSnapshots) {
+//                    System.out.println(snapshot.toObject(Dogs.class).getName());
+//                    myDogToMatch.add(snapshot.toObject(Dogs.class).getName());
+//                }
+//
+//            }
+//        });
 //        Task<List<DocumentSnapshot>> task = Tasks.whenAllComplete(myDog);
 
 //        System.out.println("my dog " + myDog);
@@ -247,22 +260,17 @@ public class SingleDogActivity extends AppCompatActivity {
 //                }
 //            });
 //        }
-        System.out.println("my dog to match" + myDogToMatch);
+
         return dogNum;
     }
 
     void showMatchDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(SingleDogActivity.this);
-
         builderSingle.setTitle("Select One Pet:-");
-
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SingleDogActivity.this, android.R.layout.select_dialog_singlechoice);
-
-        arrayAdapter.add("Hardik");
-        arrayAdapter.add("Archit");
-        arrayAdapter.add("Jignesh");
-        arrayAdapter.add("Umang");
-        arrayAdapter.add("Gatti");
+        for (String dogName: myDogToMatch.keySet()) {
+            arrayAdapter.add(dogName);
+        }
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -275,12 +283,14 @@ public class SingleDogActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
+                String myDogId = myDogToMatch.get(strName);
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(SingleDogActivity.this);
                 builderInner.setMessage(strName);
                 builderInner.setTitle("Your Selected Pet is");
                 builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        matchDog(myDogId);
                         dialog.dismiss();
                     }
                 });
@@ -292,31 +302,44 @@ public class SingleDogActivity extends AppCompatActivity {
 
     }
 
-    void fireStoreMatch() {
+    void matchDog(String myDogId) {
         if (curUser != null) {
             String userId = curUser.getUid();
             DocumentReference userRef = db.collection("users").document(curUser.getUid());
+            CollectionReference otherUserRef = db.collection("users");
             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
                     List<String> dislikeDogs = user.getDislikeDog();
 
-                    // TODO pop up a dialog to choose user's dog to match
-                    System.out.println("user dog number " + user.getDogs().size());
-//                            if (user.getDogs().size()>=2) {
-//
-//                            }
-                    String dogId = user.getDogs().get(0);
                     if (dislikeDogs.contains(curDog.getDog_id())) {
                         userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
                     }
 //
-                    DocumentReference myDogRef = db.collection("dogs").document(dogId);
+                    DocumentReference myDogRef = db.collection("dogs").document(myDogId);
+                    // TODO check if sent and received
+                    myDogRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            List<String> myDogReceivedMatch = (List<String>)task.getResult().get("receivedMatch");
+                            if (myDogReceivedMatch.contains(curDog.getDog_id())) {
+                                otherUserRef.document(curDog.getUserID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        User otherUser = task.getResult().toObject(User.class);
+                                        userRef.update("matchedUsers", FieldValue.arrayUnion(otherUser));
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    otherUserRef.document(curDog.getUserID()).update("matchedUsers", FieldValue.arrayUnion(user));
                     myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog.getDog_id()));
 //
-                    curDogRef.update("receivedMatch", FieldValue.arrayUnion(curDog.getDog_id()));
-//                            // TODO check if sent and received
+                    curDogRef.update("receivedMatch", FieldValue.arrayUnion(myDogId));
+//
 
                 }
             });

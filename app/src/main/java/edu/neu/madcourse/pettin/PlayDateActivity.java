@@ -176,7 +176,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document: task.getResult()) {
-                        System.out.println("document" + document);
                         Dogs dog = document.toObject(Dogs.class);
                         if (!dislikeDogs.contains(dog.getDog_id())&& !ownedDogs.contains(dog.getDog_id())) {
                             dogs.add(dog);
