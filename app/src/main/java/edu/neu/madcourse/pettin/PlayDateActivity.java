@@ -113,8 +113,8 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
-//                    dislikeDogs = user.getDislikeDog();
-//                    ownedDogs = user.getDogs();
+                    dislikeDogs = user.getDislikeDog();
+                    ownedDogs = user.getDogs();
                 }
             });
         }
