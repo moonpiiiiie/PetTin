@@ -31,7 +31,13 @@ public class User {
         this.userId = userId;
     }
 
+    public ArrayList<String> getDogs() {
+        return dogs;
+    }
 
+    public void setDogs(ArrayList<String> dogs) {
+        this.dogs = dogs;
+    }
 
     public String getUsername() {
         return username;
