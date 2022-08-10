@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +17,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.User;
+import edu.neu.madcourse.pettin.GroupChat.CreateGroupChatActivity;
 import edu.neu.madcourse.pettin.GroupChat.Fragments.ViewPageAdapter;
 import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
 
@@ -38,7 +42,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<User> listOfUsers;
     private UserAdapter userAdapter;
 
-    private FirebaseFirestore dbInstance;
+    private FirebaseFirestore db;
 
     private FirebaseUser currentUser;
 
@@ -65,6 +69,14 @@ public class ChatActivity extends AppCompatActivity {
         retrieveUsers();
 
         fabCreateGroup = findViewById(R.id.create_group);
+
+        fabCreateGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent createGroupIntent = new Intent(ChatActivity.this, CreateGroupChatActivity.class);
+                startActivity(createGroupIntent);
+            }
+        });
 
 
     }
@@ -114,35 +126,52 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        dbInstance = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         listOfUsers = new ArrayList<User>();
         userAdapter = new UserAdapter(ChatActivity.this, this.listOfUsers);
 
+
+
+        DocumentReference currentUserDocRef = db.collection("users").document(currentUser.getUid());
+        currentUserDocRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null && value.exists()) {
+                    User user = value.toObject(User.class);
+                    for (User matchedUser : user.getMatchedUsers()) {
+                        listOfUsers.add(matchedUser);
+                    }
+                    userAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
         recyclerView.setAdapter(userAdapter);
 
-        dbInstance.collection("users").orderBy("username", Query.Direction.ASCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            // there is an error
-                            Log.v("Firestore error", error.getMessage());
-                            return;
-                        }
-                        // get all the data from the firestore
-                        // TODO - want to retrieve matched users - will need to get the field matchedUsers which is an array
-                        for (DocumentChange document : value.getDocumentChanges()) {
-                            if (document.getType() == DocumentChange.Type.ADDED) {
-                                // fetch data
-                                User user = document.getDocument().toObject(User.class);
-                                if (user != null && !user.getUserId().equals(currentUser.getUid())) {
-                                    listOfUsers.add(user);
-                                }
-                            }
-                            userAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
+//        db.collection("users").orderBy("username", Query.Direction.ASCENDING)
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        if (error != null) {
+//                            // there is an error
+//                            Log.v("Firestore error", error.getMessage());
+//                            return;
+//                        }
+//                        // get all the data from the firestore
+//                        // TODO - want to retrieve matched users - will need to get the field matchedUsers which is an array
+//                        for (DocumentChange document : value.getDocumentChanges()) {
+//                            if (document.getType() == DocumentChange.Type.ADDED) {
+//                                // fetch data
+//                                User user = document.getDocument().toObject(User.class);
+//                                if (user != null && !user.getUserId().equals(currentUser.getUid())) {
+//                                    listOfUsers.add(user);
+//                                }
+//                            }
+//                            userAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                });
     }
 
     /**

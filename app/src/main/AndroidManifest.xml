@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetTin">
         <activity
-            android:name=".CreateGroupChatActivity"
+            android:name=".GroupChat.CreateGroupChatActivity"
             android:exported="false"
             android:label="@string/title_activity_create_group_chat"
             android:theme="@style/Theme.PetTin.NoActionBar" />
