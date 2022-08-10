@@ -152,7 +152,7 @@ public class SingleDogActivity extends AppCompatActivity {
                     Toast.makeText(SingleDogActivity.this, "Please add your dog to match another dog", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (dogNum > 1) {
+                if (dogNum >= 1) {
                     getMyDogList();
                     showMatchDialog();
                 }

@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -28,7 +30,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.User;
+
 import edu.neu.madcourse.pettin.GroupChat.CreateGroupChatActivity;
+
 import edu.neu.madcourse.pettin.GroupChat.Fragments.ViewPageAdapter;
 import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
 
@@ -41,8 +45,9 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<User> listOfUsers;
     private UserAdapter userAdapter;
-
     private FirebaseFirestore db;
+
+    private FirebaseFirestore dbInstance;
 
     private FirebaseUser currentUser;
 
@@ -69,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         retrieveUsers();
 
         fabCreateGroup = findViewById(R.id.create_group);
+
 
         fabCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +123,47 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+
+
+    }
+
+    /**
+     * Method sets up the tab layout.
+     */
+    private void setTabLayout() {
+        tabLayout = findViewById(R.id.chats_tab_layout);
+        viewPager2 = findViewById(R.id.view_pager);
+        viewPageAdapter = new ViewPageAdapter(this);
+        viewPager2.setAdapter(viewPageAdapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tabLayout.getTabAt(position).select();
+            }
+        });
+    }
+
+    /**
+
      * Method retrieves users from the FireStore database.
      * TODO: need to update so that it gets matched users only
      */
@@ -172,6 +219,8 @@ public class ChatActivity extends AppCompatActivity {
 //                        }
 //                    }
 //                });
+
+
     }
 
     /**
