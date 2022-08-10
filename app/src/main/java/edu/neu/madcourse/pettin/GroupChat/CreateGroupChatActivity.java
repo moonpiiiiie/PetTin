@@ -17,7 +17,7 @@ import edu.neu.madcourse.pettin.R;
 
 public class CreateGroupChatActivity extends AppCompatActivity {
 
-    private static final String TAG = "CreateGroupChatActivity "
+    private static final String TAG = "CreateGroupChatActivity ";
     private EditText groupName;
 
     // get the current year
