@@ -156,42 +156,7 @@ public class SingleDogActivity extends AppCompatActivity {
                     getMyDogList();
                     showMatchDialog();
                 }
-//                AlertDialog.Builder builderSingle = new AlertDialog.Builder(SingleDogActivity.this);
-//
-//                builderSingle.setTitle("Select One Pet:-");
-//
-//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SingleDogActivity.this, android.R.layout.select_dialog_singlechoice);
-//                arrayAdapter.add("Hardik");
-//                arrayAdapter.add("Archit");
-//                arrayAdapter.add("Jignesh");
-//                arrayAdapter.add("Umang");
-//                arrayAdapter.add("Gatti");
-//
-//                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String strName = arrayAdapter.getItem(which);
-//                        AlertDialog.Builder builderInner = new AlertDialog.Builder(SingleDogActivity.this);
-//                        builderInner.setMessage(strName);
-//                        builderInner.setTitle("Your Selected Pet is");
-//                        builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog,int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                        builderInner.show();
-//                    }
-//                });
-//                builderSingle.show();
-                // part II
+
             }
         });
 
@@ -230,36 +195,7 @@ public class SingleDogActivity extends AppCompatActivity {
             }
         });
 
-//        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-//        System.out.println("my dog" + myDog);
-//        for (String path : myDog) {
-//            tasks.add(db.document(path).get());
-//        }
-//        System.out.println("tasks " + tasks);
-//        Task<List<DocumentSnapshot>> finalTask = Tasks.whenAllSuccess(tasks);
-//        finalTask.addOnSuccessListener(new OnSuccessListener<List<DocumentSnapshot>>() {
-//            @Override
-//            public void onSuccess(List<DocumentSnapshot> documentSnapshots) {
-//                System.out.println("onSuccess?");
-//                for (DocumentSnapshot snapshot : documentSnapshots) {
-//                    System.out.println(snapshot.toObject(Dogs.class).getName());
-//                    myDogToMatch.add(snapshot.toObject(Dogs.class).getName());
-//                }
-//
-//            }
-//        });
-//        Task<List<DocumentSnapshot>> task = Tasks.whenAllComplete(myDog);
 
-//        System.out.println("my dog " + myDog);
-//        for (String dogId: myDog) {
-//           dogRef.document(dogId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                @Override
-//                public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                    System.out.println("get name " + documentSnapshot.toObject(Dogs.class).getName());
-//                    myDogToMatch.add(documentSnapshot.toObject(Dogs.class).getName());
-//                }
-//            });
-//        }
 
         return dogNum;
     }
@@ -337,9 +273,9 @@ public class SingleDogActivity extends AppCompatActivity {
                     });
                     otherUserRef.document(curDog.getUserID()).update("matchedUsers", FieldValue.arrayUnion(user));
                     myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog.getDog_id()));
-//
+
                     curDogRef.update("receivedMatch", FieldValue.arrayUnion(myDogId));
-//
+
 
                 }
             });
@@ -349,11 +285,5 @@ public class SingleDogActivity extends AppCompatActivity {
             Toast.makeText(SingleDogActivity.this, "Please log in to match a playdate", Toast.LENGTH_SHORT).show();
         }
     }
-//    class fireStoreMatch implements Runnable {
-//
-//        @Override
-//        public void run() {
-//
-//        }
-//    }
+
 }
