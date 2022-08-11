@@ -11,22 +11,28 @@ public class GroupChat {
     // members of the group
     private ArrayList<User> listOfGroupMembers;
     // list of messages in the group chat
-    private ArrayList<Message> listOfMessages;
+    private ArrayList<GroupMessage> listOfMessages;
 
     // empty constructor for deserializing data
     public GroupChat() {
     }
 
-    public GroupChat(String id, String group, ArrayList<User> listOfGroupMembers, ArrayList<Message> listOfMessages) {
+    public GroupChat(String id, String group, ArrayList<User> listOfGroupMembers, ArrayList<GroupMessage> listOfMessages) {
         this.id = id;
         this.group = group;
         this.listOfGroupMembers = listOfGroupMembers;
         this.listOfMessages = listOfMessages;
     }
 
-    public GroupChat(String group, ArrayList<User> listOfGroupMembers, ArrayList<Message> listOfMessages) {
+    public GroupChat(String group, ArrayList<User> listOfGroupMembers, ArrayList<GroupMessage> listOfMessages) {
         this.group = group;
         this.listOfGroupMembers = new ArrayList<>();
+        this.listOfMessages = new ArrayList<>();
+    }
+
+    public GroupChat(String group, ArrayList<User> listOfGroupMembers) {
+        this.group = group;
+        this.listOfGroupMembers = listOfGroupMembers;
         this.listOfMessages = new ArrayList<>();
     }
 
@@ -54,11 +60,11 @@ public class GroupChat {
         this.listOfGroupMembers = listOfGroupMembers;
     }
 
-    public ArrayList<Message> getListOfMessages() {
+    public ArrayList<GroupMessage> getListOfMessages() {
         return listOfMessages;
     }
 
-    public void setListOfMessages(ArrayList<Message> listOfMessages) {
+    public void setListOfMessages(ArrayList<GroupMessage> listOfMessages) {
         this.listOfMessages = listOfMessages;
     }
 }

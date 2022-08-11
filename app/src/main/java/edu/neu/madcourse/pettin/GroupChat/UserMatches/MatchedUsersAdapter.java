@@ -1,7 +1,8 @@
 package edu.neu.madcourse.pettin.GroupChat.UserMatches;
 
 import android.content.Context;
-import android.content.Intent;
+
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.User;
-import edu.neu.madcourse.pettin.GroupChat.Messages.MessageActivity;
 import edu.neu.madcourse.pettin.R;
 
 public class MatchedUsersAdapter extends RecyclerView.Adapter<MatchedUsersAdapter.MatchedUserViewHolder> {
@@ -23,19 +24,23 @@ public class MatchedUsersAdapter extends RecyclerView.Adapter<MatchedUsersAdapte
 
     private Context context;
     private ArrayList<User> listOfUsers;
-    private ArrayList<User> groupMembers;
     private User user;
 
-    public MatchedUsersAdapter(Context context, ArrayList<User> listOfUsers) {
+    final GroupListenerInterface groupListenerInterface;
+
+    public MatchedUsersAdapter(Context context, ArrayList<User> listOfUsers, GroupListenerInterface groupListenerInterface) {
         this.context = context;
         this.listOfUsers = listOfUsers;
-        this.groupMembers = new ArrayList<>();
+        this.groupListenerInterface = groupListenerInterface;
     }
 
     @NonNull
     @Override
     public MatchedUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MatchedUserViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_create_group_user_card, parent, false));
+        return new MatchedUserViewHolder(LayoutInflater
+                                            .from(context)
+                                            .inflate(R.layout.activity_create_group_user_card, null)
+                                            , groupListenerInterface);
     }
 
     @Override
@@ -54,29 +59,41 @@ public class MatchedUsersAdapter extends RecyclerView.Adapter<MatchedUsersAdapte
 
         private TextView username;
         private String userId;
+        private CardView cardView;
 
-        public MatchedUserViewHolder(@NonNull View itemView) {
+        public MatchedUserViewHolder(@NonNull View itemView, GroupListenerInterface groupListenerInterface) {
             super(itemView);
 
             username = itemView.findViewById(R.id.username_current);
+            cardView = itemView.findViewById(R.id.add_user_card);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.v(TAG + " user clicked", username.getText().toString());
                     Log.v(TAG + " username onClick: ", userId);
-                    // need id - need to pass the id of the user
-                    Log.v(TAG, "Starting Message Activity " + userId);
-                    groupMembers.add(user);
-                    Log.v(TAG, String.valueOf(groupMembers.contains(user)));
-                    Log.v(TAG + "groupMembers size", String.valueOf(groupMembers.size()));
+                    if (groupListenerInterface != null) {
+                        int position = getAbsoluteAdapterPosition();
+                        Log.v(TAG + "position " , String.valueOf(position));
+
+
+
+                        if (position != RecyclerView.NO_POSITION) {
+                            groupListenerInterface.onItemClick(position);
+                        }
+
+
+                    }
+
                 }
             });
         }
+
     }
 
-    public ArrayList<User> getGroupMembers() {
-        return groupMembers;
-    }
+
+
+
 
 }

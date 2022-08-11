@@ -23,10 +23,10 @@
         <entry key="app/src/main/res/drawable/sender_image.xml" value="0.436" />
         <entry key="app/src/main/res/drawable/user_placeholder image_foreground.xml" value="0.356" />
         <entry key="app/src/main/res/layout/activity_add_play_date.xml" value="0.2937152629328773" />
-        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.44728682170542633" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.16770186335403728" />
         <entry key="app/src/main/res/layout/activity_chat_message_card.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/activity_content.xml" value="0.290625" />
-        <entry key="app/src/main/res/layout/activity_create_group_chat.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_create_group_chat.xml" value="0.2443820224719101" />
         <entry key="app/src/main/res/layout/activity_create_group_user_card.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5369791666666667" />
@@ -40,6 +40,7 @@
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/chat_messages_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/chat_users_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/content_create_group_chat.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/dog_view.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/filter_dialog.xml" value="0.29375" />

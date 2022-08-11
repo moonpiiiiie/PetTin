@@ -1,24 +1,23 @@
 package edu.neu.madcourse.pettin.Classes;
 
+
 import com.google.firebase.firestore.FieldValue;
 
 
-public class Message {
+public class GroupMessage {
 
     private String id;
     private String sender;
-    private String receiver;
     private String message;
     private Object timestamp;
 
-    public Message() {
+    public GroupMessage() {
     }
 
-    public Message(String sender, String receiver, String message) {
+    public GroupMessage(String sender, String message, Object timestamp) {
         this.sender = sender;
-        this.receiver = receiver;
         this.message = message;
-        this.timestamp = FieldValue.serverTimestamp();
+        this.timestamp = timestamp;
     }
 
     public String getId() {
@@ -35,14 +34,6 @@ public class Message {
 
     public void setSender(String sender) {
         this.sender = sender;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
     }
 
     public String getMessage() {
@@ -62,3 +53,4 @@ public class Message {
     }
 
 }
+
