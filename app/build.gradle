@@ -52,17 +52,27 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+
     implementation 'com.firebaseui:firebase-ui-firestore:8.0.1'
+
+    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
+
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //swipecard dependency
     implementation 'com.lorentzos.swipecards:library:1.0.9'
 
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'id.zelory:compressor:2.1.1'
 
 
 
     // searchable spinner
     implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
+
+
+    implementation 'com.github.bfrachia:android-image-cropper:2.7.0'
 
 }

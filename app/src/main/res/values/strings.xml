@@ -27,6 +27,7 @@
         <item>Boy</item>
         <item>Girl</item>
     </string-array>
+<<<<<<< HEAD
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_create_group_chat">CreateGroupChatActivity</string>
@@ -38,4 +39,12 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+=======
+
+    <string name="post_date">Post Date</string>
+    <string name="location">Location</string>
+    <string name="post_content">Post content</string>
+    <string name="title">Title</string>
+    <string name="_1_1k">1.1k</string>
+>>>>>>> parent of 693da1f (fetch from main and comment likes)
 </resources>

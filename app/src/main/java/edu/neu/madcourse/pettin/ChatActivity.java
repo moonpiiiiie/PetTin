@@ -1,72 +1,19 @@
 package edu.neu.madcourse.pettin;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-
-import edu.neu.madcourse.pettin.Classes.User;
-
-import edu.neu.madcourse.pettin.GroupChat.CreateGroupChatActivity;
-
-import edu.neu.madcourse.pettin.GroupChat.Fragments.ViewPageAdapter;
-import edu.neu.madcourse.pettin.GroupChat.Messages.MessageActivity;
-import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
-import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserListenerInterface;
-
-
-public class ChatActivity extends AppCompatActivity implements UserListenerInterface {
-
-    private static final String TAG = "ChatActivity";
-
-    private BottomNavigationView bottomNav;
-    private RecyclerView recyclerView;
-    private ArrayList<User> listOfUsers;
-    private UserAdapter userAdapter;
-    private FirebaseFirestore db;
-
-    private FirebaseFirestore dbInstance;
-
-    private FirebaseUser currentUser;
-
-    // Tab Layout - Chats | Group Chats
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
-    private ViewPageAdapter viewPageAdapter;
-
-    // Setting up group chat
-    private FloatingActionButton fabCreateGroup;
-
+public class ChatActivity extends AppCompatActivity {
+    BottomNavigationView bottomNav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
 
         // creates the nav bar
         createNavBar();
@@ -228,6 +175,7 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
      * Method creates the navigation bar to get to the other activities.
      */
     public void createNavBar() {
+
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_chat);
         bottomNav.setOnItemSelectedListener(item -> {
@@ -250,29 +198,4 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
             return false;
         });
     }
-
-    @Override
-    public void userItemClick(int position) {
-        User user = listOfUsers.get(position);
-//        Log.v(TAG + " user clicked", username.getText().toString());
-//        Log.v(TAG + " username onClick: ", userId);
-        Intent intent = new Intent(ChatActivity.this, MessageActivity.class);
-        // need id - need to pass the id of the user
-        intent.putExtra("userId", user.getUserId());
-        Log.v(TAG, "Starting Message Activity " + user.getUserId());
-        startActivity(intent);
-    }
-
-    ItemTouchHelper.SimpleCallback userCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-        }
-    };
-
 }

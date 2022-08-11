@@ -13,14 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetTin">
         <activity
-            android:name=".GroupChat.CreateGroupChatActivity"
-            android:exported="false"
-            android:label="@string/title_activity_create_group_chat"
-            android:theme="@style/Theme.PetTin.NoActionBar" />
-        <activity
-            android:name=".GroupChat.Messages.MessageActivity"
-            android:exported="false" />
-        <activity
             android:name=".SingleDogActivity"
             android:exported="false" />
         <activity
@@ -53,8 +45,19 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
         <activity
             android:name=".ChangePasswordActivity"
+            android:exported="false" />
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name=".AddPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShowPostDetailActivity"
+
             android:exported="false" />
     </application>
 
