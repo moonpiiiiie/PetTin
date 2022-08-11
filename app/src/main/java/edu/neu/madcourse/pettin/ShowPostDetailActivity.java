@@ -34,7 +34,7 @@ public class ShowPostDetailActivity extends AppCompatActivity {
     private TextView postDetailUsername;
     private TextView postDetailTitle;
     private TextView postDetailContent;
-    private TextView postDetailLikes;
+//    private TextView postDetailLikes;
     private TextView postDetailLocation;
     private TextView postDetailTime;
 
@@ -52,7 +52,7 @@ public class ShowPostDetailActivity extends AppCompatActivity {
         postDetailUsername = findViewById(R.id.postDetailUsername);
         postDetailTitle = findViewById(R.id.postDetailTitle);
         postDetailContent = findViewById(R.id.postDetailContent);
-        postDetailLikes = findViewById(R.id.postDetailLikes);
+//        postDetailLikes = findViewById(R.id.postDetailLikes);
         postDetailLocation = findViewById(R.id.postDetailLocation);
         postDetailTime = findViewById(R.id.postDetailTime);
 
@@ -67,7 +67,7 @@ public class ShowPostDetailActivity extends AppCompatActivity {
                 postDetailUsername.setText(curPost.getUsername());
                 postDetailTitle.setText(curPost.getTitle());
                 postDetailContent.setText(curPost.getContent());
-                postDetailLikes.setText(curPost.getLikes());
+//                postDetailLikes.setText(curPost.getLikes());
                 postDetailLocation.setText(curPost.getLocation());
                 postDetailTime.setText(curPost.getTime());
                 image = curPost.getImage();

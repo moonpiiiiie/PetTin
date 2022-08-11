@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,12 +57,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         String username = post.getUsername();
         String postId = post.getPost_id();
         String title = post.getTitle();
-        String likes = post.getLikes();
+//        String likes = post.getLikes();
         holder.title.setText(title.length() <= 20? title: title.substring(0,20) + "...");
-        holder.likes.setText(likes);
+//        holder.likes.setText(likes);
         holder.username.setText(username);
         Glide.with(context).load(post.getImage()).into(holder.image);
-        System.out.println("postId" + postId);
+
 
 //         Click the username, got some bugs here
 //        holder.username.setOnClickListener(new View.OnClickListener() {
@@ -75,26 +76,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
         // Click the Likes
-        holder.heart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DocumentReference postRef = db.collection("posts").document(postId);
-                postRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Post curPost = documentSnapshot.toObject(Post.class);
-                        String likesThisPost = String.valueOf(Integer.valueOf(likes)+1);
-                        curPost.setLikes(likesThisPost);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("post adapter", "failed to like");
-                    }
-                });
-
-            }
-        });
+//        holder.heart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                System.out.println("postId " + postId);
+//                System.out.println( "collections" + db.collection("posts"));
+//                DocumentReference postRef = db.collection("posts").document(postId);
+//                System.out.println("postRef " + postRef);
+//                postRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                        Post curPost = documentSnapshot.toObject(Post.class);
+//                        String likesThisPost = String.valueOf(Integer.valueOf(likes)+1);
+//                        curPost.setLikes(likesThisPost);
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("post adapter", "failed to like");
+//                    }
+//                });
+//
+//            }
+//        });
 
     }
 
@@ -112,9 +116,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
-            likes = itemView.findViewById(R.id.likes);
+//            likes = itemView.findViewById(R.id.likes);
             username = itemView.findViewById(R.id.post_username);
-            heart = itemView.findViewById(R.id.heart);
+//            heart = itemView.findViewById(R.id.heart);
             image = itemView.findViewById(R.id.image);
             image.setOnClickListener(this);
         }

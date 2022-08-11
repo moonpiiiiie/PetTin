@@ -62,24 +62,24 @@
                 android:layout_marginLeft="4sp" />
 
 
-            <ImageView
-                android:id="@+id/heart"
-                android:layout_width="16sp"
-                android:layout_height="16sp"
-                android:layout_toLeftOf="@+id/likes"
-                android:src="@drawable/heart" />
+<!--            <ImageView-->
+<!--                android:id="@+id/heart"-->
+<!--                android:layout_width="16sp"-->
+<!--                android:layout_height="16sp"-->
+<!--                android:layout_toLeftOf="@+id/likes"-->
+<!--                android:src="@drawable/heart" />-->
 
 
-            <TextView
-                android:id="@+id/likes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="likes"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="1sp"
-                android:layout_marginRight="10sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/likes"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="likes"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_marginLeft="1sp"-->
+<!--                android:layout_marginRight="10sp" />-->
 
         </RelativeLayout>
     </LinearLayout>

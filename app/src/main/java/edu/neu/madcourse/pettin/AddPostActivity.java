@@ -193,8 +193,10 @@ public class AddPostActivity extends AppCompatActivity {
                                             System.out.println("getCity" + city);
                                             System.out.println("getDate" + date_String);
                                             System.out.println("getUsername" + user_name);
+//                                            Post post = new Post(upload_image_uri.toString(), title_tx.getText().toString(),
+//                                                    content_tx.getText().toString(), city, date_String, "0", user_name);
                                             Post post = new Post(upload_image_uri.toString(), title_tx.getText().toString(),
-                                                    content_tx.getText().toString(), city, date_String, "0", user_name);
+                                                    content_tx.getText().toString(), city, date_String, user_name);
                                             CollectionReference postRef = db.collection("posts");
                                             String post_id = post.getPost_id();
                                             postRef.document(post_id).set(post);
