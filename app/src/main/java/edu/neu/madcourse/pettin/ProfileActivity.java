@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,10 +53,14 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<String> matchDogIds;
     MatchReceivedAdapter matchReceivedAdapter;
 
+    ProgressBar pb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        pb = findViewById(R.id.progressBar_profile);
+        pb.setVisibility(View.VISIBLE);
         // firebase
         auth = FirebaseAuth.getInstance();
         curUser = auth.getCurrentUser();
@@ -65,26 +70,38 @@ public class ProfileActivity extends AppCompatActivity {
             String userId = curUser.getUid();
             db = FirebaseFirestore.getInstance();
             DocumentReference userRef = db.collection("users").document(userId);
-            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    User user = documentSnapshot.toObject(User.class);
-                    dogIds = user.getDogs();
-                    userName = user.getUsername();
-                    email = user.getEmail();
-                    textView_userName.setText("Username: " + userName);
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        User user = task.getResult().toObject(User.class);
+                        dogIds = user.getDogs();
+                        userName = user.getUsername();
+                        email = user.getEmail();
+                        textView_userName.setText("Username: " + userName);
+                    }
                 }
             });
+//            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    User user = documentSnapshot.toObject(User.class);
+//                    dogIds = user.getDogs();
+//                    userName = user.getUsername();
+//                    email = user.getEmail();
+//                    textView_userName.setText("Username: " + userName);
+//                }
+//            });
         }
 
         // my dog recyclerview
         myDogs = new ArrayList<>();
-
+        fetchMyDog();
         myDogRecyclerView = findViewById(R.id.recyclerView_mydog);
         myDogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         myDogAdapter = new MyDogAdapter(ProfileActivity.this, myDogs);
         myDogRecyclerView.setAdapter(myDogAdapter);
-        fetchMyDog();
+
 
 
 
@@ -117,7 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
         matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs);
         matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
         fetchMatch();
-
+        pb.setVisibility(View.INVISIBLE);
         // bottom nav
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_profile);
@@ -164,12 +181,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void fetchMatch() {
-        matchDogIds = new ArrayList<>();
-        System.out.println("my dog" + myDogs);
-        for (Dogs mydog: myDogs) {
-            matchDogIds.addAll(mydog.getReceivedMatch());
-            System.out.println("match dog id" + matchDogIds);
-        }
+
         CollectionReference playRef = db.collection("dogs");
         playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -177,13 +189,15 @@ public class ProfileActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document: task.getResult()) {
                         Dogs dog = document.toObject(Dogs.class);
-                        if (matchDogIds.contains(dog.getDog_id())) {
+                        // dogId -> owned dog
+
+                        if (dogIds.contains(dog.getSentMatch())) {
                             matchDogs.add(dog);
                         }
                         matchReceivedAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    Log.d("fetch my match", "failed", task.getException());
+                    Log.d("fetch my dog", "failed", task.getException());
                 }
             }
         });
