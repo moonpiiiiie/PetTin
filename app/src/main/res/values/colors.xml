@@ -9,9 +9,4 @@
     <color name="white">#FFFFFFFF</color>
     <color name="oxley">#7DA17D</color>
     <color name="caramel">#F2D496</color>
-    <color name="dark">#253A4B</color>
-    <color name="colorPrimary">#253A4B</color>
-    <color name="colorPrimaryDark">#253A4B</color>
-    <color name="colorAccent">#F23B5E</color>
-    <color name="magenta">#F23B5E</color>
 </resources>
