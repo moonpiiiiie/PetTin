@@ -43,11 +43,7 @@ import edu.neu.madcourse.pettin.R;
 
 public class CreateGroupChatActivity extends AppCompatActivity implements GroupListenerInterface, UserListenerInterface {
 
-<<<<<<< HEAD
-public class CreateGroupChatActivity extends AppCompatActivity {
 
-=======
->>>>>>> tl-branch
     private static final String TAG = "CreateGroupChatActivity ";
     private EditText groupName;
     private ImageView backButton;
