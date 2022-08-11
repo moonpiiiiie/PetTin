@@ -1,5 +1,6 @@
 package edu.neu.madcourse.pettin.GroupChat;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,10 +32,10 @@ import edu.neu.madcourse.pettin.GroupChat.UserMatches.MatchedUsersAdapter;
 import edu.neu.madcourse.pettin.R;
 
 
+
 public class CreateGroupChatActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateGroupChatActivity ";
-
     private EditText groupName;
     private ImageView backButton;
 
@@ -114,5 +115,6 @@ public class CreateGroupChatActivity extends AppCompatActivity {
         Log.v(TAG + "size of groupMembers", String.valueOf(groupMembers.size()));
 
     }
+
 
 }

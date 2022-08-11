@@ -205,7 +205,9 @@ public class MessageActivity extends AppCompatActivity {
         Message messageToSend = new Message(sender, receiver, message);
         Log.v(TAG, "Generated Id " + id);
 
+
         // add message to database
+
         chatsCollectionReference
                 .add(messageToSend)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
