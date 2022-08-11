@@ -196,8 +196,16 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 dog.getWeight() > filterWeightHigh || dog.getWeight() < filterWeightLow ||
                 dog.getEnergyLevel() > filterEnergyHigh || dog.getEnergyLevel() < filterEnergyLow ||
                 !filterGender.contains(dog.getGender()) || !filterSpayed.contains(dog.getSpayed()));
+        List<Dogs> psFilter = new ArrayList<>();
 
-        // TODO apply playstyle filter
+        for (String ps: filterPS) {
+            for (Dogs dog: dogs) {
+                if (!dog.getPlayStyles().contains(ps)) {
+                    psFilter.add(dog);
+                }
+            }
+        }
+        dogs.removeAll(psFilter);
         dogPlayDateAdapter.notifyDataSetChanged();
     }
 
