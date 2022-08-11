@@ -46,8 +46,9 @@ import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
 import edu.neu.madcourse.pettin.Classes.User;
+import io.grpc.internal.JsonUtil;
 
-public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAdapter.OnDogListener{
+public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAdapter.OnDogListener {
     BottomNavigationView bottomNav;
     Button button_addPlaydate;
 
@@ -104,9 +105,9 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         firebaseAuth = FirebaseAuth.getInstance();
         curUser = firebaseAuth.getCurrentUser();
 
-        dislikeDogs=new ArrayList<>();
+        dislikeDogs = new ArrayList<>();
         ownedDogs = new ArrayList<>();
-        if (curUser !=null ) {
+        if (curUser != null) {
             String userId = curUser.getUid();
             DocumentReference userRef = db.collection("users").document(userId);
             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -175,13 +176,12 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document: task.getResult()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         Dogs dog = document.toObject(Dogs.class);
-                        if (!dislikeDogs.contains(dog.getDog_id())&& !ownedDogs.contains(dog.getDog_id())) {
+                        if (!dislikeDogs.contains(dog.getDog_id()) && !ownedDogs.contains(dog.getDog_id())) {
                             dogs.add(dog);
                             dogPlayDateAdapter.notifyDataSetChanged();
                         }
-
                     }
                 } else {
                     Log.d("fetch playdate", "failed", task.getException());
@@ -191,11 +191,13 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     }
 
     private void applyFilter() {
-        dogs.removeIf(dog -> ( (!filterBreed.equals("All") && !filterBreed.equals(dog.getBreed()))
+        dogs.removeIf(dog -> ((!filterBreed.equals("All") && !filterBreed.equals(dog.getBreed()))
                 || dog.getAge() > filterAgeHigh || dog.getAge() < filterAgeLow) ||
                 dog.getWeight() > filterWeightHigh || dog.getWeight() < filterWeightLow ||
                 dog.getEnergyLevel() > filterEnergyHigh || dog.getEnergyLevel() < filterEnergyLow ||
                 !filterGender.contains(dog.getGender()) || !filterSpayed.contains(dog.getSpayed()));
+
+        // TODO apply playstyle filter
         dogPlayDateAdapter.notifyDataSetChanged();
     }
 
@@ -208,6 +210,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
             dogPlayDateAdapter.notifyDataSetChanged();
         }
     }
+
     @Override
     public void onDogClick(int position) {
         Intent intent = new Intent(this, SingleDogActivity.class);
@@ -238,7 +241,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.filter_dialog);
         spinner_filter_breed = dialog.findViewById(R.id.spinner_filter_breed);
-        String[] breedArray = {"All", "Other mix","Affenpinscher", "Afghan Hound", "Aidi", "Airedale Terrier", "Akbash Dog", "Akita", "Alano Español", "Alaskan Klee Kai", "Alaskan Malamute", "Alpine Dachsbracke", "Alpine Spaniel", "American Bulldog", "American Cocker Spaniel",
+        String[] breedArray = {"All", "Other mix", "Affenpinscher", "Afghan Hound", "Aidi", "Airedale Terrier", "Akbash Dog", "Akita", "Alano Español", "Alaskan Klee Kai", "Alaskan Malamute", "Alpine Dachsbracke", "Alpine Spaniel", "American Bulldog", "American Cocker Spaniel",
                 "American Eskimo Dog", "American Foxhound", "American Hairless Terrier", "American Pit Bull Terrier", "American Staffordshire Terrier", "American Water Spaniel", "Anglo-Français de Petite Vénerie", "Appenzeller Sennenhund", "Ariege Pointer", "Ariegeois",
                 "Armant", "Armenian Gampr dog", "Artois Hound", "Australian Cattle Dog", "Australian Kelpie", "Australian Shepherd", "Australian Silky Terrier", "Australian Stumpy Tail Cattle Dog", "Australian Terrier", "Azawakh", "Bakharwal Dog", "Barbet", "Basenji", "Basque Shepherd Dog", "Basset Artésien Normand", "Basset Bleu de Gascogne", "Basset Fauve de Bretagne", "Basset Hound", "Bavarian Mountain Hound", "Beagle", "Beagle-Harrier",
                 "Bearded Collie", "Beauceron", "Bedlington Terrier", "Belgian Shepherd Dog (Groenendael)", "Belgian Shepherd Dog (Laekenois)", "Belgian Shepherd Dog (Malinois)", "Bergamasco Shepherd", "Berger Blanc Suisse", "Berger Picard", "Berner Laufhund", "Bernese Mountain Dog", "Billy", "Black and Tan Coonhound", "Black and Tan Virginia Foxhound", "Black Norwegian Elkhound",
@@ -303,15 +306,17 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
         CheckBox chaser = dialog.findViewById(R.id.ps_chaser);
         CheckBox other = dialog.findViewById(R.id.ps_other);
 
+
         filter_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                // TODO save the data
+
                 // filter info
-                if (spinner_filter_breed.getSelectedItem()!=null) {
+                if (spinner_filter_breed.getSelectedItem() != null) {
                     filterBreed = spinner_filter_breed.getSelectedItem().toString();
                 }
+
                 float alow = ageSlider.getValues().get(0);
                 float ahigh = ageSlider.getValues().get(1);
                 float wlow = weightSlider.getValues().get(0);
@@ -326,84 +331,62 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 filterEnergyHigh = (int) ehigh;
                 int gender = genderGroup.getCheckedRadioButtonId();
                 int spay = spayGroup.getCheckedRadioButtonId();
-                RadioButton grb = (RadioButton)dialog.findViewById(gender);
-                RadioButton srb = (RadioButton)dialog.findViewById(spay);
-                if (grb!=null && grb.getText().equals("Doesn't matter")) {
+                RadioButton grb = (RadioButton) dialog.findViewById(gender);
+                RadioButton srb = (RadioButton) dialog.findViewById(spay);
+                if (grb != null && grb.getText().equals("Doesn't matter")) {
                     filterGender = "BoyGirl";
-                } else if (grb!=null) {
+                } else if (grb != null) {
                     filterGender = (String) grb.getText();
                 }
 
-                if (srb!=null && srb.getText().equals("Doesn't matter")) {
+                if (srb != null && srb.getText().equals("Doesn't matter")) {
                     filterSpayed = "YesNo";
-                } else if (srb!=null) {
+                } else if (srb != null) {
                     filterSpayed = (String) srb.getText();
                 }
+                if (ball.isChecked()) {
+                    filterPS.add("Balls");
+                }
 
-                ball.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (ball.isChecked()) {
-                            filterPS.add("Balls");
-                        }
-                    }
-                });
-                hiking.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (hiking.isChecked()) {
-                            filterPS.add("Hiking");
-                        }
-                    }
-                });
-                jogging.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (jogging.isChecked()) {
-                            filterPS.add("Jogging");
-                        }
-                    }
-                });
-                wrestle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (wrestle.isChecked()) {
-                            filterPS.add("Wrestle");
-                        }
-                    }
-                });
-                tugger.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (tugger.isChecked()) {
-                            filterPS.add("Tugger");
-                        }
-                    }
-                });
-                chaser.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (chaser.isChecked()) {
-                            filterPS.add("Chaser");
-                        }
-                    }
-                });
-                other.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        if (other.isChecked()) {
-                            filterPS.add("Other");
-                        }
-                    }
-                });
+                if (hiking.isChecked()) {
+                    filterPS.add("Hiking");
+                }
 
-                if (grb==null || srb==null) {
+
+                if (jogging.isChecked()) {
+                    filterPS.add("Jogging");
+                }
+
+
+                if (wrestle.isChecked()) {
+                    filterPS.add("Wrestle");
+                }
+
+
+                if (tugger.isChecked()) {
+                    filterPS.add("Tugger");
+                }
+
+
+                if (chaser.isChecked()) {
+                    filterPS.add("Chaser");
+                }
+
+
+                if (other.isChecked()) {
+                    filterPS.add("Other");
+                }
+                System.out.println(filterPS);
+
+                if (grb == null || srb == null) {
                     Toast.makeText(PlayDateActivity.this, "please fill out all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     applyFilter();
                     dialog.dismiss();
                 }
+
             }
+
         });
 
 

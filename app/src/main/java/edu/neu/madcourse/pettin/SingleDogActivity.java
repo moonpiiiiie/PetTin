@@ -43,7 +43,7 @@ public class SingleDogActivity extends AppCompatActivity {
     final String TAG = "single dog activity";
     //Post section
     Dogs curDog;
-    TextView dogName, dogCity, dogAge, dogGender, dogBreed;
+    TextView dogName, dogCity, dogAge, dogGender, dogBreed, dogWeight, dogSpayed, dogPS;
     ImageView dogPhoto;
     String dog_id;
 
@@ -79,16 +79,18 @@ public class SingleDogActivity extends AppCompatActivity {
         dogAge = findViewById(R.id.textView_age);
         dogGender = findViewById(R.id.textView_gender);
         dogBreed = findViewById(R.id.textView_dogBreed);
+        dogWeight = findViewById(R.id.textView_dogWeight);
+        dogSpayed = findViewById(R.id.textView_dogSpayed);
+        dogPS = findViewById(R.id.textView_dogPlaystyle);
 
 
         // data carried from main activity
         Intent intent = getIntent();
         dogName.setText(intent.getStringExtra("name"));
         dog_id = intent.getStringExtra("dogId");
-//        dogAge.setText(String.valueOf(intent.getStringExtra("age")));
-        dogGender.setText(intent.getStringExtra("gender"));
-        dogBreed.setText(intent.getStringExtra("breed"));
-        dogCity.setText(intent.getStringExtra("city"));
+//        dogGender.setText(intent.getStringExtra("gender"));
+//        dogBreed.setText(intent.getStringExtra("breed"));
+//        dogCity.setText(intent.getStringExtra("city"));
 
         // firebase
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -104,9 +106,13 @@ public class SingleDogActivity extends AppCompatActivity {
                 curDog = documentSnapshot.toObject(Dogs.class);
 
                 // set data to post section
-                dogCity.setText("City: " + curDog.getLocation());
-                dogAge.setText("Age: " + curDog.getAge());
+                dogPS.setText(curDog.getPlayStyles().toString());
+                dogCity.setText(curDog.getLocation());
+                dogAge.setText("Age: " + curDog.getAge() + " years old");
                 dogGender.setText("Gender: " + curDog.getGender());
+                dogBreed.setText(curDog.getBreed());
+                dogSpayed.setText("Spayed: " + curDog.getSpayed());
+                dogWeight.setText("Weight: " + curDog.getWeight() + " lbs");
                 String imageUrl = curDog.getImg();
                 Glide.with(getApplicationContext()).load(imageUrl).apply(new RequestOptions().override(150, 150)).centerCrop().into(dogPhoto);
             }
