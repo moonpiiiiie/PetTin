@@ -300,11 +300,6 @@ public class AddPlayDateActivity extends AppCompatActivity {
     }
 
     private void cameraIntent() {
-//        Uri cam_uri;
-//        ContentValues values = new ContentValues();
-//        values.put(MediaStore.Images.Media.TITLE, "New Picture");
-//        values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
-       //cam_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startCamera.launch(cameraIntent);
 
