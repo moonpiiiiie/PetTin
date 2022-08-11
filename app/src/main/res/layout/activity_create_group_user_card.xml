@@ -43,16 +43,25 @@
                 android:textSize="16sp"
                 />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                app:elevation="0dp"
+            <ImageView
                 android:id="@+id/add_user_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#EBF5EE"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:adjustViewBounds="true"
                 android:layout_marginStart="140dp"
-                android:clickable="true"
-                app:borderWidth="0.0dp"
-                app:srcCompat="@drawable/ic_baseline_add_24" />
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_baseline_add_24"  />
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                app:elevation="0dp"-->
+<!--                android:id="@+id/add_user_group"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:backgroundTint="#EBF5EE"-->
+<!--                -->
+<!--                android:clickable="true"-->
+<!--                app:borderWidth="0.0dp"-->
+<!--                />-->
 
         </LinearLayout>
 
