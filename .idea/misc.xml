@@ -3,6 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_baseline_chat_bubble_outline.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_baseline_dislike.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_baseline_match.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_baseline_pets.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_baseline_profile.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_baseline_restaurant.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/ic_star.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/imageview_search.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_add_play_date.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_chat.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_login.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_play_date.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_post.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_profile.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_restaurants_near_by_me.xml" value="0.2" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_single_dog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_splash.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/dog_view.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/playdate_cardview.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/restaurant_cardveiw.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/restaurant_cardview.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4015" />
 
         <entry key="app/src/main/res/drawable/circle.xml" value="0.33" />
