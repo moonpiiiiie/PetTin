@@ -411,7 +411,7 @@
                             android:textSize="18dp"
                             android:textStyle="bold" />
 
-                        <Spinner
+                        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                             android:id="@+id/spinner_breed"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
