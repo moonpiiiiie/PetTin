@@ -105,7 +105,7 @@ public class PostActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.nav_chat:
-                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.nav_profile:
