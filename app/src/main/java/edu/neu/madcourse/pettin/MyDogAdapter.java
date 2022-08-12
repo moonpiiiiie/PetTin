@@ -5,24 +5,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
+import edu.neu.madcourse.pettin.Classes.User;
 
-public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdapter.ViewHolder> {
+public class MyDogAdapter extends RecyclerView.Adapter<MyDogAdapter.ViewHolder> {
     private LayoutInflater layoutInflater;
     private List<Dogs> dogs;
     FirebaseFirestore db;
@@ -31,7 +36,7 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
     final String TAG = "My Dog Adapater";
 
 
-    MatchReceivedAdapter(Context context, List<Dogs> dogs) {
+    MyDogAdapter(Context context, List<Dogs> dogs) {
         this.layoutInflater = LayoutInflater.from(context);
         this.dogs = dogs;
     }
@@ -40,13 +45,13 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
 
     @NonNull
     @Override
-    public MatchReceivedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = layoutInflater.inflate(R.layout.match_received_view, parent, false);
-        return new MatchReceivedAdapter.ViewHolder(view);
+    public MyDogAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+        View view = layoutInflater.inflate(R.layout.my_dog_view, parent, false);
+        return new MyDogAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MatchReceivedAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull MyDogAdapter.ViewHolder viewHolder, int i) {
         Dogs dog = dogs.get(i);
         viewHolder.name.setText(dog.getName());
         viewHolder.age.setText(String.valueOf(dog.getAge()));
@@ -71,10 +76,10 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.textView_matchDogname);
-            age = itemView.findViewById(R.id.textView_matchDogage);
-            gender = itemView.findViewById(R.id.textView_matchDoggender);
-            breed = itemView.findViewById(R.id.textView_matchDogbreed);
+            name = itemView.findViewById(R.id.textView_myDogname);
+            age = itemView.findViewById(R.id.textView_myDogage);
+            gender = itemView.findViewById(R.id.textView_myDoggender);
+            breed = itemView.findViewById(R.id.textView_myDogbreed);
             itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

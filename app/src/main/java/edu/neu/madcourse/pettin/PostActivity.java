@@ -95,27 +95,23 @@ public class PostActivity extends AppCompatActivity {
 
 
         bottomNav = findViewById(R.id.bottom_nav);
-        bottomNav.setSelectedItemId(R.id.nav_post);
         bottomNav.setSelectedItemId(R.id.nav_chat);
         bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.nav_chat:
-                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
-                    overridePendingTransition(0, 0);
                 case R.id.nav_post:
                     return true;
                 case R.id.nav_playdate:
                     startActivity(new Intent(getApplicationContext(), PlayDateActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
-                case R.id.nav_post:
                 case R.id.nav_chat:
                     startActivity(new Intent(getApplicationContext(), PostActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.nav_profile:
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-@@ -35,5 +115,51 @@ protected void onCreate(Bundle savedInstanceState) {
+                    overridePendingTransition(0, 0);
+                    return true;
             }
             return false;
         });
@@ -166,4 +162,4 @@ public class PostActivity extends AppCompatActivity {
         };
     }
 
-} 
+}

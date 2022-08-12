@@ -65,7 +65,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,12 +74,9 @@ import java.util.Map;
 import java.util.UUID;
 
 
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
 import edu.neu.madcourse.pettin.Classes.Post;
 import edu.neu.madcourse.pettin.Classes.User;
-import id.zelory.compressor.Compressor;
+
 
 
 public class AddPostActivity extends AppCompatActivity {
@@ -193,8 +190,10 @@ public class AddPostActivity extends AppCompatActivity {
                                             System.out.println("getCity" + city);
                                             System.out.println("getDate" + date_String);
                                             System.out.println("getUsername" + user_name);
+//                                            Post post = new Post(upload_image_uri.toString(), title_tx.getText().toString(),
+//                                                    content_tx.getText().toString(), city, date_String, "0", user_name);
                                             Post post = new Post(upload_image_uri.toString(), title_tx.getText().toString(),
-                                                    content_tx.getText().toString(), city, date_String, "0", user_name);
+                                                    content_tx.getText().toString(), city, date_String, user_name);
                                             CollectionReference postRef = db.collection("posts");
                                             String post_id = post.getPost_id();
                                             postRef.document(post_id).set(post);
@@ -321,42 +320,42 @@ public class AddPostActivity extends AppCompatActivity {
 
 
 
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    Location location = task.getResult();
-                    if (location != null) {
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if (location != null) {
 
-                        double latitude = location.getLatitude();
-                        double longtitude = location.getLongitude();
-                        System.out.println("latitude : " + latitude);
-                        System.out.println("longtitude : " + longtitude);
-                        city = getLocationName(latitude, longtitude);
-                    } else {
-                        LocationRequest locationRequest = LocationRequest.create()
-                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                                .setInterval(10000)
-                                .setFastestInterval(1000)
-                                .setNumUpdates(1);
-                        LocationCallback locationCallback = new LocationCallback() {
-                            @Override
-                            public void onLocationResult(@NonNull LocationResult locationResult) {
-                                Location location1 = locationResult.getLastLocation();
-                                double latitude = location.getLatitude();
-                                double longtitude = location.getLongitude();
-                                System.out.println("latitude : " + latitude);
-                                System.out.println("longtitude : " + longtitude);
-                                city = getLocationName(latitude, longtitude);
-                            }
-                        };
+                    double latitude = location.getLatitude();
+                    double longtitude = location.getLongitude();
+                    System.out.println("latitude : " + latitude);
+                    System.out.println("longtitude : " + longtitude);
+                    city = getLocationName(latitude, longtitude);
+                } else {
+                    LocationRequest locationRequest = LocationRequest.create()
+                            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                            .setInterval(10000)
+                            .setFastestInterval(1000)
+                            .setNumUpdates(1);
+                    LocationCallback locationCallback = new LocationCallback() {
+                        @Override
+                        public void onLocationResult(@NonNull LocationResult locationResult) {
+                            Location location1 = locationResult.getLastLocation();
+                            double latitude = location.getLatitude();
+                            double longtitude = location.getLongitude();
+                            System.out.println("latitude : " + latitude);
+                            System.out.println("longtitude : " + longtitude);
+                            city = getLocationName(latitude, longtitude);
+                        }
+                    };
 
-                        fusedLocationProviderClient.requestLocationUpdates(locationRequest
-                                , locationCallback, Looper.myLooper());
-
-                    }
+                    fusedLocationProviderClient.requestLocationUpdates(locationRequest
+                            , locationCallback, Looper.myLooper());
 
                 }
-            });
+
+            }
+        });
     }
 
     public static boolean isNetworkOnline() {
@@ -374,3 +373,4 @@ public class AddPostActivity extends AppCompatActivity {
     }
 
 }
+
