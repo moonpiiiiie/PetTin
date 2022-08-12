@@ -112,7 +112,7 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_near_by_me);
-        setTitle("Nearby Pet Friendly Restaurant on Google Map");
+        setTitle("Nearby Pet-Friendly Restaurants on Google Map");
 
 
         //List of restaurant
@@ -141,8 +141,8 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
         }));
 
 
-        location_text = (TextView) findViewById(R.id.textView2);
-        location_text.setText("");
+/*        location_text = (TextView) findViewById(R.id.textView2);
+        location_text.setText("");*/
         if (!checkPermissions()) {
             requestPermissions();
 
@@ -179,7 +179,8 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
 
                             if(location_update[0] ==false){
 
-                                location_text.setText("Touch nearby restaurants to Google Map\nPowered by Yelp Fusion && Built by PetTin");
+                                //location_text.setText("Touch nearby restaurants to Google Map\nPowered by Yelp Fusion && Built by PetTin");
+
                                 if(!latitude.isEmpty()&&!longitude.isEmpty()) {
                                     differentThread = new differentThread();
                                     differentThread.start();
@@ -205,7 +206,7 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
         }
 
 
-        Button button_test;
+/*        Button button_test;
         button_test = findViewById(R.id.button_test);
         button_test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,7 +218,7 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(intent);
             }
-        });
+        });*/
 
 
 
