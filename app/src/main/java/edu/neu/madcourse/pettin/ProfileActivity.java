@@ -45,6 +45,13 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<Dogs> myDogs;
     MyDogAdapter myDogAdapter;
     ArrayList<String> dogIds;
+
+    // match received recyclerview
+    RecyclerView matchedDogRecyclerview;
+    ArrayList<Dogs> matchDogs;
+    ArrayList<String> matchDogIds;
+    MatchReceivedAdapter matchReceivedAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,19 +72,22 @@ public class ProfileActivity extends AppCompatActivity {
                     dogIds = user.getDogs();
                     userName = user.getUsername();
                     email = user.getEmail();
-                    textView_userName.setText(userName);
+                    textView_userName.setText("Username: " + userName);
                 }
             });
         }
 
         // my dog recyclerview
         myDogs = new ArrayList<>();
+
         myDogRecyclerView = findViewById(R.id.recyclerView_mydog);
         myDogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         myDogAdapter = new MyDogAdapter(ProfileActivity.this, myDogs);
         myDogRecyclerView.setAdapter(myDogAdapter);
-
         fetchMyDog();
+
+
+
 
         // buttons
         button_SignOut = findViewById(R.id.button_Signout);
@@ -98,6 +108,16 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+        System.out.println("on create my dog " + myDogs);
+        // match received recyclerview
+        matchDogs = new ArrayList<>();
+
+        matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
+        matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs);
+        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
+        fetchMatch();
+
         // bottom nav
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setSelectedItemId(R.id.nav_profile);
@@ -141,6 +161,32 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void fetchMatch() {
+        matchDogIds = new ArrayList<>();
+        System.out.println("my dog" + myDogs);
+        for (Dogs mydog: myDogs) {
+            matchDogIds.addAll(mydog.getReceivedMatch());
+            System.out.println("match dog id" + matchDogIds);
+        }
+        CollectionReference playRef = db.collection("dogs");
+        playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        Dogs dog = document.toObject(Dogs.class);
+                        if (matchDogIds.contains(dog.getDog_id())) {
+                            matchDogs.add(dog);
+                        }
+                        matchReceivedAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    Log.d("fetch my match", "failed", task.getException());
+                }
+            }
+        });
     }
 
     private void signOutUser() {
