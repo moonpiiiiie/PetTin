@@ -24,10 +24,11 @@
         <entry key="app/src/main/res/drawable/user_placeholder image_foreground.xml" value="0.356" />
         <entry key="app/src/main/res/layout/activity_add_play_date.xml" value="0.2937152629328773" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.16770186335403728" />
-        <entry key="app/src/main/res/layout/activity_chat_message_card.xml" value="0.29375" />
+        <entry key="app/src/main/res/layout/activity_chat_message_card.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_content.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/activity_create_group_chat.xml" value="0.2443820224719101" />
         <entry key="app/src/main/res/layout/activity_create_group_user_card.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_group_message.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/activity_message.xml" value="0.33" />
@@ -46,13 +47,16 @@
         <entry key="app/src/main/res/layout/filter_dialog.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/fragment_chats.xml" value="0.23118279569892472" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.5369791666666667" />
-        <entry key="app/src/main/res/layout/fragment_group_chats.xml" value="0.32760416666666664" />
+        <entry key="app/src/main/res/layout/fragment_group_chats.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/fragment_playdate.xml" value="0.5333333333333333" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1933876811594203" />
+        <entry key="app/src/main/res/layout/group_card.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/group_card_copy.xml" value="0.296875" />
         <entry key="app/src/main/res/layout/list_of_users.xml" value="0.36354166666666665" />
         <entry key="app/src/main/res/layout/loading_dialog.xml" value="0.28802083333333334" />
+        <entry key="app/src/main/res/layout/message_group.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/my_dog_view.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/playdate_cardview.xml" value="0.3215049166310389" />
