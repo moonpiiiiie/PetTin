@@ -3,7 +3,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- restaurant needed -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +17,7 @@
         android:theme="@style/Theme.PetTin">
         <activity
             android:name=".RestaurantsNearByMeActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize"
             android:exported="false" />
         <activity
             android:name=".SingleDogActivity"
@@ -32,12 +36,14 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
+
             android:exported="false" />
         <activity
             android:name=".PostActivity"
             android:exported="false" />
         <activity
             android:name=".ChatActivity"
+
             android:exported="false" />
         <activity
             android:name=".PlayDateActivity"
