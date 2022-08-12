@@ -145,25 +145,25 @@
             app:layout_constraintTop_toBottomOf="@+id/postDetailContent" />
 
 
-        <ImageView
-            android:id="@+id/likeImg"
-            android:layout_width="17dp"
-            android:layout_height="17dp"
-            android:src="@drawable/heart"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postDetailTime" />
+<!--        <ImageView-->
+<!--            android:id="@+id/likeImg"-->
+<!--            android:layout_width="17dp"-->
+<!--            android:layout_height="17dp"-->
+<!--            android:src="@drawable/heart"-->
+<!--            android:layout_marginStart="32dp"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/postDetailTime" />-->
 
-        <TextView
-            android:id="@+id/postDetailLikes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_1_1k"
-            android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/likeImg"
-            app:layout_constraintStart_toEndOf="@+id/likeImg"
-            app:layout_constraintTop_toTopOf="@+id/likeImg" />
+<!--        <TextView-->
+<!--            android:id="@+id/postDetailLikes"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/_1_1k"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/likeImg"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/likeImg"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/likeImg" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,19 +9,29 @@ public class Post {
     private String content;
     private String location;
     private String time;
-    private String likes;
+//    private String likes;
     private String username;
     private String post_id;
 
     public Post(){}
 
-    public Post(String image, String title, String content, String location, String time, String likes, String username) {
+//    public Post(String image, String title, String content, String location, String time, String likes, String username) {
+//        this.image = image;
+//        this.title = title;
+//        this.content = content;
+//        this.location = location;
+//        this.time = time;
+//        this.likes = likes;
+//        this.username = username;
+//        this.post_id = UUID.randomUUID().toString();
+//    }
+
+    public Post(String image, String title, String content, String location, String time, String username) {
         this.image = image;
         this.title = title;
         this.content = content;
         this.location = location;
         this.time = time;
-        this.likes = likes;
         this.username = username;
         this.post_id = UUID.randomUUID().toString();
     }
@@ -66,13 +76,13 @@ public class Post {
         this.time = time;
     }
 
-    public String getLikes() {
-        return likes;
-    }
-
-    public void setLikes(String likes) {
-        this.likes = likes;
-    }
+//    public String getLikes() {
+//        return likes;
+//    }
+//
+//    public void setLikes(String likes) {
+//        this.likes = likes;
+//    }
 
     public String getUsername() {
         return username;
@@ -91,6 +101,17 @@ public class Post {
     }
 
     @Override
+//    public String toString() {
+//        return "Post{" +
+//                "image='" + image + '\'' +
+//                ", title='" + title + '\'' +
+//                ", content='" + content + '\'' +
+//                ", location='" + location + '\'' +
+//                ", time='" + time + '\'' +
+//                ", likes='" + likes + '\'' +
+//                ", username='" + username + '\'' +
+//                '}';
+//    }
     public String toString() {
         return "Post{" +
                 "image='" + image + '\'' +
@@ -98,7 +119,6 @@ public class Post {
                 ", content='" + content + '\'' +
                 ", location='" + location + '\'' +
                 ", time='" + time + '\'' +
-                ", likes='" + likes + '\'' +
                 ", username='" + username + '\'' +
                 '}';
     }
