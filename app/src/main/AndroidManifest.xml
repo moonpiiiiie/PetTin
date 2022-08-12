@@ -54,6 +54,18 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AddPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShowPostDetailActivity"
+
+            android:exported="false" />
     </application>
 
 </manifest>

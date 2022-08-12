@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sender_layout"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/receiver_profileimage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/receiver_image"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/show_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_toRightOf="@+id/receiver_profileimage"
+        android:background="@drawable/receiver_box"
+        android:padding="8dp"
+        android:text="receiver's message"
+        android:textColor="#000000" />
+
+</RelativeLayout>

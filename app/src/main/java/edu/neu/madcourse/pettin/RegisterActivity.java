@@ -26,8 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class RegisterActivity extends AppCompatActivity {
     // data input
@@ -70,9 +73,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(view -> {
 
-        userName = registerUsername.getText().toString();
-        email = registerEmail.getText().toString();
-        pw = registerPassword.getText().toString();
+            userName = registerUsername.getText().toString();
+            email = registerEmail.getText().toString();
+            pw = registerPassword.getText().toString();
 
             if (userName.isEmpty()) {
                 registerUsername.setError("Username is required");
@@ -152,15 +155,21 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.w("sign up activity", "createUserWithEmail:failure", task.getException());
                     userId = auth.getCurrentUser().getUid();
                     DocumentReference documentRef = db.collection("users").document(userId);
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("username", userName);
-                    user.put("email", email);
+                    User user = new User(userName, email, userId);
+//                    Map<String, Object> user = new HashMap<>();
+//                    user.put("username", userName);
+//                    user.put("email", email);
+//                    user.put("following", new HashMap<>());
+//                    user.put("posts", new HashMap<>());
+//                    user.put("dogs", new ArrayList<>());
+//                    user.put("mathcedUsers", new ArrayList<>());
+//                    user.put("dislikeDog", new ArrayList<>());
                     documentRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d("signupUser", "on success, userName" + userId);
-                        }
-                    })
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("signupUser", "on success, userName" + userId);
+                                }
+                            })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {

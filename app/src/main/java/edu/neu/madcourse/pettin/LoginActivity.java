@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        }
 //                    });
 
-                SignInUser();
+                    SignInUser();
                 }
             }
         });
