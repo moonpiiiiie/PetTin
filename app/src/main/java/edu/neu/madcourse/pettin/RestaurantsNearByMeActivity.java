@@ -112,7 +112,7 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_near_by_me);
-        setTitle("Pet Friendly Restaurant");
+        setTitle("Nearby Pet Friendly Restaurant on Google Map");
 
 
         //List of restaurant
@@ -435,7 +435,7 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
         if (builder == null) {
             builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Loading Pet Friendly Restaurants...");
+            builder.setTitle("Loading Nearby Pet Friendly Restaurants...");
 
             final ProgressBar progressBar = new ProgressBar(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
