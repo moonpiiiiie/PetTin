@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -59,6 +61,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.messageToShow.setText(currentMessage.getMessage());
         Log.v(TAG + "onBindViewHolder - currentMessage Object", currentMessage.getMessage());
         Log.v(TAG + "onBindViewHolder - after setText", holder.messageToShow.getText().toString());
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (!currentMessage.getSender().equals(currentUser.getUid())) {
+            holder.username.setText("");
+
+        }
+
         // TODO : display user image - use Glide library
     }
 
@@ -71,10 +79,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         private TextView messageToShow;
         private ImageView userImage;
+        private TextView username;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             messageToShow = itemView.findViewById(R.id.message_display);
+            username = itemView.findViewById(R.id.username_display);
         }
     }
 

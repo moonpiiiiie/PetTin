@@ -62,7 +62,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupCardVie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.v(TAG + " groupId", groupId);
+//                    Log.v(TAG + " groupId", groupId);
                     Intent intent = new Intent(context, GroupMessageActivity.class);
                     intent.putExtra("id", groupId);
                     context.startActivity(intent);

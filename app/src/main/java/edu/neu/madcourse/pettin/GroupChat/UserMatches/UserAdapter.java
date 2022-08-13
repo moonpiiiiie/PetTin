@@ -45,6 +45,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         user = listOfUsers.get(position);
         holder.username.setText(user.getUsername());
         holder.userId = user.getUserId();
+
+
+
+
     }
 
 

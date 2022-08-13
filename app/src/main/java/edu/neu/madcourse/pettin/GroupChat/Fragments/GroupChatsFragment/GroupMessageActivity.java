@@ -161,8 +161,10 @@ public class GroupMessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = userTextToSend.getText().toString();
                 sendMessageFunctionality(currentUser.getUid(), message);
+                userTextToSend.setText("");
             }
         });
+
     }
 
 

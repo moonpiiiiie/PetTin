@@ -139,8 +139,8 @@ public class CreateGroupChatActivity extends AppCompatActivity implements GroupL
     public void onItemClick(int position) {
         User user = listOfUsers.get(position);
         Log.v(TAG + "onItemClick", user.getUsername());
-        this.groupMembers.add(user);
         this.listOfUsers.remove(user);
+        this.groupMembers.add(user);
         matchedUsersAdapter.notifyDataSetChanged();
         addedMembersAdapter.notifyDataSetChanged();
         Log.v(TAG + "onItemClick - listOfUsers", String.valueOf(listOfUsers.size()));
@@ -170,9 +170,9 @@ public class CreateGroupChatActivity extends AppCompatActivity implements GroupL
     public void userItemClick(int position) {
         User user = groupMembers.get(position);
         Log.v(TAG + "onItemClick", user.getUsername());
-        this.listOfUsers.add(user);
         if (!user.getUserId().equals(currentUser.getUid())) {
             this.groupMembers.remove(user);
+            this.listOfUsers.add(user);
         }
         addedMembersAdapter.notifyDataSetChanged();
         matchedUsersAdapter.notifyDataSetChanged();
@@ -231,13 +231,13 @@ public class CreateGroupChatActivity extends AppCompatActivity implements GroupL
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
-
+                                                                startActivity(new Intent(CreateGroupChatActivity.this, ChatActivity.class));
                                                             }
                                                         });
                                             }
                                         });
                             }
-                            startActivity(new Intent(CreateGroupChatActivity.this, ChatActivity.class));
+
                         }
                     });
 

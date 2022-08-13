@@ -62,12 +62,18 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
     public void onBindViewHolder(@NonNull GroupMessageViewHolder holder, int position) {
         GroupMessage currentMessage = listOfMessages.get(position);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         if (!currentMessage.getSender().equals(currentUser.getUid())) {
             holder.username.setText(currentMessage.getUsername());
-            Glide.with(context)
-                    .load(currentMessage.getImage())
-                    .transform(new FitCenter())
-                    .into(holder.image);
+                Glide.with(context)
+                        .load(currentMessage.getImage())
+                        .transform(new FitCenter())
+                        .into(holder.image);
+                if (currentMessage.getImage() != null) {
+                    holder.image.setBackgroundResource(0);
+                }
+
+
         }
         Log.v(TAG + "onBindViewHolder - current position", String.valueOf(position));
         holder.messageToShow.setText(currentMessage.getMessage());
