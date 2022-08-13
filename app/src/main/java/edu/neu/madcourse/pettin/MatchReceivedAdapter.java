@@ -22,18 +22,22 @@ import java.util.List;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
 
-public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdapter.ViewHolder> {
+public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdapter.ViewHolder> implements View.OnClickListener{
     private LayoutInflater layoutInflater;
     private List<Dogs> dogs;
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseUser curUser;
+    Context context;
+    OnDogListener onDogListener;
     final String TAG = "My Dog Adapater";
 
 
-    MatchReceivedAdapter(Context context, List<Dogs> dogs) {
+    MatchReceivedAdapter(Context context, List<Dogs> dogs, OnDogListener onDogListener) {
+        this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.dogs = dogs;
+        this.onDogListener = onDogListener;
     }
 
 
@@ -42,7 +46,7 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
     @Override
     public MatchReceivedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = layoutInflater.inflate(R.layout.match_received_view, parent, false);
-        return new MatchReceivedAdapter.ViewHolder(view);
+        return new ViewHolder(view, onDogListener);
     }
 
     @Override
@@ -65,18 +69,26 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
         return dogs.size();
     }
 
+    @Override
+    public void onClick(View view) {
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, age, gender, breed;
         int position;
+        OnDogListener onDogListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnDogListener onDogListener) {
             super(itemView);
             name = itemView.findViewById(R.id.textView_matchDogname);
             age = itemView.findViewById(R.id.textView_matchDogage);
             gender = itemView.findViewById(R.id.textView_matchDoggender);
             breed = itemView.findViewById(R.id.textView_matchDogbreed);
+            this.onDogListener = onDogListener;
+            itemView.setOnClickListener(this);
 //            itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -112,4 +124,15 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
                 userRef.update("dogs", FieldValue.arrayRemove(dog.getDog_id()));
             }
         }
-    }}
+
+        @Override
+        public void onClick(View view) {
+            onDogListener.onDogClick(getAdapterPosition());
+        }
+    }
+
+
+    public interface OnDogListener {
+        void onDogClick(int position);
+    }
+}

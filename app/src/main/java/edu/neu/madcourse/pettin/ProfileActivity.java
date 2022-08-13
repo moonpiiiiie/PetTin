@@ -32,7 +32,7 @@ import java.util.HashSet;
 import edu.neu.madcourse.pettin.Classes.Dogs;
 import edu.neu.madcourse.pettin.Classes.User;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements MatchReceivedAdapter.OnDogListener{
 
     BottomNavigationView bottomNav;
     ExtendedFloatingActionButton button_SignOut, button_ChangePW;
@@ -93,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
         matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
         fetchMyDog();
-        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs);
+        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs, this);
         matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
 
 
@@ -182,7 +182,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void fetchMatch() {
 //        matchDogIds = new ArrayList<>();
         for (Dogs mydog: myDogs) {
-            matchDogs.addAll(mydog.getReceivedMatch());
+            matchDogs.addAll(mydog.getReceivedMatch().values());
             matchReceivedAdapter.notifyDataSetChanged();
         }
 
@@ -208,5 +208,29 @@ public class ProfileActivity extends AppCompatActivity {
     private void signOutUser() {
         startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
         finish();
+    }
+
+    @Override
+    public void onDogClick(int position) {
+        Intent intent = new Intent(this, SingleDogActivity.class);
+        String name = matchDogs.get(position).getName();
+        String dogId = matchDogs.get(position).getDog_id();
+        String gender = matchDogs.get(position).getGender();
+        int age = matchDogs.get(position).getAge();
+        int energyLevel = matchDogs.get(position).getEnergyLevel();
+        Double weight = matchDogs.get(position).getWeight();
+        String spayed = matchDogs.get(position).getSpayed();
+        String breed = matchDogs.get(position).getBreed();
+        String city = matchDogs.get(position).getLocation();
+        intent.putExtra("name", name);
+        intent.putExtra("dogId", dogId);
+        intent.putExtra("age", age);
+        intent.putExtra("gender", gender);
+        intent.putExtra("energyLevel", energyLevel);
+        intent.putExtra("weight", weight);
+        intent.putExtra("spayed", spayed);
+        intent.putExtra("breed", breed);
+        intent.putExtra("city", city);
+        startActivity(intent);
     }
 }
