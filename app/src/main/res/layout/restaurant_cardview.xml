@@ -37,10 +37,7 @@
             android:id="@+id/idIVRestaurantImage"
             android:layout_width="150dp"
             android:layout_height="200dp"
-            android:contentDescription="@string/app_name"
-
-            android:padding="5dp"
-            android:src="@drawable/default_restaurant" />
+            />
 
         <!--Text View to display Course Name-->
         <TextView
