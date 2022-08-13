@@ -242,6 +242,10 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
                     startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
+                case R.id.nav_restaurant:
+                    startActivity(new Intent(getApplicationContext(), RestaurantsNearByMeActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
             }
             return false;
         });
