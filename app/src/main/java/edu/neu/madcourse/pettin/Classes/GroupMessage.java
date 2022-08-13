@@ -1,34 +1,28 @@
 package edu.neu.madcourse.pettin.Classes;
 
-
-import com.google.firebase.firestore.FieldValue;
-
 import java.time.LocalDateTime;
 
 
 public class GroupMessage {
 
-    private String id;
     private String sender;
     private String message;
+    private String username;
     private String timestamp;
+    private String image;
+
 
     public GroupMessage() {
     }
 
-    public GroupMessage(String sender, String message) {
+    public GroupMessage(String sender, String message, String username, String image) {
         this.sender = sender;
         this.message = message;
+        this.username = username;
+        this.image = image;
         this.timestamp = LocalDateTime.now().toString();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getSender() {
         return sender;
@@ -54,4 +48,19 @@ public class GroupMessage {
         this.timestamp = timestamp;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

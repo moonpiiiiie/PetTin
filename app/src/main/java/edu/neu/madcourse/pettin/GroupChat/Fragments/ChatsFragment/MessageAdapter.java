@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin.GroupChat.Messages.Adapter;
+package edu.neu.madcourse.pettin.GroupChat.Fragments.ChatsFragment;
 
 import android.content.Context;
 import android.util.Log;
@@ -74,7 +74,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            messageToShow = itemView.findViewById(R.id.show_message);
+            messageToShow = itemView.findViewById(R.id.message_display);
         }
     }
 

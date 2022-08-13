@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin.GroupChat.Fragments;
+package edu.neu.madcourse.pettin.GroupChat;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

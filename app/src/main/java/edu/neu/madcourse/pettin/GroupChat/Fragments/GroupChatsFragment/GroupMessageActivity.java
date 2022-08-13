@@ -3,6 +3,7 @@ package edu.neu.madcourse.pettin.GroupChat.Fragments.GroupChatsFragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -27,14 +28,16 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.sql.Array;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.neu.madcourse.pettin.ChatActivity;
+import edu.neu.madcourse.pettin.Classes.Dogs;
 import edu.neu.madcourse.pettin.Classes.GroupChat;
 import edu.neu.madcourse.pettin.Classes.GroupMessage;
-import edu.neu.madcourse.pettin.GroupChat.Messages.MessageActivity;
+import edu.neu.madcourse.pettin.Classes.User;
+import edu.neu.madcourse.pettin.GroupChat.Fragments.ChatsFragment.MessageAdapter;
 import edu.neu.madcourse.pettin.R;
 
 public class GroupMessageActivity extends AppCompatActivity {
@@ -48,6 +51,8 @@ public class GroupMessageActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // get the group from the database
     private CollectionReference groupsCollectionReference = db.collection("groups");
+    // get the user from the database
+    private CollectionReference usersCollectionReference = db.collection("users");
     // get the group document with the intent - groupId
     private DocumentReference documentReference;
 
@@ -62,7 +67,7 @@ public class GroupMessageActivity extends AppCompatActivity {
     private EditText userTextToSend;
 
     // to use to display messages in the chat
-    private ArrayList<GroupMessage> listOfMessagesInGroup = new ArrayList<>();
+    private ArrayList<GroupMessage> listOfMessagesInGroup;
     private RecyclerView messagesRecyclerView;
     private GroupMessageAdapter messageAdapter;
 
@@ -121,18 +126,30 @@ public class GroupMessageActivity extends AppCompatActivity {
     }
 
     private void getMessages() {
+        // initialize a new array
+        listOfMessagesInGroup = new ArrayList<>();
+        // get the group document from the groups collection
         documentReference = groupsCollectionReference.document(groupId);
+        // with document - get the GroupMessage object
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
                     groupChat = value.toObject(GroupChat.class);
                     for (GroupMessage message : groupChat.getListOfMessages()) {
-                        listOfMessagesInGroup.add(message);
+                        if (listOfMessagesInGroup.contains(message)) {
+
+                        } else {
+                            listOfMessagesInGroup.add(message);
+                    }
                     }
                     Log.v(TAG + " after getGroup ",  " group " + groupChat.getGroup());
                     groupName.setText(groupChat.getGroup());
-
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    linearLayoutManager.setStackFromEnd(true);
+                    messagesRecyclerView.setLayoutManager(linearLayoutManager);
+                    messageAdapter = new GroupMessageAdapter(GroupMessageActivity.this, listOfMessagesInGroup, "");
+                    messagesRecyclerView.setAdapter(messageAdapter);
                 }
             }
         });
@@ -143,59 +160,48 @@ public class GroupMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String message = userTextToSend.getText().toString();
-                if (message != null) {
-                    sendMessageFunctionality(currentUser.getUid(), message);
-                } else {
-                    return;
-                }
-                userTextToSend.setText("");
+                sendMessageFunctionality(currentUser.getUid(), message);
             }
         });
     }
 
+
     private void sendMessageFunctionality(String sender, String message) {
-        GroupMessage messageToSend = new GroupMessage(sender, message);
-        documentReference = groupsCollectionReference.document(groupId);
-
-//        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot snapshot) {
-//                groupChat = snapshot.toObject(GroupChat.class);
-//                HashMap<String, Object> data = new HashMap<>();
-//                data.put("listOfMessages", groupChat.getListOfMessages().add(messageToSend));
-//                documentReference.update(data);
-//            }
-//        });
-
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        GroupMessage messageToSend;
+        // get the user document
+        DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(currentUser.getUid());
+        userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("listOfMessages", FieldValue.arrayUnion(messageToSend));
-                documentReference.update(data);
+            public void onSuccess(DocumentSnapshot snapshot) {
+                User user = snapshot.toObject(User.class);
+                assert user != null;
+                Log.v(TAG, " sendMessageFunctionality " + user.getUsername());
+                DocumentReference dogDocRef = FirebaseFirestore.getInstance().collection("dogs").document(user.getDogs().get(0));
+                dogDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot snapshot) {
+                        Dogs dog = snapshot.toObject(Dogs.class);
+                        assert dog != null;
+                        GroupMessage messageToSend = new GroupMessage(sender, message, user.getUsername(), dog.getImg());
+                        documentReference = groupsCollectionReference.document(groupId);
+                        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("listOfMessages", FieldValue.arrayUnion(messageToSend));
+                                documentReference.update(data);
+                            }
+                        });
+
+                    }
+                });
+
             }
         });
 
-//        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                if (value != null && value.exists()) {
-//                    groupChat = value.toObject(GroupChat.class);
-//                    int count = 1;
-//                    if (count == 1) {
-//                        groupChat.getListOfMessages().add(messageToSend);
-//                        HashMap<String, Object> data = new HashMap<>();
-//                        data.put("listOfMessages", groupChat.getListOfMessages());
-//                        documentReference.update(data);
-//                        count++;
-//                    } else {
-//                        return;
-//                    }
-//
-//                }
-//
-//            }
-//        });
+
+
+
 
 
     }
