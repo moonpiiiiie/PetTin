@@ -16,10 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetTin">
         <activity
-<<<<<<< HEAD
+
             android:name=".RestaurantsNearByMeActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize"
-=======
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize"/>
+
+        <activity
             android:name=".GroupChat.Fragments.GroupChatsFragment.GroupMessageActivity"
             android:exported="false" />
         <activity
@@ -29,7 +30,6 @@
             android:theme="@style/Theme.PetTin.NoActionBar" />
         <activity
             android:name=".GroupChat.Messages.MessageActivity"
->>>>>>> tl-branch
             android:exported="false" />
         <activity
             android:name=".SingleDogActivity"
