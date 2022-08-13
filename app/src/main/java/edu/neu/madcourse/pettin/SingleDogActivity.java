@@ -60,11 +60,9 @@ public class SingleDogActivity extends AppCompatActivity {
 
     // match my dog dialog
     List<String> myDog;
-    List<Task<DocumentSnapshot>> task;
     Map<String, String> myDogToMatch;
-    DogToMatchAdapter dogToMatchAdapter;
-    RecyclerView myDogToMatchRV;
     int dogNum;
+    Dogs mDog;
     DocumentReference curDogRef;
 
     @Override
@@ -83,14 +81,10 @@ public class SingleDogActivity extends AppCompatActivity {
         dogSpayed = findViewById(R.id.textView_dogSpayed);
         dogPS = findViewById(R.id.textView_dogPlaystyle);
 
-
         // data carried from main activity
         Intent intent = getIntent();
         dogName.setText(intent.getStringExtra("name"));
         dog_id = intent.getStringExtra("dogId");
-//        dogGender.setText(intent.getStringExtra("gender"));
-//        dogBreed.setText(intent.getStringExtra("breed"));
-//        dogCity.setText(intent.getStringExtra("city"));
 
         // firebase
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -226,6 +220,7 @@ public class SingleDogActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
                 String myDogId = myDogToMatch.get(strName);
+
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(SingleDogActivity.this);
                 builderInner.setMessage(strName);
                 builderInner.setTitle("Your Selected Pet is");
@@ -265,6 +260,7 @@ public class SingleDogActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             List<String> myDogReceivedMatch = (List<String>)task.getResult().get("receivedMatch");
+                            mDog = (Dogs)task.getResult().toObject(Dogs.class);
                             if (myDogReceivedMatch.contains(curDog.getDog_id())) {
                                 otherUserRef.document(curDog.getUserID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
@@ -278,9 +274,9 @@ public class SingleDogActivity extends AppCompatActivity {
                         }
                     });
                     otherUserRef.document(curDog.getUserID()).update("matchedUsers", FieldValue.arrayUnion(user));
-                    myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog.getDog_id()));
+                    myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog));
 
-                    curDogRef.update("receivedMatch", FieldValue.arrayUnion(myDogId));
+                    curDogRef.update("receivedMatch", FieldValue.arrayUnion(mDog));
 
 
                 }

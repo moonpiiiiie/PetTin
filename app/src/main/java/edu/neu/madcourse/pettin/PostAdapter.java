@@ -118,7 +118,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             title = itemView.findViewById(R.id.title);
 //            likes = itemView.findViewById(R.id.likes);
             username = itemView.findViewById(R.id.post_username);
-            username = itemView.findViewById(R.id.post_username);
 //            heart = itemView.findViewById(R.id.heart);
             image = itemView.findViewById(R.id.image);
             image.setOnClickListener(this);

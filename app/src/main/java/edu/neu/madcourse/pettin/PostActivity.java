@@ -95,7 +95,7 @@ public class PostActivity extends AppCompatActivity {
 
 
         bottomNav = findViewById(R.id.bottom_nav);
-        bottomNav.setSelectedItemId(R.id.nav_chat);
+        bottomNav.setSelectedItemId(R.id.nav_post);
         bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_post:

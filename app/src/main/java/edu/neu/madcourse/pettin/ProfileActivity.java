@@ -25,7 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import edu.neu.madcourse.pettin.Classes.Dogs;
 import edu.neu.madcourse.pettin.Classes.User;
@@ -49,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     // match received recyclerview
     RecyclerView matchedDogRecyclerview;
     ArrayList<Dogs> matchDogs;
-    ArrayList<String> matchDogIds;
+//    ArrayList<String> matchDogIds;
     MatchReceivedAdapter matchReceivedAdapter;
 
     @Override
@@ -84,7 +86,17 @@ public class ProfileActivity extends AppCompatActivity {
         myDogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         myDogAdapter = new MyDogAdapter(ProfileActivity.this, myDogs);
         myDogRecyclerView.setAdapter(myDogAdapter);
+
+        // match received recyclerview
+        matchDogs = new ArrayList<>();
+        matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
+        matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
         fetchMyDog();
+        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs);
+        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
+
+
+
 
 
 
@@ -108,15 +120,12 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-        System.out.println("on create my dog " + myDogs);
-        // match received recyclerview
-        matchDogs = new ArrayList<>();
 
-        matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
-        matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs);
-        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
-        fetchMatch();
+
+
+
+
+
 
         // bottom nav
         bottomNav = findViewById(R.id.bottom_nav);
@@ -158,7 +167,9 @@ public class ProfileActivity extends AppCompatActivity {
                             myDogs.add(dog);
                         }
                         myDogAdapter.notifyDataSetChanged();
+                        fetchMatch();
                     }
+
                 } else {
                     Log.d("fetch my dog", "failed", task.getException());
                 }
@@ -168,29 +179,29 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void fetchMatch() {
-        matchDogIds = new ArrayList<>();
-        System.out.println("my dog" + myDogs);
+//        matchDogIds = new ArrayList<>();
         for (Dogs mydog: myDogs) {
-            matchDogIds.addAll(mydog.getReceivedMatch());
-            System.out.println("match dog id" + matchDogIds);
+            matchDogs.addAll(mydog.getReceivedMatch());
+            matchReceivedAdapter.notifyDataSetChanged();
         }
-        CollectionReference playRef = db.collection("dogs");
-        playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        Dogs dog = document.toObject(Dogs.class);
-                        if (matchDogIds.contains(dog.getDog_id())) {
-                            matchDogs.add(dog);
-                        }
-                        matchReceivedAdapter.notifyDataSetChanged();
-                    }
-                } else {
-                    Log.d("fetch my match", "failed", task.getException());
-                }
-            }
-        });
+
+//        CollectionReference playRef = db.collection("dogs");
+//        playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document: task.getResult()) {
+//                        Dogs dog = document.toObject(Dogs.class);
+//                        if (!matchDogs.contains(dog) && matchDogIds.contains(dog.getDog_id())) {
+//                            matchDogs.add(dog);
+//                        }
+//                        matchReceivedAdapter.notifyDataSetChanged();
+//                    }
+//                } else {
+//                    Log.d("fetch my match", "failed", task.getException());
+//                }
+//            }
+//        });
     }
 
     private void signOutUser() {
