@@ -50,7 +50,7 @@
 
             android:contentDescription="@string/app_name"
 
-            android:scaleType="centerCrop"
+
             android:src="@drawable/default_restaurant" />
 
         <!--Text View to display Course Name-->
