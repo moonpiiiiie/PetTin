@@ -72,6 +72,8 @@ dependencies {
     // searchable spinner
     implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
 
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 

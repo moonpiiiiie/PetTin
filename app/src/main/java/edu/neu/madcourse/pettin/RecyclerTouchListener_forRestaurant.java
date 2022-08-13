@@ -29,8 +29,12 @@ public class RecyclerTouchListener_forRestaurant implements RecyclerView.OnItemT
         View child = rv.findChildViewUnder(e.getX(), e.getY());
         if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
             clickListener.onClick(child, rv.getChildAdapterPosition(child));
+
+
         }
         return false;
+
+
     }
 
     @Override

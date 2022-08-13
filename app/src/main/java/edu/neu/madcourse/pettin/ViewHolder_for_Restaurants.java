@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.squareup.picasso.Picasso;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,32 +54,15 @@ public class ViewHolder_for_Restaurants extends RecyclerView.ViewHolder {
         // sets the age of the person to the websiteItem textview of the viewholder.
         ratingTV.setText(String.valueOf(thePersonToBind.getCourse_rating()));
         addressTV.setText(thePersonToBind.getCourse_address());
-        double distance_to_2_decimal_places = Math.round(Double.parseDouble(thePersonToBind.getDistance())*100.0)/100.0;
+        double distance_to_2_decimal_places = round(Double.parseDouble(thePersonToBind.getDistance())*100.0)/100.0;
         distanceTV.setText(distance_to_2_decimal_places+" meters away");
         typeTV.setText(thePersonToBind.getCategory());
         if(!thePersonToBind.getCourse_image().isEmpty()) {
-            picIV.setImageBitmap(getImageBitmap(thePersonToBind.getCourse_image()));
-        }
-        }
+            Picasso
+                    .get()
+                    .load(thePersonToBind.getCourse_image())
+                    .into(picIV);
 
-    private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        Bitmap compress_bm = null;
-        try {
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            Matrix matrix = new Matrix();
-            matrix.setScale(0.5f, 0.5f);
-            compress_bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting bitmap", e);
         }
-        return compress_bm;
-    }
+        }
 }

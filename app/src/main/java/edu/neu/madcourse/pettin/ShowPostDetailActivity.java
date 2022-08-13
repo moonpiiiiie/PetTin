@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,7 +72,7 @@ public class ShowPostDetailActivity extends AppCompatActivity {
                 postDetailLocation.setText(curPost.getLocation());
                 postDetailTime.setText(curPost.getTime());
                 image = curPost.getImage();
-                Picasso.with(ShowPostDetailActivity.this).load(image).into(postDetailImg);
+                Glide.with(ShowPostDetailActivity.this).load(image).into(postDetailImg);
             }
         });
 
