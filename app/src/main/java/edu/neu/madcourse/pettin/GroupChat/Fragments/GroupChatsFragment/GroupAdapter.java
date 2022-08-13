@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import edu.neu.madcourse.pettin.Classes.GroupChat;
-import edu.neu.madcourse.pettin.GroupChat.Messages.MessageActivity;
 import edu.neu.madcourse.pettin.R;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupCardViewHolder> {

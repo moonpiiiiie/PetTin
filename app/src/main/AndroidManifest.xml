@@ -29,7 +29,7 @@
             android:label="@string/title_activity_create_group_chat"
             android:theme="@style/Theme.PetTin.NoActionBar" />
         <activity
-            android:name=".GroupChat.Messages.MessageActivity"
+            android:name=".GroupChat.Fragments.ChatsFragment.MessageActivity"
             android:exported="false" />
         <activity
             android:name=".SingleDogActivity"

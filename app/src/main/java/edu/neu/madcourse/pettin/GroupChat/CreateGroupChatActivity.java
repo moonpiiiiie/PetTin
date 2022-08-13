@@ -171,7 +171,9 @@ public class CreateGroupChatActivity extends AppCompatActivity implements GroupL
         User user = groupMembers.get(position);
         Log.v(TAG + "onItemClick", user.getUsername());
         this.listOfUsers.add(user);
-        this.groupMembers.remove(user);
+        if (!user.getUserId().equals(currentUser.getUid())) {
+            this.groupMembers.remove(user);
+        }
         addedMembersAdapter.notifyDataSetChanged();
         matchedUsersAdapter.notifyDataSetChanged();
         Log.v(TAG + "onItemClick - listOfUsers", String.valueOf(listOfUsers.size()));

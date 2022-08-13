@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#EBF5EE"
     android:backgroundTint="#EBF5EE"
-    tools:context=".GroupChat.Messages.MessageActivity">
+    tools:context=".GroupChat.Fragments.ChatsFragment.MessageActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
