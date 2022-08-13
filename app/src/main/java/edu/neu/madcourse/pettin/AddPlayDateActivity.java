@@ -364,12 +364,11 @@ public class AddPlayDateActivity extends AppCompatActivity {
 
 
         spinner_breed.setItem(breedList);
-
+        spinner_breed.setSelected(true);
         spinner_breed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(AddPlayDateActivity.this, breedList.get(position), Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(AddPlayDateActivity.this, breedList.get(position), Toast.LENGTH_SHORT).show();}
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
