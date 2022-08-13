@@ -49,13 +49,14 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
     public void onBindViewHolder(@NonNull MatchReceivedAdapter.ViewHolder viewHolder, int i) {
         if(!dogs.isEmpty()) {
             Dogs dog = dogs.get(i);
-            viewHolder.name.setText(dog.getName());
-            viewHolder.age.setText(String.valueOf(dog.getAge()));
-            viewHolder.gender.setText(" " + dog.getGender());
-            viewHolder.breed.setText(dog.getBreed());
-
-            viewHolder.position = viewHolder.getAdapterPosition();
-        }
+            if(dog!=null) {
+                viewHolder.name.setText(dog.getName());
+                viewHolder.age.setText(String.valueOf(dog.getAge()));
+                viewHolder.gender.setText(" " + dog.getGender());
+                viewHolder.breed.setText(dog.getBreed());
+                viewHolder.position = viewHolder.getAdapterPosition();
+            }
+            }
 
     }
 
