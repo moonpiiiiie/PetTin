@@ -25,19 +25,37 @@
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/imageview_search.xml" value="0.1" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_add_play_date.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_add_post.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_change_password.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_chat.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_chat_message_card.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_create_group_chat.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_create_group_user_card.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_login.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_message.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_play_date.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_post.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_profile.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_restaurants_near_by_me.xml" value="0.2" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_show_post_detail.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_single_dog.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/activity_splash.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/dog_view.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/filter_dialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/fragment_chats.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/fragment_first.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/fragment_group_chats.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/fragment_second.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/item.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/loading_dialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/match_which_dog_view.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/my_dog_view.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/playdate_cardview.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/receiver_layout.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/restaurant_cardveiw.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/restaurant_cardview.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/layout/sender_layout.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/happy/Documents/GitHub/PetTin/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4015" />
         <entry key="app/src/main/res/drawable/black_gradient.xml" value="0.2195" />
