@@ -6,6 +6,7 @@ import static java.lang.Math.round;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class ViewHolder_for_Restaurants extends RecyclerView.ViewHolder {
         typeTV.setText(thePersonToBind.getCategory());
         if(!thePersonToBind.getCourse_image().isEmpty()) {
             picIV.setImageBitmap(getImageBitmap(thePersonToBind.getCourse_image()));
+
         }
         }
 
