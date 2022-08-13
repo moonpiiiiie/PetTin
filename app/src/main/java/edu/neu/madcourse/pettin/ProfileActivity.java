@@ -33,6 +33,7 @@ import edu.neu.madcourse.pettin.Classes.Dogs;
 import edu.neu.madcourse.pettin.Classes.User;
 
 public class ProfileActivity extends AppCompatActivity {
+
     BottomNavigationView bottomNav;
     ExtendedFloatingActionButton button_SignOut, button_ChangePW;
     FirebaseFirestore db;
