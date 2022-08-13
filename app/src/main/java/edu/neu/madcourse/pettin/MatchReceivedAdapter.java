@@ -75,12 +75,12 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
             age = itemView.findViewById(R.id.textView_matchDogage);
             gender = itemView.findViewById(R.id.textView_matchDoggender);
             breed = itemView.findViewById(R.id.textView_matchDogbreed);
-            itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteItem(position);
-                }
-            });
+//            itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    deleteItem(position);
+//                }
+//            });
         }
 
 
