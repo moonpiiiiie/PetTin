@@ -249,7 +249,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                                         public void onSuccess(Uri uri) {
                                             Map<String, Object> playdatePost = new HashMap<>();
                                             Timestamp ts = new Timestamp(new Date());
-                                            Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts, new ArrayList<>(), new ArrayList<>());
+                                            Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts, new HashMap<>(), new HashMap<>());
                                             CollectionReference dogRef = db.collection("dogs");
                                             String dog_id = dog.getDog_id();
                                             dogRef.document(dog_id).set(dog);

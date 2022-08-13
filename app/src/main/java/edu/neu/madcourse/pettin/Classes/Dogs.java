@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Dogs {
@@ -21,11 +22,11 @@ public class Dogs {
     private String userID;
     private Timestamp timestamp;
     private String dog_id;
-    private List<Dogs> sentMatch;
-    private List<Dogs> receivedMatch;
+    private Map<String, Dogs> sentMatch;
+    private Map<String, Dogs> receivedMatch;
 
 
-    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, List<Dogs> sentMatch, List<Dogs> receivedMatch) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, Map<String, Dogs> sentMatch, Map<String, Dogs> receivedMatch) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
@@ -152,19 +153,19 @@ public class Dogs {
         this.dog_id = dog_id;
     }
 
-    public List<Dogs> getSentMatch() {
+    public Map<String, Dogs> getSentMatch() {
         return sentMatch;
     }
 
-    public void setSentMatch(List<Dogs> sentMatch) {
+    public void setSentMatch(Map<String, Dogs> sentMatch) {
         this.sentMatch = sentMatch;
     }
 
-    public List<Dogs> getReceivedMatch() {
+    public Map<String, Dogs> getReceivedMatch() {
         return receivedMatch;
     }
 
-    public void setReceivedMatch(List<Dogs> receivedMatch) {
+    public void setReceivedMatch(Map<String, Dogs> receivedMatch) {
         this.receivedMatch = receivedMatch;
     }
 }

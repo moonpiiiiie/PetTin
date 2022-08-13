@@ -79,6 +79,7 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
 
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, age, gender, energyLevel, weight, spayed, breed, city;
