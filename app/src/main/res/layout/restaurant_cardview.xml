@@ -37,12 +37,6 @@
         <!--ImageVIew to display our Course Image-->
         <ImageView
             android:id="@+id/idIVRestaurantImage"
-<<<<<<< Updated upstream
-            android:layout_width="150dp"
-            android:layout_height="200dp"
-            />
-=======
-
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -53,7 +47,6 @@
 
 
             android:src="@drawable/default_restaurant" />
->>>>>>> Stashed changes
 
         <!--Text View to display Course Name-->
         <TextView
