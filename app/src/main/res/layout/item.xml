@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@drawable/profile"
-            android:scaleType="fitXY" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/title"
@@ -45,7 +45,7 @@
                 android:layout_width="15sp"
                 android:layout_height="15sp"
                 android:layout_marginLeft="4sp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/circle_profile" />
 
 

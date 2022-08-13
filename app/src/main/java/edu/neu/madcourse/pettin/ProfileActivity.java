@@ -96,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
         matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
         matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
 
+
         matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs, this);
         matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
         fetchMyDog();
@@ -184,6 +185,7 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
 
     private void fetchMatch() {
         for (Dogs mydog: myDogs) {
+
             temp.addAll(mydog.getReceivedMatch().values());
             matchReceivedAdapter.notifyDataSetChanged();
             matchDogs=Lists.newArrayList(Sets.newHashSet(temp));
