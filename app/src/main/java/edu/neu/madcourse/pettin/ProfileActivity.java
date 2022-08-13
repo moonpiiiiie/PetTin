@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -53,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
     RecyclerView matchedDogRecyclerview;
     ArrayList<Dogs> matchDogs;
 //    ArrayList<String> matchDogIds;
+    ArrayList<Dogs> temp;
     MatchReceivedAdapter matchReceivedAdapter;
 
     @Override
@@ -82,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
 
         // my dog recyclerview
         myDogs = new ArrayList<>();
-
+        temp = new ArrayList<>();
         myDogRecyclerView = findViewById(R.id.recyclerView_mydog);
         myDogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         myDogAdapter = new MyDogAdapter(ProfileActivity.this, myDogs);
@@ -92,10 +95,11 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
         matchDogs = new ArrayList<>();
         matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
         matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
-        fetchMyDog();
+
+
         matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs, this);
         matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
-
+        fetchMyDog();
 
 
 
@@ -180,11 +184,14 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
     }
 
     private void fetchMatch() {
-//        matchDogIds = new ArrayList<>();
         for (Dogs mydog: myDogs) {
-            matchDogs.addAll(mydog.getReceivedMatch().values());
+
+            temp.addAll(mydog.getReceivedMatch().values());
             matchReceivedAdapter.notifyDataSetChanged();
+            matchDogs=Lists.newArrayList(Sets.newHashSet(temp));
         }
+
+        System.out.println("matchDogs " + matchDogs);
 
 //        CollectionReference playRef = db.collection("dogs");
 //        playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
