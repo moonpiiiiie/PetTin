@@ -21,11 +21,11 @@ public class Dogs {
     private String userID;
     private Timestamp timestamp;
     private String dog_id;
-    private List<String> sentMatch;
-    private List<String> receivedMatch;
+    private List<Dogs> sentMatch;
+    private List<Dogs> receivedMatch;
 
 
-    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, List<String> sentMatch, List<String> receivedMatch) {
+    public Dogs(String name, String gender, String spayed, int age, String breed, ArrayList<String> playStyles, Double weight, int energyLevel, String img, String location, String userId, Timestamp timestamp, List<Dogs> sentMatch, List<Dogs> receivedMatch) {
         this.name = name;
         this.gender = gender;
         this.spayed = spayed;
@@ -152,19 +152,19 @@ public class Dogs {
         this.dog_id = dog_id;
     }
 
-    public List<String> getSentMatch() {
+    public List<Dogs> getSentMatch() {
         return sentMatch;
     }
 
-    public void setSentMatch(List<String> sentMatch) {
+    public void setSentMatch(List<Dogs> sentMatch) {
         this.sentMatch = sentMatch;
     }
 
-    public List<String> getReceivedMatch() {
+    public List<Dogs> getReceivedMatch() {
         return receivedMatch;
     }
 
-    public void setReceivedMatch(List<String> receivedMatch) {
+    public void setReceivedMatch(List<Dogs> receivedMatch) {
         this.receivedMatch = receivedMatch;
     }
 }
