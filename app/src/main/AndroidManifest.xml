@@ -16,8 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetTin">
         <activity
+<<<<<<< HEAD
             android:name=".RestaurantsNearByMeActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize"
+=======
+            android:name=".GroupChat.Fragments.GroupChatsFragment.GroupMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupChat.CreateGroupChatActivity"
+            android:exported="false"
+            android:label="@string/title_activity_create_group_chat"
+            android:theme="@style/Theme.PetTin.NoActionBar" />
+        <activity
+            android:name=".GroupChat.Messages.MessageActivity"
+>>>>>>> tl-branch
             android:exported="false" />
         <activity
             android:name=".SingleDogActivity"
