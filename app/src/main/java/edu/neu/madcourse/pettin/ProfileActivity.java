@@ -51,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     // match received recyclerview
     RecyclerView matchedDogRecyclerview;
     ArrayList<Dogs> matchDogs;
-//    ArrayList<String> matchDogIds;
+    ArrayList<String> matchDogIds;
     MatchReceivedAdapter matchReceivedAdapter;
 
     @Override
@@ -167,9 +167,9 @@ public class ProfileActivity extends AppCompatActivity {
                             myDogs.add(dog);
                         }
                         myDogAdapter.notifyDataSetChanged();
-                        fetchMatch();
-                    }
 
+                    }
+                    fetchMatch();
                 } else {
                     Log.d("fetch my dog", "failed", task.getException());
                 }
@@ -179,12 +179,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void fetchMatch() {
-//        matchDogIds = new ArrayList<>();
+        matchDogIds = new ArrayList<>();
         for (Dogs mydog: myDogs) {
             matchDogs.addAll(mydog.getReceivedMatch());
-            matchReceivedAdapter.notifyDataSetChanged();
         }
-
+        matchReceivedAdapter.notifyDataSetChanged();
 //        CollectionReference playRef = db.collection("dogs");
 //        playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //            @Override
