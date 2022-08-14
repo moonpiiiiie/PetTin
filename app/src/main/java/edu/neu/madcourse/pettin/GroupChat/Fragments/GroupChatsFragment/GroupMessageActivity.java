@@ -200,11 +200,6 @@ public class GroupMessageActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
 }

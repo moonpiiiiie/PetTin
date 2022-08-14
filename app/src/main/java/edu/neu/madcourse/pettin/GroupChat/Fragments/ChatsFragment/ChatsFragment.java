@@ -22,37 +22,36 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.CurrentChats;
 import edu.neu.madcourse.pettin.Classes.User;
 import edu.neu.madcourse.pettin.GroupChat.UserMatches.CurrentChatsAdapter;
-import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
 import edu.neu.madcourse.pettin.R;
 
-// to display the current messages
-// COMPLETED
+// logic for the chats tab in the ChatActivity
 public class ChatsFragment extends Fragment {
 
     private static final String TAG = "ChatFragment ";
 
-
+    // the recycler view fo the current chats
+    private RecyclerView currentChatRv;
     private CurrentChatsAdapter currentChatsAdapter;
+
+    // the list of current chats to display to the user
+    // TODO: implement so that 1st message received from matched appears to the receiver
+    private ArrayList<CurrentChats> currentChats;
     private ArrayList<User> listOfUsers;
 
-    private FirebaseUser currentUser;
+    // the current user
+     private FirebaseUser currentUser;
     // get db instance
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // get the users collection
     private CollectionReference usersCollectionReference = db.collection("users");
     private CollectionReference chatsCollectionReference = db.collection("chats");
     private CollectionReference currentChatsCollection = db.collection("current_chats");
-    private DocumentReference documentReference;
 
-    private ArrayList<CurrentChats> currentChats;
-
-    private RecyclerView currentChatRv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,29 +73,39 @@ public class ChatsFragment extends Fragment {
                 for (QueryDocumentSnapshot snapshot : value) {
                     CurrentChats currentChat = snapshot.toObject(CurrentChats.class);
                     // add only the Current Chat object if the current user and the sender user match
-                    if (currentChat.getSenderId().equals(currentUser.getUid())) {
+                    if (currentChat.getSenderId().equals(currentUser.getUid()) || currentChat.getReceiverId().equals(currentUser.getUid())) {
                         currentChats.add(currentChat);
                     }
                 }
                 retrieveUsers();
             }
         });
-
         return view;
     }
 
-    // method gets the users that have chatted with
+    /**
+     * Method gets the list of matched users and checks with the current chats to load.
+     */
     private void retrieveUsers() {
         usersCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 listOfUsers.clear();
-                // iterate through all users
+                // get the current user
+                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                // for each user in the collection
                 for (QueryDocumentSnapshot snapshot : value) {
+                    // get the user object
                     User user = snapshot.toObject(User.class);
-                    // iterate through all the current chats
+                    // for each currentChat in currentChats list
                     for (CurrentChats currentChat : currentChats) {
-                        if(user.getUserId().equals(currentChat.getReceiverId()) && !listOfUsers.contains(user)) {
+                        // if the user is equal to the receiver id
+                        if(user.getUserId().equals(currentChat.getReceiverId()) && !listOfUsers.contains(user) && !user.getUserId().equals(currentUser.getUid())) {
+                            listOfUsers.add(user);
+                        }
+                    }
+                    for (CurrentChats currentChat : currentChats) {
+                        if (user.getUserId().equals(currentChat.getSenderId()) && !listOfUsers.contains(user) && !user.getUserId().equals(currentUser.getUid())) {
                             listOfUsers.add(user);
                         }
                     }

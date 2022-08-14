@@ -67,8 +67,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages_gc"
-        android:layout_width="412dp"
-        android:layout_height="621dp"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="@+id/text_to_send_gc"

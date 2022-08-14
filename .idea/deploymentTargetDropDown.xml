@@ -6,6 +6,8 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="$USER_HOME$/.android/avd/3rd.avd" />
             <type value="SERIAL_NUMBER" />
             <value value="11041JEC216201" />
           </Key>

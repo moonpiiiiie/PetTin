@@ -71,11 +71,16 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
         // creates the tab layout
         setTabLayout();
 
+        // sets up the float action button to allow user to create a group
+        setFabCreateGroup();
+
         // sets up the users at the top - to be matched users
         retrieveUsers();
 
-        fabCreateGroup = findViewById(R.id.create_group);
+    }
 
+    private void setFabCreateGroup() {
+        fabCreateGroup = findViewById(R.id.create_group);
 
         fabCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,47 +89,8 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
                 startActivity(createGroupIntent);
             }
         });
-
-
     }
 
-//    /**
-//     * Method sets up the tab layout.
-//     */
-//    private void setTabLayout() {
-//        tabLayout = findViewById(R.id.chats_tab_layout);
-//        viewPager2 = findViewById(R.id.view_pager);
-//        viewPageAdapter = new ViewPageAdapter(this);
-//        viewPager2.setAdapter(viewPageAdapter);
-//
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                viewPager2.setCurrentItem(tab.getPosition());
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-//
-//        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                super.onPageSelected(position);
-//                tabLayout.getTabAt(position).select();
-//            }
-//        });
-//    }
-
-    /**
-     }
      /**
      * Method sets up the tab layout.
      */
@@ -172,8 +138,6 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
 
         db = FirebaseFirestore.getInstance();
         listOfUsers = new ArrayList<User>();
-        userAdapter = new UserAdapter(ChatActivity.this, this.listOfUsers, this);
-        new ItemTouchHelper(userCallback).attachToRecyclerView(recyclerView);
 
         // load data from Firestore into array
         DocumentReference currentUserDocRef = db.collection("users").document(currentUser.getUid());
@@ -189,32 +153,9 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
                 }
             }
         });
-
+        userAdapter = new UserAdapter(ChatActivity.this, this.listOfUsers, this);
+        new ItemTouchHelper(userCallback).attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(userAdapter);
-//        db.collection("users").orderBy("username", Query.Direction.ASCENDING)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                        if (error != null) {
-//                            // there is an error
-//                            Log.v("Firestore error", error.getMessage());
-//                            return;
-//                        }
-//                        // get all the data from the firestore
-//                        // TODO - want to retrieve matched users - will need to get the field matchedUsers which is an array
-//                        for (DocumentChange document : value.getDocumentChanges()) {
-//                            if (document.getType() == DocumentChange.Type.ADDED) {
-//                                // fetch data
-//                                User user = document.getDocument().toObject(User.class);
-//                                if (user != null && !user.getUserId().equals(currentUser.getUid())) {
-//                                    listOfUsers.add(user);
-//                                }
-//                            }
-//                            userAdapter.notifyDataSetChanged();
-//                        }
-//                    }
-//                });
-
     }
 
     /**
