@@ -94,11 +94,10 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
         // match received recyclerview
         matchDogs = new ArrayList<>();
         matchedDogRecyclerview = findViewById(R.id.recyclerView_matchReceived);
-        matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
-
-
-        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs, this);
-        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
+        matchedDogRecyclerview.setLayoutManager(new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.VERTICAL, false));
+        matchedDogRecyclerview.setHasFixedSize(true);
+//        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs, this);
+//        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
         fetchMyDog();
 
 
@@ -172,7 +171,10 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
                             myDogs.add(dog);
                         }
                         myDogAdapter.notifyDataSetChanged();
+//                        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
                         fetchMatch();
+                        matchReceivedAdapter = new MatchReceivedAdapter(ProfileActivity.this, matchDogs, ProfileActivity.this);
+                        matchedDogRecyclerview.setAdapter(matchReceivedAdapter);
                     }
 
                 } else {
@@ -185,31 +187,14 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
 
     private void fetchMatch() {
         for (Dogs mydog: myDogs) {
-
             temp.addAll(mydog.getReceivedMatch().values());
-            matchReceivedAdapter.notifyDataSetChanged();
-            matchDogs=Lists.newArrayList(Sets.newHashSet(temp));
         }
-
-        System.out.println("matchDogs " + matchDogs);
-
-//        CollectionReference playRef = db.collection("dogs");
-//        playRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    for (QueryDocumentSnapshot document: task.getResult()) {
-//                        Dogs dog = document.toObject(Dogs.class);
-//                        if (!matchDogs.contains(dog) && matchDogIds.contains(dog.getDog_id())) {
-//                            matchDogs.add(dog);
-//                        }
-//                        matchReceivedAdapter.notifyDataSetChanged();
-//                    }
-//                } else {
-//                    Log.d("fetch my match", "failed", task.getException());
-//                }
-//            }
-//        });
+        matchDogs=Lists.newArrayList(Sets.newHashSet(temp));
+//        matchReceivedAdapter.notifyDataSetChanged();
+        for (Dogs d: matchDogs) {
+            Log.d("matchdog loop", d.getName());
+        }
+//        System.out.println("matchDogs " + matchDogs);
     }
 
     private void signOutUser() {

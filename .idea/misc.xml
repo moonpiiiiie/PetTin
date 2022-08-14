@@ -105,6 +105,7 @@
         <entry key="app/src/main/res/layout/item.xml" value="0.67" />
         <entry key="app/src/main/res/layout/list_of_users.xml" value="0.36354166666666665" />
         <entry key="app/src/main/res/layout/loading_dialog.xml" value="0.28802083333333334" />
+        <entry key="app/src/main/res/layout/match_received_view.xml" value="0.5" />
         <entry key="app/src/main/res/layout/message_group.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/my_dog_view.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/nav_drawer_layout.xml" value="0.2125" />

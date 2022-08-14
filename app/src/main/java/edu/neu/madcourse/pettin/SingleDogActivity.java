@@ -305,16 +305,12 @@ public class SingleDogActivity extends AppCompatActivity {
             });
             myDogRef = db.collection("dogs").document(mDog.getDog_id());
             if (!mDog.getSentMatch().containsKey(curDog.getDog_id())) {
-                Map<String, Dogs> curDogMap = new HashMap<>();
-                curDogMap.put(curDog.getDog_id(), curDog);
                 String newKey1 = String.format("sentMatch.%s", mDog.getDog_id());
                 myDogRef.update(newKey1, curDog);
 
 
             }
             if (!curDog.getReceivedMatch().containsKey(mDog.getDog_id())) {
-                Map<String, Dogs> myDogMap = new HashMap<>();
-                myDogMap.put(mDog.getDog_id(), mDog);
                 String newKey2 = String.format("receivedMatch.%s", mDog.getDog_id());
                 curDogRef.update(newKey2, mDog);
 

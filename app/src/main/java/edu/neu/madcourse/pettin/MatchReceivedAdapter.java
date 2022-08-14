@@ -89,12 +89,7 @@ public class MatchReceivedAdapter extends RecyclerView.Adapter<MatchReceivedAdap
             breed = itemView.findViewById(R.id.textView_matchDogbreed);
             this.onDogListener = onDogListener;
             itemView.setOnClickListener(this);
-//            itemView.findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    deleteItem(position);
-//                }
-//            });
+
         }
 
 
