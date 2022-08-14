@@ -134,14 +134,10 @@ public class GroupMessageActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
+                    listOfMessagesInGroup.clear();
                     groupChat = value.toObject(GroupChat.class);
-                    for (GroupMessage message : groupChat.getListOfMessages()) {
-                        if (listOfMessagesInGroup.contains(message)) {
-
-                        } else {
-                            listOfMessagesInGroup.add(message);
-                        }
-                    }
+                    assert groupChat != null;
+                    listOfMessagesInGroup.addAll(groupChat.getListOfMessages());
                     Log.v(TAG + " after getGroup ",  " group " + groupChat.getGroup());
                     groupName.setText(groupChat.getGroup());
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -171,6 +167,33 @@ public class GroupMessageActivity extends AppCompatActivity {
         GroupMessage messageToSend;
         // get the user document
         DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(currentUser.getUid());
+//        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                assert value != null;
+//                User user = value.toObject(User.class);
+//                assert user != null;
+//                Log.v(TAG, " sendMessageFunctionality " + user.getUsername());
+//                DocumentReference dogDocRef = FirebaseFirestore.getInstance().collection("dogs").document(user.getDogs().get(0));
+//                dogDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot snapshot) {
+//                        Dogs dog = snapshot.toObject(Dogs.class);
+//                        assert dog != null;
+//                        GroupMessage messageToSend = new GroupMessage(sender, message, user.getUsername(), dog.getImg());
+//                        documentReference = groupsCollectionReference.document(groupId);
+//                        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                HashMap<String, Object> data = new HashMap<>();
+//                                data.put("listOfMessages", FieldValue.arrayUnion(messageToSend));
+//                                documentReference.update(data);
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
         userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot snapshot) {
@@ -195,11 +218,11 @@ public class GroupMessageActivity extends AppCompatActivity {
                         });
 
                     }
-                });
+                }
+                );
 
             }
         });
-
     }
 
 }
