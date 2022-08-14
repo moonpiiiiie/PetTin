@@ -1,6 +1,7 @@
 package edu.neu.madcourse.pettin;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -28,8 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
 import java.sql.SQLOutput;
@@ -190,17 +194,28 @@ public class SingleDogActivity extends AppCompatActivity {
     // get how many dogs the current user owned
     int ownedDogs() {
         DocumentReference userRef = db.collection("users").document(curUser.getUid());
-        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User user = documentSnapshot.toObject(User.class);
-                myDog = user.getDogs();
-                dogNum = myDog.size();
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w("get owned dog", error);
+                }
+                if (value!=null && value.exists()) {
+                    User user = value.toObject(User.class);
+                    myDog = user.getDogs();
+                    dogNum = myDog.size();
+                }
             }
         });
-
-
-
+//        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                User user = documentSnapshot.toObject(User.class);
+//                myDog = user.getDogs();
+//                dogNum = myDog.size();
+//            }
+//        });
+//
         return dogNum;
     }
 
