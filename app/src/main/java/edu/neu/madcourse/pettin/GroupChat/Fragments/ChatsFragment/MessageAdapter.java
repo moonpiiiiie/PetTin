@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin.GroupChat.Messages.Adapter;
+package edu.neu.madcourse.pettin.GroupChat.Fragments.ChatsFragment;
 
 import android.content.Context;
 import android.util.Log;
@@ -20,6 +20,7 @@ import edu.neu.madcourse.pettin.Classes.Message;
 import edu.neu.madcourse.pettin.R;
 
 // class displays the messages in the message activity
+// COMPLETED
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private static final String TAG = "MessageAdapter ";
@@ -59,6 +60,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.messageToShow.setText(currentMessage.getMessage());
         Log.v(TAG + "onBindViewHolder - currentMessage Object", currentMessage.getMessage());
         Log.v(TAG + "onBindViewHolder - after setText", holder.messageToShow.getText().toString());
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (!currentMessage.getSender().equals(currentUser.getUid())) {
+            holder.username.setText("");
+
+        }
+
         // TODO : display user image - use Glide library
     }
 
@@ -71,10 +78,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         private TextView messageToShow;
         private ImageView userImage;
+        private TextView username;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            messageToShow = itemView.findViewById(R.id.show_message);
+            messageToShow = itemView.findViewById(R.id.message_display);
+            username = itemView.findViewById(R.id.username_display);
         }
     }
 

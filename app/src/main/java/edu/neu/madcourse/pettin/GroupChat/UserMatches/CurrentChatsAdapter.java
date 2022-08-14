@@ -14,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.User;
-import edu.neu.madcourse.pettin.GroupChat.Messages.MessageActivity;
+import edu.neu.madcourse.pettin.GroupChat.Fragments.ChatsFragment.MessageActivity;
 import edu.neu.madcourse.pettin.R;
 
+// COMPLETED
 public class CurrentChatsAdapter extends RecyclerView.Adapter<CurrentChatsAdapter.CurrentChatsViewHolder> {
 
     private static final String TAG = "CurrentChatsAdapter";

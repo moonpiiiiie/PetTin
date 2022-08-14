@@ -32,6 +32,7 @@ import edu.neu.madcourse.pettin.GroupChat.UserMatches.UserAdapter;
 import edu.neu.madcourse.pettin.R;
 
 // to display the current messages
+// COMPLETED
 public class ChatsFragment extends Fragment {
 
     private static final String TAG = "ChatFragment ";
@@ -112,4 +113,3 @@ public class ChatsFragment extends Fragment {
     }
 
 }
-

@@ -1,4 +1,4 @@
-package edu.neu.madcourse.pettin.GroupChat.Messages;
+package edu.neu.madcourse.pettin.GroupChat.Fragments.ChatsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.metrics.Event;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,15 +30,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import edu.neu.madcourse.pettin.ChatActivity;
 import edu.neu.madcourse.pettin.Classes.CurrentChats;
 import edu.neu.madcourse.pettin.Classes.Message;
 import edu.neu.madcourse.pettin.Classes.User;
-import edu.neu.madcourse.pettin.GroupChat.Messages.Adapter.MessageAdapter;
 import edu.neu.madcourse.pettin.R;
 
+// COMPLETED
 public class MessageActivity extends AppCompatActivity {
 
     private static final String TAG = "MessageActivity ";
@@ -137,30 +134,7 @@ public class MessageActivity extends AppCompatActivity {
     private void readMessages(String id1, String id2, String image) {
         listOfMessages = new ArrayList<>();
         // gets the document
-//        chatsCollectionReference
-//                .orderBy("timestamp", Query.Direction.ASCENDING)
-//                .get()
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        // iterate through all the messages
-//                        listOfMessages.clear();
-//                        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-//                            Message message = snapshot.toObject(Message.class);
-//                            if (message.getReceiver().equals(id1) && message.getSender().equals(id2)
-//                                    || message.getReceiver().equals(id2) && message.getSender().equals(id1)) {
-//                                Log.v(TAG, message.getMessage());
-//                                Log.v(TAG, "message retrieved from Firestore");
-//                                listOfMessages.add(message);
-//                            }
-//                            messageAdapter = new MessageAdapter(MessageActivity.this, listOfMessages, image);
-//                            messagesRecyclerView.setAdapter(messageAdapter);
-//                        }
-//                        for (Message message : listOfMessages) {
-//                            Log.v(TAG + "Message in listOfMessages", message.getMessage());
-//                        }
-//                    }
-//                });
+
         // this approach allows for real time update on chats
         chatsCollectionReference
                 .orderBy("timestamp", Query.Direction.ASCENDING)
