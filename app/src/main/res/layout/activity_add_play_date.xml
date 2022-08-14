@@ -368,7 +368,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittext_rounded"
                             android:gravity="bottom"
-                            android:hint="Age"
+                            android:hint="years old"
                            />
 
                     </LinearLayout>

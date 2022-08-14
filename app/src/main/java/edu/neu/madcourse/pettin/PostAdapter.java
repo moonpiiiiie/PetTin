@@ -12,16 +12,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,11 +44,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private ArrayList<Post> posts;
     private RecyclerViewClickListener listener;
     FirebaseFirestore db;
+    FirebaseAuth auth;
+    FirebaseUser curUser;
 
     public PostAdapter(Context context, ArrayList<Post> postList, RecyclerViewClickListener listener) {
         this.context = context;
         this.posts = postList;
         this.listener = listener;
+
     }
 
 
@@ -48,20 +59,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        curUser = auth.getCurrentUser();
         Post post = posts.get(position);
         String username = post.getUsername();
         String postId = post.getPost_id();
         String title = post.getTitle();
 //        String likes = post.getLikes();
         holder.title.setText(title.length() <= 20? title: title.substring(0,20) + "...");
-//        holder.likes.setText(likes);
+//        holder.likes.setText(Integer.toString(post.getLikes().size()));
         holder.username.setText(username);
+//
+//        if (post.getLikes().contains(curUser.getUid())) {
+//            Glide.with(context).load(R.drawable.ic_baseline_liked).into(holder.heart);
+//        } else {
+//            Glide.with(context).load(R.drawable.ic_baseline_match).into(holder.heart);
+//        }
         Glide.with(context).load(post.getImage()).into(holder.image);
+        isLikes(postId, holder.heart);
+        nLikes(holder.likes, postId);
+
 
 
 //         Click the username, got some bugs here
@@ -76,13 +100,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
 
         // Click the Likes
-//        holder.heart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                System.out.println("postId " + postId);
-//                System.out.println( "collections" + db.collection("posts"));
-//                DocumentReference postRef = db.collection("posts").document(postId);
-//                System.out.println("postRef " + postRef);
+        holder.heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("postId " + postId);
+                System.out.println( "collections" + db.collection("posts"));
+                if (holder.heart.getTag().equals("like")) {
+                    DocumentReference postRef = db.collection("posts").document(postId);
+                    postRef.update("likes", FieldValue.arrayUnion(curUser.getUid()));
+//                    Glide.with(context).load(R.drawable.ic_baseline_liked).into(holder.heart);
+                } else {
+//                    DocumentReference postRef = db.collection("posts").document(postId);
+//                    postRef.update("likes", FieldValue.arrayRemove(curUser.getUid()));
+//                    Glide.with(context).load(R.drawable.ic_baseline_match).into(holder.heart);
+                }
+
+
+
 //                postRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
 //                    @Override
 //                    public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -96,9 +130,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 //                        Log.w("post adapter", "failed to like");
 //                    }
 //                });
-//
-//            }
-//        });
+
+            }
+        });
 
     }
 
@@ -115,10 +149,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         ImageView heart, image;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+
             title = itemView.findViewById(R.id.title);
-//            likes = itemView.findViewById(R.id.likes);
+            likes = itemView.findViewById(R.id.likes);
             username = itemView.findViewById(R.id.post_username);
-//            heart = itemView.findViewById(R.id.heart);
+            heart = itemView.findViewById(R.id.heart);
             image = itemView.findViewById(R.id.image);
             image.setOnClickListener(this);
         }
@@ -169,6 +204,56 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     public interface RecyclerViewClickListener {
         void onClick(View v, int position);
+    }
+
+    private void isLikes(String postId, final ImageView imageview) {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DocumentReference postRef = FirebaseFirestore.getInstance().collection("posts").document(postId);
+
+        postRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error!=null) {
+                    Log.w("nLikes", error);
+                }
+                if (value != null && value.exists()) {
+                    Post post = value.toObject(Post.class);
+                    if (post.getLikes().contains(firebaseUser.getUid())) {
+                        imageview.setImageResource(R.drawable.ic_baseline_liked);
+                        imageview.setTag("liked");
+                    } else {
+                        imageview.setImageResource(R.drawable.ic_baseline_match);
+                        imageview.setTag("like");
+                    }
+                }
+            }
+        });
+    }
+
+    private void nLikes(TextView likes, String postId) {
+        DocumentReference postRef = FirebaseFirestore.getInstance().collection("posts").document(postId);
+        postRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error!=null) {
+                    Log.w("nLikes", error);
+                }
+                if (value != null && value.exists()) {
+                    Post post = value.toObject(Post.class);
+                    likes.setText(Integer.toString(post.getLikes().size()) + "likes");
+                }
+            }
+        });
+//        postRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    Post post = task.getResult().toObject(Post.class);
+//                    likes.setText(Integer.toString(post.getLikes().size()) + "likes");
+//                }
+//            }
+//        });
     }
 
 } 

@@ -1,6 +1,8 @@
 package edu.neu.madcourse.pettin.Classes;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class Post {
@@ -9,7 +11,7 @@ public class Post {
     private String content;
     private String location;
     private String time;
-//    private String likes;
+    private List<String> likes;
     private String username;
     private String post_id;
 
@@ -34,6 +36,7 @@ public class Post {
         this.time = time;
         this.username = username;
         this.post_id = UUID.randomUUID().toString();
+        this.likes = new ArrayList<>();
     }
 
     public String getImage() {
@@ -76,13 +79,13 @@ public class Post {
         this.time = time;
     }
 
-//    public String getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(String likes) {
-//        this.likes = likes;
-//    }
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
 
     public String getUsername() {
         return username;
