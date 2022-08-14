@@ -51,7 +51,11 @@ public class PostActivity extends AppCompatActivity {
     String userName;
 
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bottomNav.setSelectedItemId(R.id.nav_post);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

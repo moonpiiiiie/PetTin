@@ -76,7 +76,11 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     int filterEnergyLow, filterEnergyHigh;
     List<String> filterPS = new ArrayList<>();
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bottomNav.setSelectedItemId(R.id.nav_playdate);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

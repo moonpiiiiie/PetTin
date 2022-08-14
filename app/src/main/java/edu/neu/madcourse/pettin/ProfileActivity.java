@@ -57,7 +57,11 @@ public class ProfileActivity extends AppCompatActivity implements MatchReceivedA
 //    ArrayList<String> matchDogIds;
     ArrayList<Dogs> temp;
     MatchReceivedAdapter matchReceivedAdapter;
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bottomNav.setSelectedItemId(R.id.nav_profile);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

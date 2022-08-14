@@ -89,11 +89,17 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
 
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bottomNav.setSelectedItemId(R.id.nav_restaurant);
+    }
+
 
     @Override
     protected void onRestart() {

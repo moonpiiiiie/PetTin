@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -77,6 +78,12 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
         // sets up the users at the top - to be matched users
         retrieveUsers();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bottomNav.setSelectedItemId(R.id.nav_chat);
     }
 
     private void setFabCreateGroup() {
