@@ -184,6 +184,8 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                         Dogs dog = document.toObject(Dogs.class);
                         if ((!dislikeDogs.contains(dog.getDog_id())) && (!ownedDogs.contains(dog.getDog_id()))) {
                             dogs.add(dog);
+                            System.out.println("dogname " + dog.getName());
+                            System.out.println("dog.getImg " + dog.getImg());
                             dogPlayDateAdapter.notifyDataSetChanged();
                         }
                     }

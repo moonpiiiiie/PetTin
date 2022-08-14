@@ -64,7 +64,6 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
         viewHolder.spayed.setText("Spayed: " + dog.getSpayed());
         viewHolder.breed.setText(dog.getBreed());
         viewHolder.city.setText(dog.getLocation());
-
         viewHolder.setPhoto(dog.getImg());
 
     }
@@ -105,6 +104,7 @@ public class DogPlayDateAdapter extends RecyclerView.Adapter<DogPlayDateAdapter.
 
 
         public void setPhoto(String url) {
+            System.out.println("url " + url);
             photo = itemView.findViewById(R.id.imageView_dog);
             Glide.with(context).load(url).apply(new RequestOptions().override(150, 150)).centerCrop().into(photo);
         }
