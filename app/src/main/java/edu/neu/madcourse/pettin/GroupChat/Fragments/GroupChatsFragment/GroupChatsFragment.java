@@ -27,6 +27,7 @@ import edu.neu.madcourse.pettin.Classes.GroupChat;
 import edu.neu.madcourse.pettin.Classes.User;
 import edu.neu.madcourse.pettin.R;
 
+// COMPLETED
 public class GroupChatsFragment extends Fragment {
 
     private static final String TAG = "GroupFragment ";

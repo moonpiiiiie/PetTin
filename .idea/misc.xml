@@ -112,7 +112,7 @@
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/playdate_cardview.xml" value="0.5" />
         <entry key="app/src/main/res/layout/popup_add_post.xml" value="0.2125" />
-        <entry key="app/src/main/res/layout/receiver_layout.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/receiver_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/restaurant_cardview.xml" value="0.32064985036340315" />
         <entry key="app/src/main/res/layout/row_comment.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/row_post_item.xml" value="0.2125" />

@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import edu.neu.madcourse.pettin.Classes.GroupChat;
-import edu.neu.madcourse.pettin.GroupChat.Messages.MessageActivity;
 import edu.neu.madcourse.pettin.R;
 
+// COMPLETED
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupCardViewHolder> {
 
     private static final String TAG = "GroupAdapter ";
@@ -63,7 +63,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupCardVie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.v(TAG + " groupId", groupId);
+//                    Log.v(TAG + " groupId", groupId);
                     Intent intent = new Intent(context, GroupMessageActivity.class);
                     intent.putExtra("id", groupId);
                     context.startActivity(intent);
