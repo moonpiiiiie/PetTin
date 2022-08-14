@@ -89,11 +89,17 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
 
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bottomNav.setSelectedItemId(R.id.nav_restaurant);
+    }
+
 
     @Override
     protected void onRestart() {
@@ -408,9 +414,10 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
                 textHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                       adapter.notifyDataSetChanged();
-                       progressDialog.dismiss();
 
+                       adapter.notifyDataSetChanged();
+
+                       progressDialog.dismiss();
                     }
                 });
 
@@ -437,13 +444,14 @@ public class RestaurantsNearByMeActivity extends AppCompatActivity {
             builder = new AlertDialog.Builder(this);
 
             builder.setTitle("Loading Nearby Pet Friendly Restaurants...");
-
+            builder.setCancelable(false);
             final ProgressBar progressBar = new ProgressBar(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             progressBar.setLayoutParams(lp);
             progressBar.setPadding(0, 0, 0, 30);
+
             builder.setView(progressBar);
         }
         return builder;
