@@ -12,15 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.neu.madcourse.pettin.Classes.GroupChat;
@@ -44,7 +47,6 @@ public class GroupChatsFragment extends Fragment {
     private CollectionReference userCollectionReference = db.collection("users");
     private CollectionReference groupCollectionReference = db.collection("groups");
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,36 +66,38 @@ public class GroupChatsFragment extends Fragment {
 
         // array will store the list of groups that the user is a member of
         listOfGroups = new ArrayList<>();
-
         retrieveDocuments();
-
-
-
         return view;
     }
 
     private void retrieveDocuments() {
+
         groupCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 listOfGroups.clear();
+                // get the current user document
+                ArrayList<User> currentUserRetrieved = new ArrayList<>();
                 // for each document in the collection
+                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
                 for (QueryDocumentSnapshot snapshot : value) {
                     // get each group chat from the groups collection
                     GroupChat groupChat = snapshot.toObject(GroupChat.class);
                     // iterate through each user in the list of group members
                     for (User user : groupChat.getListOfGroupMembers()) {
-                        // if the current user is in list of group members then add group chat to list of groups
-                        if (groupChat.getListOfGroupMembers().contains(user) && !listOfGroups.contains(groupChat)) {
+                        if (user.getUserId().equals(currentUser.getUid())  && !listOfGroups.contains(groupChat)) {
                             listOfGroups.add(groupChat);
                         }
+//                        if (groupChat.getListOfGroupMembers().contains(user) && !listOfGroups.contains(groupChat)) {
+//
+//                        }
                         usersGroupsAdapter = new GroupAdapter(getContext(), listOfGroups, groupChat.getId());
                         usersGroupsRv.setAdapter(usersGroupsAdapter);
                     }
                     Log.v(TAG, " groups " + groupChat.getGroup());
 
                 }
-
             }
         });
     }
