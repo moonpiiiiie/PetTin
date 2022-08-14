@@ -231,46 +231,68 @@ public class AddPlayDateActivity extends AppCompatActivity {
                 name = editText_name.getText().toString();
                 gender = spinner_gender.getSelectedItem().toString();
                 spayed = spinner_spayed.getSelectedItem().toString();
-                age = Integer.parseInt(editText_age.getText().toString());
-                breed = spinner_breed.getSelectedItem().toString();
-                weight = Double.parseDouble(editText_weight.getText().toString());
+
+
+
                 energyLevel = Integer.parseInt(spinner_energyLevel.getSelectedItem().toString());
                 location = editText_location.getText().toString();
 
-                if (!name.isEmpty() && ImageUri!=null) {
-                    if (curUser!=null) {
-                        StorageReference dogPhotoRef = storageReference.child("dog_photo").child(FieldValue.serverTimestamp().toString() + ".jpg");
-                        dogPhotoRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    dogPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                if ( curUser != null) {
+                    if (!name.isEmpty() && ImageUri != null) {
+
+                        if (isInteger(editText_age.getText().toString())) {
+                            age = Integer.parseInt(editText_age.getText().toString());
+                            if (isNumeric(editText_weight.getText().toString())) {
+                                weight = Double.parseDouble(editText_weight.getText().toString());
+                                if (spinner_breed.getSelectedItem()!=null) {
+                                    breed = spinner_breed.getSelectedItem().toString();
+                                    StorageReference dogPhotoRef = storageReference.child("dog_photo").child(FieldValue.serverTimestamp().toString() + ".jpg");
+                                    dogPhotoRef.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                         @Override
-                                        public void onSuccess(Uri uri) {
-                                            Map<String, Object> playdatePost = new HashMap<>();
-                                            Timestamp ts = new Timestamp(new Date());
-                                            Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts, new HashMap<>(), new HashMap<>());
-                                            CollectionReference dogRef = db.collection("dogs");
-                                            String dog_id = dog.getDog_id();
-                                            dogRef.document(dog_id).set(dog);
-                                            Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
-                                            String userId = curUser.getUid();
-                                            DocumentReference userRef = db.collection("users").document(userId);
-                                            userRef.update("dogs", FieldValue.arrayUnion(dog.getDog_id()));
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                            finish();
+                                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                dogPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                    @Override
+                                                    public void onSuccess(Uri uri) {
+                                                        Map<String, Object> playdatePost = new HashMap<>();
+                                                        Timestamp ts = new Timestamp(new Date());
+                                                        Dogs dog = new Dogs(name, gender, spayed, age, breed, playStyles, weight, energyLevel, uri.toString(), location, currentUserId, ts, new HashMap<>(), new HashMap<>());
+                                                        CollectionReference dogRef = db.collection("dogs");
+                                                        String dog_id = dog.getDog_id();
+                                                        dogRef.document(dog_id).set(dog);
+                                                        Toast.makeText(AddPlayDateActivity.this, "Playdate added successfully", Toast.LENGTH_SHORT).show();
+                                                        String userId = curUser.getUid();
+                                                        DocumentReference userRef = db.collection("users").document(userId);
+                                                        userRef.update("dogs", FieldValue.arrayUnion(dog.getDog_id()));
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        finish();
+                                                    }
+                                                });
+                                            } else {
+                                                Toast.makeText(AddPlayDateActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(AddPlayDateActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddPlayDateActivity.this, "Please choose a breed.", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.INVISIBLE);
                                 }
+                            } else {
+                                Toast.makeText(AddPlayDateActivity.this, "Please input numbers for weight.", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
-                        });
-                    }else {
-                        Toast.makeText(AddPlayDateActivity.this, "Please sign in.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AddPlayDateActivity.this, "Please input an integer for age.", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    } else {
+                        Toast.makeText(AddPlayDateActivity.this, "Please input your dog's name and attach a photo.", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 } else {
-                    Toast.makeText(AddPlayDateActivity.this, "Please input your dog's name and attach a photo.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPlayDateActivity.this, "Please sign in.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
@@ -304,6 +326,31 @@ public class AddPlayDateActivity extends AppCompatActivity {
         startCamera.launch(cameraIntent);
 
     }
+
+    private boolean isNumeric(String weight) {
+        if (weight == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(weight);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isInteger(String age) {
+        if (age == null) {
+            return false;
+        }
+        try {
+            Integer.parseInt(age);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
     ActivityResultLauncher<Intent> startCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -343,7 +390,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
         String[] breedArray = {"Other mix","Affenpinscher", "Afghan Hound", "Aidi", "Airedale Terrier", "Akbash Dog", "Akita", "Alano Español", "Alaskan Klee Kai", "Alaskan Malamute", "Alpine Dachsbracke", "Alpine Spaniel", "American Bulldog", "American Cocker Spaniel",
                 "American Eskimo Dog", "American Foxhound", "American Hairless Terrier", "American Pit Bull Terrier", "American Staffordshire Terrier", "American Water Spaniel", "Anglo-Français de Petite Vénerie", "Appenzeller Sennenhund", "Ariege Pointer", "Ariegeois",
                 "Armant", "Armenian Gampr dog", "Artois Hound", "Australian Cattle Dog", "Australian Kelpie", "Australian Shepherd", "Australian Silky Terrier", "Australian Stumpy Tail Cattle Dog", "Australian Terrier", "Azawakh", "Bakharwal Dog", "Barbet", "Basenji", "Basque Shepherd Dog", "Basset Artésien Normand", "Basset Bleu de Gascogne", "Basset Fauve de Bretagne", "Basset Hound", "Bavarian Mountain Hound", "Beagle", "Beagle-Harrier",
-                "Bearded Collie", "Beauceron", "Bedlington Terrier", "Belgian Shepherd Dog (Groenendael)", "Belgian Shepherd Dog (Laekenois)", "Belgian Shepherd Dog (Malinois)", "Bergamasco Shepherd", "Berger Blanc Suisse", "Berger Picard", "Berner Laufhund", "Bernese Mountain Dog", "Billy", "Black and Tan Coonhound", "Black and Tan Virginia Foxhound", "Black Norwegian Elkhound",
+                "Bearded Collie", "Beauceron", "Bedlington Terrier", "Belgian Shepherd Dog (Groenendael)", "Belgian Shepherd Dog (Laekenois)", "Belgian Shepherd Dog (Malinois)", "Bergamasco Shepherd", "Berger Blanc Suisse", "Berger Picard", "Berner Laufhund", "Bernese Mountain Dog", "Billy", "Bichon Frise", "Black and Tan Coonhound", "Black and Tan Virginia Foxhound", "Black Norwegian Elkhound",
                 "Black Russian Terrier", "Bloodhound", "Blue Lacy", "Blue Paul Terrier", "Boerboel", "Bohemian Shepherd", "Bolognese", "Border Collie", "Border Terrier", "Borzoi", "Boston Terrier", "Bouvier des Ardennes", "Bouvier des Flandres", "Boxer", "Boykin Spaniel", "Bracco Italiano", "Braque d'Auvergne", "Braque du Bourbonnais", "Braque du Puy", "Braque Francais", "Braque Saint-Germain", "Brazilian Terrier", "Briard", "Briquet Griffon Vendéen", "Brittany",
                 "Broholmer", "Bruno Jura Hound", "Bucovina Shepherd Dog", "Bull and Terrier", "Bull Terrier (Miniature)", "Bull Terrier", "Bulldog", "Bullenbeisser", "Bullmastiff", "Bully Kutta", "Burgos Pointer", "Cairn Terrier", "Canaan Dog", "Canadian Eskimo Dog", "Cane Corso", "Cardigan Welsh Corgi", "Carolina Dog", "Carpathian Shepherd Dog", "Catahoula Cur", "Catalan Sheepdog", "Caucasian Shepherd Dog", "Cavalier King Charles Spaniel", "Central Asian Shepherd Dog", "Cesky Fousek", "Cesky Terrier", "Chesapeake Bay Retriever", "Chien Français Blanc et Noir", "Chien Français Blanc et Orange", "Chien Français Tricolore", "Chien-gris",
                 "Chihuahua", "Chilean Fox Terrier", "Chinese Chongqing Dog", "Chinese Crested Dog", "Chinese Imperial Dog", "Chinook", "Chippiparai", "Chow Chow", "Cierny Sery", "Cimarrón Uruguayo", "Cirneco dell'Etna", "Clumber Spaniel", "Combai", "Cordoba Fighting Dog", "Coton de Tulear", "Cretan Hound", "Croatian Sheepdog", "Cumberland Sheepdog", "Curly Coated Retriever", "Cursinu", "Cão da Serra de Aires",

@@ -47,9 +47,9 @@ public class PostActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private PostAdapter postAdapter;
     private ArrayList<Post> postList;
+    FirebaseUser curUser;
+    String userName;
 
-
-    private String username;
 
 
     @Override
@@ -59,7 +59,20 @@ public class PostActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
+        curUser = auth.getCurrentUser();
 
+
+        if (curUser != null) {
+            String userId = curUser.getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User user = documentSnapshot.toObject(User.class);
+                    userName = user.getUsername();
+                }
+            });
+        }
         recyclerView = findViewById(R.id.postList);
         addButton = findViewById(R.id.add);
         postList = new ArrayList<>();
@@ -127,6 +140,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PostActivity.this, AddPostActivity.class);
+                intent.putExtra("username", userName);
                 startActivity(intent);
             }
         });
