@@ -61,10 +61,11 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
     FirebaseUser curUser;
+    String userName;
 
     ImageView searchButton;
     EditText searchText;
-    // TODO advanced filter dialog
+
     ImageView filter;
     SmartMaterialSpinner<String> spinner_filter_breed;
     String filterBreed;
@@ -74,7 +75,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
     int filterWeightLow, filterWeightHigh;
     int filterEnergyLow, filterEnergyHigh;
     List<String> filterPS = new ArrayList<>();
-    // TODO swipe left/right to dislike and request
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +104,12 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
 
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        curUser = firebaseAuth.getCurrentUser();
-
         dislikeDogs = new ArrayList<>();
         ownedDogs = new ArrayList<>();
+
+        curUser = firebaseAuth.getCurrentUser();
+
+
         if (curUser != null) {
             String userId = curUser.getUid();
             DocumentReference userRef = db.collection("users").document(userId);
@@ -114,6 +117,7 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
+                    userName = user.getUsername();
                     dislikeDogs = user.getDislikeDog();
                     ownedDogs = user.getDogs();
                 }
@@ -184,8 +188,6 @@ public class PlayDateActivity extends AppCompatActivity implements DogPlayDateAd
                         Dogs dog = document.toObject(Dogs.class);
                         if ((!dislikeDogs.contains(dog.getDog_id())) && (!ownedDogs.contains(dog.getDog_id()))) {
                             dogs.add(dog);
-                            System.out.println("dogname " + dog.getName());
-                            System.out.println("dog.getImg " + dog.getImg());
                             dogPlayDateAdapter.notifyDataSetChanged();
                         }
                     }

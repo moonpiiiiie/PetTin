@@ -7,8 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import edu.neu.madcourse.pettin.Classes.User;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -33,8 +38,10 @@ public class SplashActivity extends AppCompatActivity {
                 if (currentUser == null) {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 } else {
-                    startActivity(new Intent(SplashActivity.this, PlayDateActivity.class));
+                    Intent intent = new Intent(SplashActivity.this, PlayDateActivity.class);
+                    startActivity(intent);
                 }
+
                 finish();
             }
         }, 2500);
