@@ -112,7 +112,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("image", "clicked");
-                System.out.println("permission: " + checkPermissions());
+//                System.out.println("permission: " + checkPermissions());
                 if (!checkPermissions()) {
                     getPermissions();
                 }
@@ -378,7 +378,7 @@ public class AddPlayDateActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         ImageUri = data.getData();
-                        System.out.println(ImageUri);
+//                        System.out.println(ImageUri);
                         imageView.setImageURI(ImageUri);
                     }
                 }
