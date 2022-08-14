@@ -89,7 +89,10 @@
         <entry key="app/src/main/res/layout/activity_content.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/activity_create_group_chat.xml" value="0.2443820224719101" />
         <entry key="app/src/main/res/layout/activity_create_group_user_card.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.5" />
+
+        <entry key="app/src/main/res/layout/activity_group_message.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.3996101364522417" />
+
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5369791666666667" />
         <entry key="app/src/main/res/layout/activity_message.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_play_date.xml" value="0.5229826353421859" />
