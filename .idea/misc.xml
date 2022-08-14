@@ -55,6 +55,7 @@
         <entry key="app/src/main/res/drawable/popup_edittext_style.xml" value="0.2195" />
         <entry key="app/src/main/res/drawable/receiver_box.xml" value="0.278" />
         <entry key="app/src/main/res/drawable/receiver_circle.xml" value="0.2545" />
+        <entry key="app/src/main/res/drawable/rounded_bg.xml" value="0.3165" />
         <entry key="app/src/main/res/drawable/send_box.xml" value="0.278" />
         <entry key="app/src/main/res/drawable/sender_circle.xml" value="0.436" />
         <entry key="app/src/main/res/drawable/sender_image.xml" value="0.436" />
@@ -80,7 +81,7 @@
         <entry key="app/src/main/res/layout/activity_show_all_post.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_show_blogger_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_show_follow.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_show_post_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_show_post_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_single_dog.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.5369791666666667" />
@@ -118,6 +119,7 @@
         <entry key="app/src/main/res/layout/row_comment.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/row_post_item.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/sender_layout.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/single_comment_view.xml" value="0.2539546814878153" />
         <entry key="app/src/main/res/layout/user_card_chat.xml" value="0.3523809523809524" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.17692307692307693" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.5333333333333333" />
