@@ -109,7 +109,7 @@ public class SingleDogActivity extends AppCompatActivity {
                 curDog = documentSnapshot.toObject(Dogs.class);
 
                 // set data to post section
-                if (curDog.getPlayStyles()!=null) {
+                if (curDog.getPlayStyles()!=null && !curDog.getPlayStyles().isEmpty()) {
                     dogPS.setText(curDog.getPlayStyles().toString());
                 }
 

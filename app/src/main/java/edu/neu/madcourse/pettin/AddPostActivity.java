@@ -182,14 +182,14 @@ public class AddPostActivity extends AppCompatActivity {
                                             Date date = new Date(System.currentTimeMillis());
                                             date_String = formatter.format(date).toString();
                                             // String image, String title, String content, String location, String time, String likes, String username
-                                            System.out.println("getUrl");
-                                            System.out.println(upload_image_uri.toString());
-                                            System.out.println("getTitle " + title_tx.getText().toString());
-                                            System.out.println("getTitle" + title_tx.getText().toString());
-                                            System.out.println("getContent" + content_tx.getText().toString());
-                                            System.out.println("getCity" + city);
-                                            System.out.println("getDate" + date_String);
-                                            System.out.println("getUsername" + user_name);
+//                                            System.out.println("getUrl");
+//                                            System.out.println(upload_image_uri.toString());
+//                                            System.out.println("getTitle " + title_tx.getText().toString());
+//                                            System.out.println("getTitle" + title_tx.getText().toString());
+//                                            System.out.println("getContent" + content_tx.getText().toString());
+//                                            System.out.println("getCity" + city);
+//                                            System.out.println("getDate" + date_String);
+//                                            System.out.println("getUsername" + user_name);
 //                                            Post post = new Post(upload_image_uri.toString(), title_tx.getText().toString(),
 //                                                    content_tx.getText().toString(), city, date_String, "0", user_name);
                                             Post post = new Post(upload_image_uri.toString(), title_tx.getText().toString(),
