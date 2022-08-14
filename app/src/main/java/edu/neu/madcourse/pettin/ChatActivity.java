@@ -140,9 +140,7 @@ public class ChatActivity extends AppCompatActivity implements UserListenerInter
     private void retrieveUsers() {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         recyclerView = findViewById(R.id.matched_users);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         db = FirebaseFirestore.getInstance();
         listOfUsers = new ArrayList<User>();
 
