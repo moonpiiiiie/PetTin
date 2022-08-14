@@ -109,7 +109,10 @@ public class SingleDogActivity extends AppCompatActivity {
                 curDog = documentSnapshot.toObject(Dogs.class);
 
                 // set data to post section
-                dogPS.setText(curDog.getPlayStyles().toString());
+                if (curDog.getPlayStyles()!=null) {
+                    dogPS.setText(curDog.getPlayStyles().toString());
+                }
+
                 dogCity.setText(curDog.getLocation());
                 dogAge.setText("Age: " + curDog.getAge() + " years old");
                 dogGender.setText("Gender: " + curDog.getGender());
@@ -301,7 +304,7 @@ public class SingleDogActivity extends AppCompatActivity {
 
 //                curDogRef.update("receivedMatch", FieldValue.arrayUnion(myDogMap));
             }
-
+            Toast.makeText(SingleDogActivity.this, "Match sent!", Toast.LENGTH_SHORT).show();
             finish();
 
         } else {
