@@ -270,37 +270,7 @@ public class SingleDogActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    // update mydog's sentMatch and curDog's receivedMatch
 
-//                    List<String> dislikeDogs = user.getDislikeDog();
-//                    if (dislikeDogs.contains(curDog.getDog_id())) {
-//                        userRef.update("dislikeDog", FieldValue.arrayRemove(curDog.getDog_id()));
-//                    }
-                    // dog object myDog -> for match
-                    //
-//                    myDogRef = db.collection("dogs").document(myDogId);
-
-//                    myDogRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                            List<String> myDogReceivedMatch = (List<String>)task.getResult().get("receivedMatch");
-//                            System.out.println("print task " + task.getResult());
-//                            mDog = (Dogs)task.getResult().toObject(Dogs.class);
-//                            if (myDogReceivedMatch.contains(curDog.getDog_id())) {
-//                                otherUserRef.document(curDog.getUserID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                        User otherUser = task.getResult().toObject(User.class);
-//                                        userRef.update("matchedUsers", FieldValue.arrayUnion(otherUser));
-//                                    }
-//                                });
-//                            }
-//                            otherUserRef.document(curDog.getUserID()).update("matchedUsers", FieldValue.arrayUnion(user));
-//                            myDogRef.update("sentMatch", FieldValue.arrayUnion(curDog));
-//                            System.out.println("mDog" +mDog.getName());
-//                            curDogRef.update("receivedMatch", FieldValue.arrayUnion(mDog));
-//                        }
-//                    });
                 }
             });
             myDogRef = db.collection("dogs").document(mDog.getDog_id());
